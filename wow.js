@@ -267,6 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
         u_texture: { value: videoTexture },
         u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
         u_time: { value: 0.0 },
+        u_pointerEnergy: { value: 0.0 },
         u_resolution: { value: new THREE.Vector2(heroVideoContainer.clientWidth, heroVideoContainer.clientHeight) }
       };
 
@@ -274,42 +275,44 @@ document.addEventListener('DOMContentLoaded', () => {
         uniforms: vUniforms,
         vertexShader: `
           varying vec2 vUv;
-          uniform vec2 u_mouse;
-          uniform float u_time;
           
           void main() {
             vUv = uv;
-            vec3 pos = position;
-            
-            // Calculate distance to mouse for bulge effect
-            // Normalize position to 0.0-1.0 to match mouse coordinates
-            vec2 normPos = vec2(pos.x / ${heroVideoContainer.clientWidth}.0 + 0.5, pos.y / ${heroVideoContainer.clientHeight}.0 + 0.5);
-            float dist = distance(normPos, u_mouse);
-            
-            // Create a ripple/bulge effect around the mouse
-            float bulge = exp(-dist * 5.0) * 20.0;
-            pos.z += bulge * sin(u_time * 2.0 - dist * 10.0);
-
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
           }
         `,
         fragmentShader: `
           uniform sampler2D u_texture;
           uniform vec2 u_mouse;
+          uniform float u_time;
+          uniform float u_pointerEnergy;
           varying vec2 vUv;
 
           void main() {
             vec2 uv = vUv;
-            
-            // Slight RGB split based on mouse distance
-            float dist = distance(uv, u_mouse);
-            float rgbSplit = exp(-dist * 8.0) * 0.01;
-            
-            vec4 colorR = texture2D(u_texture, vec2(uv.x + rgbSplit, uv.y));
-            vec4 colorG = texture2D(u_texture, vec2(uv.x, uv.y));
-            vec4 colorB = texture2D(u_texture, vec2(uv.x - rgbSplit, uv.y));
-            
-            gl_FragColor = vec4(colorR.r, colorG.g, colorB.b, 1.0);
+            vec2 pointerVector = uv - u_mouse;
+            float distanceToPointer = length(pointerVector);
+            vec2 pointerDirection = pointerVector / max(distanceToPointer, 0.0001);
+
+            // A glassy ripple travels out from the pointer instead of producing random streaks.
+            float focus = exp(-distanceToPointer * 7.0);
+            float primaryWave = sin(distanceToPointer * 48.0 - u_time * 4.2);
+            float secondaryWave = sin(distanceToPointer * 82.0 - u_time * 6.1 + 1.4);
+            float waveStrength = mix(0.35, 1.0, u_pointerEnergy);
+            float distortion = (primaryWave * 0.010 + secondaryWave * 0.003) * focus * waveStrength;
+            vec2 rippleUv = clamp(uv + pointerDirection * distortion, 0.001, 0.999);
+
+            float rgbSplit = focus * (0.0015 + u_pointerEnergy * 0.0035);
+            vec4 colorR = texture2D(u_texture, rippleUv + vec2(rgbSplit, 0.0));
+            vec4 colorG = texture2D(u_texture, rippleUv);
+            vec4 colorB = texture2D(u_texture, rippleUv - vec2(rgbSplit, 0.0));
+
+            // Thin acid-lime rings make the interaction legible without covering the footage.
+            float ringPattern = 1.0 - smoothstep(0.0, 0.16, abs(sin(distanceToPointer * 40.0 - u_time * 4.0)));
+            float ringGlow = ringPattern * exp(-distanceToPointer * 6.5) * (0.04 + u_pointerEnergy * 0.16);
+            vec3 rippleColor = vec3(colorR.r, colorG.g, colorB.b) + vec3(0.52, 1.0, 0.08) * ringGlow;
+
+            gl_FragColor = vec4(rippleColor, 1.0);
           }
         `
       });
@@ -318,16 +321,22 @@ document.addEventListener('DOMContentLoaded', () => {
       vScene.add(vPlane);
 
       let vTargetMouse = new THREE.Vector2(0.5, 0.5);
+      let vPointerEnergy = 0.0;
       
       heroVideoContainer.addEventListener('mousemove', (e) => {
         const rect = heroVideoContainer.getBoundingClientRect();
-        // Mouse coordinates normalized 0-1 relative to the container
-        vTargetMouse.x = (e.clientX - rect.left) / rect.width;
-        vTargetMouse.y = 1.0 - ((e.clientY - rect.top) / rect.height);
+        const nextMouse = new THREE.Vector2(
+          (e.clientX - rect.left) / rect.width,
+          1.0 - ((e.clientY - rect.top) / rect.height)
+        );
+
+        // Faster movement creates a slightly stronger pulse, then fades naturally.
+        vPointerEnergy = Math.min(1.0, Math.max(vPointerEnergy, nextMouse.distanceTo(vTargetMouse) * 16.0));
+        vTargetMouse.copy(nextMouse);
       });
 
       heroVideoContainer.addEventListener('mouseleave', () => {
-        // Return to center
+        // Return to center after the last ripple dissipates.
         vTargetMouse.x = 0.5;
         vTargetMouse.y = 0.5;
       });
@@ -335,6 +344,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const renderVideo = (time) => {
         vUniforms.u_time.value = time * 0.001;
         vUniforms.u_mouse.value.lerp(vTargetMouse, 0.1);
+        vPointerEnergy *= 0.94;
+        vUniforms.u_pointerEnergy.value += (vPointerEnergy - vUniforms.u_pointerEnergy.value) * 0.12;
         
         vRenderer.render(vScene, vCamera);
         requestAnimationFrame(renderVideo);
