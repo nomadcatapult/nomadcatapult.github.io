@@ -1,4 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+  // 0. Appearance Preference
+  const themeToggle = document.getElementById('theme-toggle');
+  const applyTheme = (theme) => {
+    const isDark = theme === 'dark';
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem('nomad_theme', theme);
+
+    if (themeToggle) {
+      themeToggle.setAttribute('aria-pressed', String(isDark));
+      themeToggle.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+      themeToggle.title = isDark ? 'Light theme' : 'Dark theme';
+    }
+  };
+
+  const savedTheme = localStorage.getItem('nomad_theme');
+  const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  applyTheme(savedTheme || systemTheme);
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      applyTheme(nextTheme);
+    });
+  }
   
   // 1. Mobile Menu Toggle
   const header = document.getElementById('header');
@@ -150,8 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work4_summary: "Clean plate reconstruction, overhead wires removal, and custom holographic logo tracking integration.",
       work5_title: "NomadCanvas",
       work5_summary: "A lightweight, high-performance HTML5 canvas sketching application designed for digital graphics workflow.",
-      banner_accent: "// AI ORCHESTRATION",
-      banner_quote: "\"While today's AI agents can generate content, only artists with 10+ years of production experience can orchestrate hundreds of agents efficiently and correctly to deliver human taste, precision, and craft.\"",
+      banner_accent: "// HOW WE LAUNCH",
+      banner_quote: "A small core team brings the right specialists together — then carries the idea from a rough brief to final delivery.",
       slider_tag: "Invisible VFX",
       slider_title: "Production Cleanup",
       slider_subtitle: "Slide to check out the details of our cleanup, objects removal, and HUD integration pipeline.",
@@ -175,11 +200,11 @@ document.addEventListener('DOMContentLoaded', () => {
       form_project: "Project Details",
       btn_send: "Send Message",
       footer_text: "&copy; 2026 Nomad Catapult. All rights reserved. Remote Visual & Interactive Production Studio.",
-      placeholder_name: "Pavel Pakharukov",
-      placeholder_email: "client@agency.com",
+      placeholder_name: "Your name",
+      placeholder_email: "hello@company.com",
       placeholder_project: "Briefly describe your visuals, website, app, game, live show, sound, or production scale requirements...",
       form_launching: "Launching Message...",
-      form_success: "Message sent successfully! Pavel will reach out to you within 24 hours.",
+      form_success: "Message sent successfully! We'll get back to you within 24 hours.",
       modal_role: "Role / Services",
       modal_client: "Client / Type",
       modal_tools: "Tools & Tech",
@@ -239,8 +264,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work4_summary: "Реконструкция чистого листа, удаление подвесных проводов и интеграция отслеживаемого голографического логотипа.",
       work5_title: "NomadCanvas",
       work5_summary: "Легковесное высокопроизводительное приложение для рисования на HTML5 Canvas, созданное для рабочих процессов цифровой графики.",
-      banner_accent: "// ИИ-ОРКЕСТРАЦИЯ",
-      banner_quote: "«Хотя современные ИИ-агенты умеют генерировать контент, только художники с более чем 10-летним опытом работы в продакшене могут эффективно и правильно оркестровать сотни таких агентов, обеспечивая человеческий вкус, точность и мастерство».",
+      banner_accent: "// КАК МЫ ЗАПУСКАЕМ ИДЕИ",
+      banner_quote: "Небольшая основная команда собирает нужных специалистов и доводит идею от сырого брифа до готового запуска.",
       slider_tag: "Невидимый VFX",
       slider_title: "Производственный клинап",
       slider_subtitle: "Передвигайте ползунок, чтобы оценить качество клинапа, удаления объектов и интеграции графики.",
@@ -264,11 +289,11 @@ document.addEventListener('DOMContentLoaded', () => {
       form_project: "Детали проекта",
       btn_send: "Отправить сообщение",
       footer_text: "&copy; 2026 Nomad Catapult. Все права защищены. Удаленная студия визуального и интерактивного продакшена.",
-      placeholder_name: "Павел Пахаруков",
-      placeholder_email: "client@agency.com",
+      placeholder_name: "Ваше имя",
+      placeholder_email: "hello@company.com",
       placeholder_project: "Кратко опишите визуал, сайт, приложение, игру, live-шоу, звук или требования к масштабу команды...",
       form_launching: "Отправка сообщения...",
-      form_success: "Сообщение успешно отправлено! Павел свяжется с вами в течение 24 часов.",
+      form_success: "Сообщение успешно отправлено! Мы свяжемся с вами в течение 24 часов.",
       modal_role: "Роль / Услуги",
       modal_client: "Клиент / Тип",
       modal_tools: "Инструменты и технологии",
@@ -328,8 +353,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work4_summary: "干净的背景板重建、擦除头顶电线，以及集成自定义的全息 Logo 跟踪融合。",
       work5_title: "NomadCanvas",
       work5_summary: "轻量级、高性能的 HTML5 canvas 绘图应用程序，专为数字图形工作流设计。",
-      banner_accent: "// 人工智能协同",
-      banner_quote: "“虽然当今的人工智能代理可以生成内容，但只有拥有 10 年以上制作经验的艺术家才能高效且正确地协同数百个代理，以交付人类的审美、精确度以及工艺。”",
+      banner_accent: "// 我们如何发射创意",
+      banner_quote: "小而核心的团队会为项目集结合适的专家，并将想法从初始简报推进到最终交付。",
       slider_tag: "无形特效",
       slider_title: "制作擦除清理",
       slider_subtitle: "滑动即可查看我们的擦除清理、物体移除和 HUD 集成流程的细节。",
@@ -354,10 +379,10 @@ document.addEventListener('DOMContentLoaded', () => {
       btn_send: "发送消息",
       footer_text: "&copy; 2026 Nomad Catapult。版权所有。远程视觉与互动制作工作室。",
       placeholder_name: "姓名",
-      placeholder_email: "client@agency.com",
+      placeholder_email: "hello@company.com",
       placeholder_project: "简单描述您的视觉、网站、应用、游戏、现场演出、声音或团队规模需求...",
       form_launching: "正在发送消息...",
-      form_success: "消息发送成功！Pavel 将在 24 小时内回复您。",
+      form_success: "消息发送成功！我们将在 24 小时内回复您。",
       modal_role: "角色 / 服务",
       modal_client: "客户 / 类型",
       modal_tools: "工具与技术",
@@ -417,8 +442,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work4_summary: "クリーンプレート再構成、頭上電線の除去、およびカスタムホログラフィックロゴトラッキング合成。",
       work5_title: "NomadCanvas",
       work5_summary: "デジタルグラフィックスワークフロー向けに設計された、軽量で高性能なHTML5キャンバススケッチアプリケーション。",
-      banner_accent: "// AIオーケストレーション",
-      banner_quote: "「今日のAIエージェントはコンテンツを生成できますが、人間ならではのセンス、正確さ、クラフトマンシップを届けるために、何百ものエージェンシーを効率的かつ正しくオーケストレートできるのは、10年以上の制作実績を持つアーティストだけです。」",
+      banner_accent: "// アイデアの打ち上げ方",
+      banner_quote: "小さなコアチームが必要な専門家を集め、ラフなブリーフから最終納品までアイデアを伴走します。",
       slider_tag: "インビジブルVFX",
       slider_title: "クリンアップ",
       slider_subtitle: "スライダーを動かして、クリンアップ、オブジェクト除去、およびHUD合成パイプラインの詳細を確認してください。",
@@ -443,10 +468,10 @@ document.addEventListener('DOMContentLoaded', () => {
       btn_send: "送信",
       footer_text: "&copy; 2026 Nomad Catapult. All rights reserved. リモートビジュアル＆インタラクティブ制作スタジオ。",
       placeholder_name: "お名前",
-      placeholder_email: "client@agency.com",
+      placeholder_email: "hello@company.com",
       placeholder_project: "ビジュアル、Webサイト、アプリ、ゲーム、ライブショー、サウンド、チーム規模の要件を簡単にご記入ください...",
       form_launching: "送信中...",
-      form_success: "送信されました！Pavelが24時間以内にご連絡いたします。",
+      form_success: "送信されました！24時間以内にご連絡します。",
       modal_role: "役割・サービス",
       modal_client: "クライアント・タイプ",
       modal_tools: "使用ツール・技術",
