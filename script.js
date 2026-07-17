@@ -43,28 +43,46 @@ document.addEventListener('DOMContentLoaded', () => {
     link.classList.remove('is-disabled');
   });
 
-  // 0.5. The first downward gesture introduces the hero copy; the next one enters the site.
+  // 0.5. The first downward gesture introduces the hero copy; scrolling stays locked until it finishes.
   const heroSection = document.getElementById('hero');
+  const heroContent = document.getElementById('hero-intro');
   const heroScrollIndicator = document.getElementById('hero-scroll-indicator');
-  let heroIntroRevealed = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let heroIntroRevealed = reducedMotion;
+  let heroIntroReady = reducedMotion;
+  let heroIntroUnlockTimer;
   let touchStartY = null;
 
+  const finishHeroIntro = () => {
+    heroIntroReady = true;
+    window.clearTimeout(heroIntroUnlockTimer);
+  };
+
   const revealHeroIntro = () => {
-    if (heroIntroRevealed || !heroSection || window.scrollY > 4) return false;
-    heroIntroRevealed = true;
-    heroSection.classList.add('hero-intro-revealed');
-    if (heroScrollIndicator) {
-      heroScrollIndicator.querySelector('a')?.setAttribute('aria-label', 'Scroll down to explore the site');
-      const scrollHint = heroScrollIndicator.querySelector('.scroll-hint');
-      const currentLang = document.documentElement.getAttribute('lang') || 'en';
-      if (scrollHint) scrollHint.textContent = translations[currentLang]?.hero_scroll_continue || 'Scroll to explore';
+    if (!heroSection || window.scrollY > 4 || heroIntroReady) return false;
+
+    if (!heroIntroRevealed) {
+      heroIntroRevealed = true;
+      heroSection.classList.add('hero-intro-revealed');
+      if (heroScrollIndicator) {
+        heroScrollIndicator.querySelector('a')?.setAttribute('aria-label', 'Scroll down to explore the site');
+        const scrollHint = heroScrollIndicator.querySelector('.scroll-hint');
+        const currentLang = document.documentElement.getAttribute('lang') || 'en';
+        if (scrollHint) scrollHint.textContent = translations[currentLang]?.hero_scroll_continue || 'Scroll to explore';
+      }
+      heroIntroUnlockTimer = window.setTimeout(finishHeroIntro, 950);
     }
+
     return true;
   };
 
   if (heroIntroRevealed && heroSection) {
     heroSection.classList.add('hero-intro-revealed');
   }
+
+  heroContent?.addEventListener('transitionend', (event) => {
+    if (event.propertyName === 'transform' && heroIntroRevealed) finishHeroIntro();
+  });
 
   heroScrollIndicator?.querySelector('a')?.addEventListener('click', (event) => {
     if (revealHeroIntro()) event.preventDefault();
@@ -87,9 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const touchY = event.touches[0]?.clientY;
     if (touchStartY !== null && touchY !== undefined && touchStartY - touchY > 28 && revealHeroIntro()) {
       event.preventDefault();
-      touchStartY = null;
     }
   }, { passive: false });
+
+  window.addEventListener('touchend', () => {
+    touchStartY = null;
+  }, { passive: true });
   
   // 1. Mobile Menu Toggle
   const header = document.getElementById('header');
@@ -194,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
       nav_work: "Selected Work",
       nav_vfx: "VFX Showcase",
       nav_collab: "How We Work",
+      nav_canvas: "NomadCanvas",
       nav_contact: "Contact",
       hero_subtitle: "Remote visual and interactive production studio for campaigns, websites, apps, games, live shows, and AI-assisted media.",
       hero_scroll_hint: "Scroll to reveal",
@@ -300,6 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
       nav_work: "Работы",
       nav_vfx: "VFX витрина",
       nav_collab: "Как мы работаем",
+      nav_canvas: "NomadCanvas",
       nav_contact: "Контакты",
       hero_subtitle: "Удаленная студия визуального и интерактивного продакшена: кампании, сайты, приложения, игры, live-шоу и медиа с помощью ИИ.",
       hero_scroll_hint: "Прокрутите, чтобы открыть",
@@ -406,6 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
       nav_work: "精选作品",
       nav_vfx: "特效展示",
       nav_collab: "合作模式",
+      nav_canvas: "NomadCanvas",
       nav_contact: "联系我们",
       hero_subtitle: "远程视觉与互动制作工作室，服务于广告活动、网站、应用、游戏、现场演出和 AI 辅助媒体。",
       hero_scroll_hint: "向下滚动以展开",
@@ -512,6 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
       nav_work: "実績紹介",
       nav_vfx: "VFX紹介",
       nav_collab: "業務フロー",
+      nav_canvas: "NomadCanvas",
       nav_contact: "お問い合わせ",
       hero_subtitle: "キャンペーン、Webサイト、アプリ、ゲーム、ライブショー、AI支援メディアを制作するリモートのビジュアル＆インタラクティブ制作スタジオ。",
       hero_scroll_hint: "スクロールして表示",
