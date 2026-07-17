@@ -89,7 +89,7 @@
       <div class="hero-overlay"></div>
     </div>
 
-    <div class="hero-content">
+    <div class="hero-content" id="hero-intro">
       <div class="hero-title-container">
         <!-- Sketch path animation simulator -->
         <h1 class="hero-title animate-draw" id="hero-title">NOMAD CATAPULT</h1>
@@ -108,9 +108,10 @@
       </button>
     </div>
 
-    <div class="scroll-indicator">
+    <div class="scroll-indicator" id="hero-scroll-indicator">
       <a href="#positioning" aria-label="Scroll down to positioning section">
         <span class="mouse-icon"><span class="wheel"></span></span>
+        <span class="scroll-hint" data-i18n="hero_scroll_hint">Scroll to reveal</span>
       </a>
     </div>
 
@@ -401,6 +402,24 @@
           <div class="collab-card">
             <h3 class="collab-type" data-i18n="collab3_title">03. White-Label Partner</h3>
             <p class="collab-desc" data-i18n="collab3_desc">Unbranded production partner. We handle backend visual execution, CGI setups, and animations silently while your client-facing account team manages feedback.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NomadCanvas Promo -->
+    <section class="nomadcanvas-promo" id="nomadcanvas">
+      <div class="container">
+        <div class="nomadcanvas-promo-content">
+          <div class="nomadcanvas-promo-copy">
+            <span class="section-tag" data-i18n="canvas_tag">NomadCanvas</span>
+            <h2 class="section-title" data-i18n="canvas_title">NomadCanvas</h2>
+            <p class="nomadcanvas-promo-subtitle" data-i18n="canvas_promo_subtitle">Visual workspace for motion, media and ideas.</p>
+            <p class="nomadcanvas-promo-description" data-i18n="canvas_promo_description">Локальное приложение с бесконечным холстом для референсов, медиа, раскадровок, заметок и таймлайнов. Проекты сохраняются в переносимом формате .nmc.</p>
+            <div class="nomadcanvas-promo-actions">
+              <a class="canvas-promo-button canvas-promo-button-primary is-disabled" id="nomadcanvas-repo-link" data-i18n="canvas_promo_repo" aria-disabled="true">Смотреть на GitHub</a>
+              <a class="canvas-promo-button canvas-promo-button-secondary is-disabled" id="nomadcanvas-release-link" data-i18n="canvas_promo_release" aria-disabled="true">Скачать релиз</a>
+            </div>
           </div>
         </div>
       </div>

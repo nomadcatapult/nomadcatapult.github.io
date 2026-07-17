@@ -1,3 +1,6 @@
+const REPO_URL = 'https://github.com/nomadcatapult/nomadcanvas-releases';
+const RELEASES_URL = 'https://github.com/nomadcatapult/nomadcanvas-releases/releases';
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // 0. Appearance Preference
@@ -24,6 +27,69 @@ document.addEventListener('DOMContentLoaded', () => {
       applyTheme(nextTheme);
     });
   }
+
+  const nomadCanvasLinks = {
+    'nomadcanvas-repo-link': REPO_URL,
+    'nomadcanvas-release-link': RELEASES_URL
+  };
+
+  Object.entries(nomadCanvasLinks).forEach(([id, url]) => {
+    const link = document.getElementById(id);
+    if (!link || !url) return;
+    link.href = url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.removeAttribute('aria-disabled');
+    link.classList.remove('is-disabled');
+  });
+
+  // 0.5. The first downward gesture introduces the hero copy; the next one enters the site.
+  const heroSection = document.getElementById('hero');
+  const heroScrollIndicator = document.getElementById('hero-scroll-indicator');
+  let heroIntroRevealed = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let touchStartY = null;
+
+  const revealHeroIntro = () => {
+    if (heroIntroRevealed || !heroSection || window.scrollY > 4) return false;
+    heroIntroRevealed = true;
+    heroSection.classList.add('hero-intro-revealed');
+    if (heroScrollIndicator) {
+      heroScrollIndicator.querySelector('a')?.setAttribute('aria-label', 'Scroll down to explore the site');
+      const scrollHint = heroScrollIndicator.querySelector('.scroll-hint');
+      const currentLang = document.documentElement.getAttribute('lang') || 'en';
+      if (scrollHint) scrollHint.textContent = translations[currentLang]?.hero_scroll_continue || 'Scroll to explore';
+    }
+    return true;
+  };
+
+  if (heroIntroRevealed && heroSection) {
+    heroSection.classList.add('hero-intro-revealed');
+  }
+
+  heroScrollIndicator?.querySelector('a')?.addEventListener('click', (event) => {
+    if (revealHeroIntro()) event.preventDefault();
+  });
+
+  window.addEventListener('wheel', (event) => {
+    if (event.deltaY > 0 && revealHeroIntro()) event.preventDefault();
+  }, { passive: false });
+
+  window.addEventListener('keydown', (event) => {
+    if (!['ArrowDown', 'PageDown', ' '].includes(event.key)) return;
+    if (revealHeroIntro()) event.preventDefault();
+  });
+
+  window.addEventListener('touchstart', (event) => {
+    touchStartY = event.touches[0]?.clientY ?? null;
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (event) => {
+    const touchY = event.touches[0]?.clientY;
+    if (touchStartY !== null && touchY !== undefined && touchStartY - touchY > 28 && revealHeroIntro()) {
+      event.preventDefault();
+      touchStartY = null;
+    }
+  }, { passive: false });
   
   // 1. Mobile Menu Toggle
   const header = document.getElementById('header');
@@ -130,6 +196,23 @@ document.addEventListener('DOMContentLoaded', () => {
       nav_collab: "How We Work",
       nav_contact: "Contact",
       hero_subtitle: "Remote visual and interactive production studio for campaigns, websites, apps, games, live shows, and AI-assisted media.",
+      hero_scroll_hint: "Scroll to reveal",
+      hero_scroll_continue: "Scroll to explore",
+      canvas_tag: "Made for makers",
+      canvas_title: "NomadCanvas",
+      canvas_lead: "A focused drawing space for designers, authors, and creators — from the first loose sketch to a shareable visual idea.",
+      canvas_text: "Shape concepts with responsive brushes, flexible layers, quick colour control, and a calm interface that keeps the canvas at the centre.",
+      canvas_feature_1: "Sketch, paint, annotate and explore",
+      canvas_feature_2: "Brushes, layers and fast exports",
+      canvas_feature_3: "Built for desktop creative flow",
+      canvas_download_label: "Downloads are on the way",
+      canvas_download_macos: "macOS · soon",
+      canvas_download_windows: "Windows · soon",
+      canvas_download_linux: "Linux · soon",
+      canvas_promo_subtitle: "Visual workspace for motion, media and ideas.",
+      canvas_promo_description: "A local app with an infinite canvas for references, media, storyboards, notes, and timelines. Projects are saved in the portable .nmc format.",
+      canvas_promo_repo: "View on GitHub",
+      canvas_promo_release: "Download release",
       motto: "Direct execution.<br>Flexible studio scale.",
       lead_text: "We help agencies, brands, and creative teams turn raw ideas into finished visuals, interactive experiences, tools, games, websites, and show content.",
       body_text: "Nomad Catapult operates as a remote-first creative production partner for any screen, stage, or playable surface. For focused tasks, you work directly with a senior artist for speed and efficiency. For larger productions, we assemble specialists across visual design, development, animation, sound, and AI-assisted workflows.",
@@ -219,6 +302,23 @@ document.addEventListener('DOMContentLoaded', () => {
       nav_collab: "Как мы работаем",
       nav_contact: "Контакты",
       hero_subtitle: "Удаленная студия визуального и интерактивного продакшена: кампании, сайты, приложения, игры, live-шоу и медиа с помощью ИИ.",
+      hero_scroll_hint: "Прокрутите, чтобы открыть",
+      hero_scroll_continue: "Прокрутите, чтобы смотреть дальше",
+      canvas_tag: "Для тех, кто создаёт",
+      canvas_title: "NomadCanvas",
+      canvas_lead: "Пространство для рисования для дизайнеров, авторов и креаторов — от первого наброска до визуальной идеи, которой хочется поделиться.",
+      canvas_text: "Развивайте концепты с отзывчивыми кистями, гибкими слоями, быстрым выбором цвета и спокойным интерфейсом, в котором главное место остаётся холсту.",
+      canvas_feature_1: "Скетчи, рисование, заметки и поиск идей",
+      canvas_feature_2: "Кисти, слои и быстрый экспорт",
+      canvas_feature_3: "Создано для творческого desktop-потока",
+      canvas_download_label: "Загрузки уже готовятся",
+      canvas_download_macos: "macOS · скоро",
+      canvas_download_windows: "Windows · скоро",
+      canvas_download_linux: "Linux · скоро",
+      canvas_promo_subtitle: "Visual workspace for motion, media and ideas.",
+      canvas_promo_description: "Локальное приложение с бесконечным холстом для референсов, медиа, раскадровок, заметок и таймлайнов. Проекты сохраняются в переносимом формате .nmc.",
+      canvas_promo_repo: "Смотреть на GitHub",
+      canvas_promo_release: "Скачать релиз",
       motto: "Прямая работа.<br>Гибкий масштаб студии.",
       lead_text: "Мы помогаем агентствам, брендам и творческим командам превращать сырые идеи в готовые визуалы, интерактивные форматы, инструменты, игры, сайты и шоу-контент.",
       body_text: "Nomad Catapult работает как удаленный творческий production-партнер для любых экранов, сцен и playable-поверхностей. Для точечных задач вы работаете напрямую со старшим художником. Для крупных проектов мы собираем специалистов по визуальному дизайну, разработке, анимации, звуку и AI-assisted workflow.",
@@ -308,6 +408,23 @@ document.addEventListener('DOMContentLoaded', () => {
       nav_collab: "合作模式",
       nav_contact: "联系我们",
       hero_subtitle: "远程视觉与互动制作工作室，服务于广告活动、网站、应用、游戏、现场演出和 AI 辅助媒体。",
+      hero_scroll_hint: "向下滚动以展开",
+      hero_scroll_continue: "向下探索",
+      canvas_tag: "为创作者而作",
+      canvas_title: "NomadCanvas",
+      canvas_lead: "为设计师、作者和创作者打造的专注绘画空间——从最初的草图到可分享的视觉想法。",
+      canvas_text: "借助灵敏画笔、灵活图层、快速配色与安静界面发展概念，让画布始终处于中心。",
+      canvas_feature_1: "草图、绘画、标注与探索",
+      canvas_feature_2: "画笔、图层与快速导出",
+      canvas_feature_3: "为桌面端创作流程打造",
+      canvas_download_label: "下载版本即将推出",
+      canvas_download_macos: "macOS · 即将推出",
+      canvas_download_windows: "Windows · 即将推出",
+      canvas_download_linux: "Linux · 即将推出",
+      canvas_promo_subtitle: "面向动效、媒体与灵感的视觉工作空间。",
+      canvas_promo_description: "一款本地应用，提供无限画布来整理参考、媒体、分镜、笔记和时间线。项目以可移植的 .nmc 格式保存。",
+      canvas_promo_repo: "在 GitHub 查看",
+      canvas_promo_release: "下载发行版",
       motto: "直接执行。<br>灵活的工作室规模。",
       lead_text: "我们帮助代理商、品牌和创意团队将初步想法转化为完成的视觉内容、互动体验、工具、游戏、网站和演出内容。",
       body_text: "Nomad Catapult 是面向各种屏幕、舞台和可交互界面的远程创意制作伙伴。对于聚焦任务，您直接与资深艺术家协作以获得速度和效率。对于更大的制作，我们会组建设计、开发、动画、声音和 AI 辅助流程方面的专家团队。",
@@ -397,6 +514,23 @@ document.addEventListener('DOMContentLoaded', () => {
       nav_collab: "業務フロー",
       nav_contact: "お問い合わせ",
       hero_subtitle: "キャンペーン、Webサイト、アプリ、ゲーム、ライブショー、AI支援メディアを制作するリモートのビジュアル＆インタラクティブ制作スタジオ。",
+      hero_scroll_hint: "スクロールして表示",
+      hero_scroll_continue: "スクロールして探索",
+      canvas_tag: "つくる人のために",
+      canvas_title: "NomadCanvas",
+      canvas_lead: "デザイナー、作家、クリエイターのための集中できる描画スペース。最初のラフスケッチから共有したくなるビジュアルアイデアまで支えます。",
+      canvas_text: "反応のよいブラシ、柔軟なレイヤー、すばやい色選び、キャンバスに集中できる静かなインターフェースでコンセプトを育てます。",
+      canvas_feature_1: "スケッチ、ペイント、注釈、アイデア探索",
+      canvas_feature_2: "ブラシ、レイヤー、すばやい書き出し",
+      canvas_feature_3: "デスクトップの創作フローのために設計",
+      canvas_download_label: "ダウンロード版を準備中",
+      canvas_download_macos: "macOS · 準備中",
+      canvas_download_windows: "Windows · 準備中",
+      canvas_download_linux: "Linux · 準備中",
+      canvas_promo_subtitle: "モーション、メディア、アイデアのためのビジュアルワークスペース。",
+      canvas_promo_description: "リファレンス、メディア、絵コンテ、メモ、タイムラインを整理できる無限キャンバスのローカルアプリです。プロジェクトは持ち運べる .nmc 形式で保存されます。",
+      canvas_promo_repo: "GitHub で見る",
+      canvas_promo_release: "リリースをダウンロード",
       motto: "ダイレクトな実行力。<br>柔軟なスタジオ規模。",
       lead_text: "エージェンシー、ブランド、クリエイティブチームのラフなアイデアを、完成したビジュアル、インタラクティブ体験、ツール、ゲーム、Webサイト、ショーコンテンツへと形にします。",
       body_text: "Nomad Catapultは、あらゆるスクリーン、ステージ、プレイ可能な面に対応するリモートのクリエイティブ制作パートナーです。集中した作業ではシニアアーティストと直接連携し、より大きな制作ではビジュアルデザイン、開発、アニメーション、サウンド、AI支援ワークフローの専門家を編成します。",
@@ -512,6 +646,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
+
+    if (heroIntroRevealed) {
+      const scrollHint = heroScrollIndicator?.querySelector('.scroll-hint');
+      if (scrollHint) scrollHint.textContent = translations[lang].hero_scroll_continue;
+    }
 
     // Update Form Inputs Placeholders
     const inputName = document.getElementById('form-name');
