@@ -49,30 +49,58 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroScrollIndicator = document.getElementById('hero-scroll-indicator');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let heroIntroRevealed = reducedMotion;
-  let heroIntroReady = reducedMotion;
-  let heroIntroUnlockTimer;
+  let heroIntroAnimating = false;
+  let heroIntroTransitionTimer;
   let touchStartY = null;
 
-  const finishHeroIntro = () => {
-    heroIntroReady = true;
-    window.clearTimeout(heroIntroUnlockTimer);
+  const setHeroScrollHint = (isRevealed) => {
+    if (!heroScrollIndicator) return;
+    const currentLang = document.documentElement.getAttribute('lang') || 'en';
+    const scrollHint = heroScrollIndicator.querySelector('.scroll-hint');
+    heroScrollIndicator.querySelector('a')?.setAttribute(
+      'aria-label',
+      isRevealed ? 'Scroll down to explore the site' : 'Scroll down to reveal the studio introduction'
+    );
+    if (scrollHint) {
+      scrollHint.textContent = isRevealed
+        ? translations[currentLang]?.hero_scroll_continue || 'Scroll to explore'
+        : translations[currentLang]?.hero_scroll_hint || 'Scroll to reveal';
+    }
+  };
+
+  const finishHeroIntroTransition = () => {
+    heroIntroAnimating = false;
+    window.clearTimeout(heroIntroTransitionTimer);
+  };
+
+  const startHeroIntroTransition = () => {
+    heroIntroAnimating = true;
+    window.clearTimeout(heroIntroTransitionTimer);
+    heroIntroTransitionTimer = window.setTimeout(finishHeroIntroTransition, 950);
   };
 
   const revealHeroIntro = () => {
-    if (!heroSection || window.scrollY > 4 || heroIntroReady) return false;
+    if (reducedMotion || !heroSection || window.scrollY > 4) return false;
+    if (heroIntroAnimating) return true;
+    if (heroIntroRevealed) return false;
 
-    if (!heroIntroRevealed) {
-      heroIntroRevealed = true;
-      heroSection.classList.add('hero-intro-revealed');
-      if (heroScrollIndicator) {
-        heroScrollIndicator.querySelector('a')?.setAttribute('aria-label', 'Scroll down to explore the site');
-        const scrollHint = heroScrollIndicator.querySelector('.scroll-hint');
-        const currentLang = document.documentElement.getAttribute('lang') || 'en';
-        if (scrollHint) scrollHint.textContent = translations[currentLang]?.hero_scroll_continue || 'Scroll to explore';
-      }
-      heroIntroUnlockTimer = window.setTimeout(finishHeroIntro, 950);
-    }
+    heroIntroRevealed = true;
+    heroSection.classList.add('hero-intro-revealed');
+    setHeroScrollHint(true);
+    startHeroIntroTransition();
 
+    return true;
+  };
+
+  const hideHeroIntro = () => {
+    if (reducedMotion || !heroSection || window.scrollY > 4) return false;
+    if (heroIntroAnimating) return true;
+    if (!heroIntroRevealed) return false;
+
+    heroIntroRevealed = false;
+    heroSection.classList.remove('hero-intro-revealed');
+    setHeroScrollHint(false);
+    startHeroIntroTransition();
     return true;
   };
 
@@ -81,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   heroContent?.addEventListener('transitionend', (event) => {
-    if (event.propertyName === 'transform' && heroIntroRevealed) finishHeroIntro();
+    if (event.propertyName === 'transform' && heroIntroAnimating) finishHeroIntroTransition();
   });
 
   heroScrollIndicator?.querySelector('a')?.addEventListener('click', (event) => {
@@ -90,11 +118,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('wheel', (event) => {
     if (event.deltaY > 0 && revealHeroIntro()) event.preventDefault();
+    if (event.deltaY < 0 && hideHeroIntro()) event.preventDefault();
   }, { passive: false });
 
   window.addEventListener('keydown', (event) => {
-    if (!['ArrowDown', 'PageDown', ' '].includes(event.key)) return;
-    if (revealHeroIntro()) event.preventDefault();
+    if (['ArrowDown', 'PageDown', ' '].includes(event.key) && revealHeroIntro()) event.preventDefault();
+    if (['ArrowUp', 'PageUp'].includes(event.key) && hideHeroIntro()) event.preventDefault();
   });
 
   window.addEventListener('touchstart', (event) => {
@@ -104,6 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('touchmove', (event) => {
     const touchY = event.touches[0]?.clientY;
     if (touchStartY !== null && touchY !== undefined && touchStartY - touchY > 28 && revealHeroIntro()) {
+      event.preventDefault();
+    }
+    if (touchStartY !== null && touchY !== undefined && touchY - touchStartY > 28 && hideHeroIntro()) {
       event.preventDefault();
     }
   }, { passive: false });
