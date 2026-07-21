@@ -48,7 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroContent = document.getElementById('hero-intro');
   const heroScrollIndicator = document.getElementById('hero-scroll-indicator');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let heroIntroRevealed = reducedMotion;
+  // On phones the hero copy is shown immediately (to fill the space below the
+  // shorter video band) and scrolling is never intercepted — same as the
+  // reduced-motion path.
+  const heroIntroStatic = reducedMotion || window.matchMedia('(max-width: 768px)').matches;
+  let heroIntroRevealed = heroIntroStatic;
   let heroIntroAnimating = false;
   let heroIntroTransitionTimer;
   let touchStartY = null;
@@ -80,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const revealHeroIntro = () => {
-    if (reducedMotion || !heroSection || window.scrollY > 4) return false;
+    if (heroIntroStatic || !heroSection || window.scrollY > 4) return false;
     if (heroIntroAnimating) return true;
     if (heroIntroRevealed) return false;
 
@@ -93,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const hideHeroIntro = () => {
-    if (reducedMotion || !heroSection || window.scrollY > 4) return false;
+    if (heroIntroStatic || !heroSection || window.scrollY > 4) return false;
     if (heroIntroAnimating) return true;
     if (!heroIntroRevealed) return false;
 
@@ -106,6 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (heroIntroRevealed && heroSection) {
     heroSection.classList.add('hero-intro-revealed');
+    // The scroll hint text is set by setLanguage() (which runs after the
+    // translations table is defined) based on heroIntroRevealed.
   }
 
   heroContent?.addEventListener('transitionend', (event) => {
