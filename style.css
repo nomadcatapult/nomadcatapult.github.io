@@ -1190,7 +1190,7 @@ section {
      existing radial overlay at the edges. */
   .hero-video-container {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     background-color: #07080a;
   }
@@ -1202,10 +1202,10 @@ section {
     aspect-ratio: 1344 / 1080;
     object-fit: cover;
     object-position: center;
-    /* Fade the top/bottom edges into the dark field so the band has no
-       hard letterbox seam. */
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+    /* Video sits flush with the top; only the bottom edge fades into the
+       dark field so there is no hard letterbox seam below. */
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 82%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0, #000 82%, transparent 100%);
   }
 
   /* Responsive Header Navigation Drawer */
