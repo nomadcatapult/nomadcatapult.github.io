@@ -1182,7 +1182,32 @@ section {
   section {
     padding: 5rem 0;
   }
-  
+
+  /* On portrait phones the 16:9 hero video would lose ~70% of its width
+     with plain object-fit: cover. Cap the crop at 30% by giving the video
+     the aspect ratio of its central 70% (1344/1080). The remaining height
+     is filled with the near-black hero color, which blends into the
+     existing radial overlay at the edges. */
+  .hero-video-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #07080a;
+  }
+
+  .hero-video {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    aspect-ratio: 1344 / 1080;
+    object-fit: cover;
+    object-position: center;
+    /* Fade the top/bottom edges into the dark field so the band has no
+       hard letterbox seam. */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+  }
+
   /* Responsive Header Navigation Drawer */
   .menu-toggle {
     display: flex;
