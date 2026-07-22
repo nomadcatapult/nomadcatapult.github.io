@@ -2233,9 +2233,6 @@ main > section {
 }
 
 .nomadcanvas-promo {
-  --reveal-x: 50%;
-  --reveal-y: 50%;
-  --reveal-radius: 0px;
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -2256,29 +2253,8 @@ main > section {
     linear-gradient(90deg, rgba(4, 11, 14, 0.96) 0%, rgba(4, 11, 14, 0.82) 36%, rgba(4, 11, 14, 0.42) 63%, rgba(4, 11, 14, 0.14) 100%),
     url('assets/images/NomadCanvas.jpg') center / cover no-repeat,
     #071115;
-  filter: blur(8px) brightness(0.74) saturate(0.68);
+  filter: blur(4px) brightness(0.8) saturate(0.75);
   transform: scale(1.04);
-}
-
-.nomadcanvas-promo::after {
-  content: '';
-  position: absolute;
-  inset: -1.5rem;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(4, 11, 14, 0.92) 0%, rgba(4, 11, 14, 0.68) 36%, rgba(4, 11, 14, 0.22) 63%, rgba(4, 11, 14, 0.04) 100%),
-    url('assets/images/NomadCanvas.jpg') center / cover no-repeat,
-    #071115;
-  clip-path: circle(var(--reveal-radius) at var(--reveal-x) var(--reveal-y));
-  filter: brightness(0.92) saturate(0.9);
-  transform: scale(1.04);
-  transition: clip-path 0.16s ease-out;
-  will-change: clip-path;
-}
-
-.nomadcanvas-promo.is-pointer-revealing {
-  --reveal-radius: 11rem;
 }
 
 .nomadcanvas-promo-content {
@@ -2382,12 +2358,6 @@ main > section {
 
   .nomadcanvas-promo-actions {
     gap: 0.6rem;
-  }
-}
-
-@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
-  .nomadcanvas-promo::after {
-    display: none;
   }
 }
 
