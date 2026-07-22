@@ -2233,6 +2233,8 @@ main > section {
 }
 
 .nomadcanvas-promo {
+  --canvas-parallax-x: 0px;
+  --canvas-parallax-y: 0px;
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -2254,7 +2256,12 @@ main > section {
     url('assets/images/NomadCanvas.jpg') center / cover no-repeat,
     #071115;
   filter: blur(4px) brightness(0.8) saturate(0.75);
-  transform: scale(1.04);
+  transform: translate3d(var(--canvas-parallax-x), var(--canvas-parallax-y), 0) scale(1.04);
+  transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nomadcanvas-promo.is-canvas-parallax::before {
+  will-change: transform;
 }
 
 .nomadcanvas-promo-content {

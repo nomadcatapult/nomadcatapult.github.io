@@ -48,6 +48,50 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroContent = document.getElementById('hero-intro');
   const heroScrollIndicator = document.getElementById('hero-scroll-indicator');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nomadCanvasPromo = document.getElementById('nomadcanvas');
+  const canUseCanvasParallax = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  if (nomadCanvasPromo && canUseCanvasParallax && !reducedMotion) {
+    let parallaxFrame;
+    let parallaxX = 0;
+    let parallaxY = 0;
+
+    const renderCanvasParallax = () => {
+      nomadCanvasPromo.style.setProperty('--canvas-parallax-x', `${parallaxX}px`);
+      nomadCanvasPromo.style.setProperty('--canvas-parallax-y', `${parallaxY}px`);
+      parallaxFrame = undefined;
+    };
+
+    const updateCanvasParallax = (event) => {
+      const promoBounds = nomadCanvasPromo.getBoundingClientRect();
+      const horizontal = (event.clientX - promoBounds.left) / promoBounds.width - 0.5;
+      const vertical = (event.clientY - promoBounds.top) / promoBounds.height - 0.5;
+
+      parallaxX = horizontal * -36;
+      parallaxY = vertical * -24;
+      nomadCanvasPromo.classList.add('is-canvas-parallax');
+
+      if (parallaxFrame === undefined) {
+        parallaxFrame = window.requestAnimationFrame(renderCanvasParallax);
+      }
+    };
+
+    const resetCanvasParallax = () => {
+      parallaxX = 0;
+      parallaxY = 0;
+      nomadCanvasPromo.classList.remove('is-canvas-parallax');
+
+      if (parallaxFrame === undefined) {
+        parallaxFrame = window.requestAnimationFrame(renderCanvasParallax);
+      }
+    };
+
+    nomadCanvasPromo.addEventListener('pointermove', updateCanvasParallax);
+    nomadCanvasPromo.addEventListener('pointerleave', resetCanvasParallax);
+    document.addEventListener('pointermove', (event) => {
+      if (!nomadCanvasPromo.contains(event.target)) resetCanvasParallax();
+    });
+  }
 
   // On phones the hero copy is shown immediately (to fill the space below the
   // shorter video band) and scrolling is never intercepted — same as the
