@@ -406,25 +406,23 @@ section {
 }
 
 .btn-control {
-  background: rgba(18, 20, 24, 0.6);
-  border: 1px solid var(--border-color);
-  color: var(--text-muted);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
+  background: none;
+  border: none;
+  color: #fff6e7;
+  width: 40px;
+  height: 40px;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: var(--transition-smooth);
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.55));
+  transition: color 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
 }
 
 .btn-control:hover {
-  border-color: var(--accent-color);
   color: var(--accent-color);
-  box-shadow: 0 0 10px rgba(var(--accent-color-rgb), 0.2);
+  transform: translateY(-1px);
 }
 
 .control-icon {
@@ -1693,16 +1691,6 @@ section {
   right: 2rem;
 }
 
-.btn-control {
-  background: rgba(255, 246, 231, 0.92);
-  border-color: rgba(24, 61, 67, 0.28);
-  color: var(--text-main);
-  box-shadow: 2px 2px 0 rgba(24, 61, 67, 0.18);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.btn-control:hover,
 .btn-secondary:hover,
 .btn-contact-nav:hover {
   color: var(--accent-color);
@@ -1785,17 +1773,17 @@ section {
   height: 40px;
   padding: 0;
   color: var(--text-main);
-  background: #fffdf7;
-  border: 1px solid var(--border-color);
-  border-radius: 50%;
-  box-shadow: 2px 2px 0 rgba(24, 61, 67, 0.08);
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
   cursor: pointer;
-  transition: transform 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+  transition: transform 0.25s ease, color 0.25s ease, opacity 0.25s ease;
 }
 
 .theme-toggle:hover {
-  border-color: var(--accent-color);
-  transform: translateY(-2px) rotate(8deg);
+  color: var(--accent-color);
+  transform: rotate(8deg);
 }
 
 .theme-icon {
@@ -1896,8 +1884,7 @@ html[data-theme='dark'] {
 
 html[data-theme='dark'] .main-header,
 html[data-theme='dark'] .lang-selector,
-html[data-theme='dark'] .btn-contact-nav,
-html[data-theme='dark'] .theme-toggle {
+html[data-theme='dark'] .btn-contact-nav {
   background-color: #173b40;
 }
 

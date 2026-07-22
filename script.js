@@ -51,7 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // On phones the hero copy is shown immediately (to fill the space below the
   // shorter video band) and scrolling is never intercepted — same as the
   // reduced-motion path.
-  const heroIntroStatic = reducedMotion || window.matchMedia('(max-width: 768px)').matches;
+  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+  const isPhoneViewport = viewportWidth > 0 && viewportWidth <= 768;
+  const heroIntroStatic = reducedMotion || isPhoneViewport;
   let heroIntroRevealed = heroIntroStatic;
   let heroIntroAnimating = false;
   let heroIntroTransitionTimer;
