@@ -16,6 +16,7 @@
   --font-body: 'Inter', sans-serif;
   --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   --split-percent: 50%;
+  --section-anchor-offset: 5.25rem;
 }
 
 /* Reset & Base Styles */
@@ -70,6 +71,11 @@ img, video {
 section {
   padding: 7rem 0;
   border-bottom: 1px solid var(--border-color);
+}
+
+/* Keep hash navigation section headings below the fixed header. */
+section[id] {
+  scroll-margin-top: var(--section-anchor-offset);
 }
 
 .section-tag {
@@ -1226,6 +1232,10 @@ section {
 }
 
 @media (max-width: 768px) {
+  section[id] {
+    scroll-margin-top: 4.75rem;
+  }
+
   section {
     padding: 5rem 0;
   }
