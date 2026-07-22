@@ -233,17 +233,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const iconMute = document.getElementById('icon-mute');
   const replayBtn = document.getElementById('video-replay');
 
-  // Hide the loading spinner once the video can show frames. Cover the cached
-  // case (already buffered before this runs) and a timeout fallback so the
-  // spinner never lingers if autoplay is blocked or a source fails.
+  // Keep the loading state perceptible over the poster, including when a
+  // cached video becomes ready before the first paint. It is removed only
+  // after playback begins (or by the safe timeout if playback cannot start).
   if (video && heroSection) {
-    const markVideoReady = () => heroSection.classList.add('video-ready');
-    if (video.readyState >= 2) {
+    const minimumLoaderVisibleMs = 700;
+    const loaderStartedAt = performance.now();
+    let videoReadyTimer;
+    const markVideoReady = () => {
+      const remaining = minimumLoaderVisibleMs - (performance.now() - loaderStartedAt);
+      window.clearTimeout(videoReadyTimer);
+      videoReadyTimer = window.setTimeout(
+        () => heroSection.classList.add('video-ready'),
+        Math.max(0, remaining)
+      );
+    };
+
+    if (video.readyState >= 3 && !video.paused) {
       markVideoReady();
     } else {
-      ['loadeddata', 'canplay', 'playing'].forEach((evt) =>
-        video.addEventListener(evt, markVideoReady, { once: true })
-      );
+      video.addEventListener('playing', markVideoReady, { once: true });
       video.addEventListener('error', markVideoReady, { once: true });
       window.setTimeout(markVideoReady, 8000);
     }
