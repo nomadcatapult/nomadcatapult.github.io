@@ -2255,7 +2255,7 @@ main > section {
     linear-gradient(90deg, rgba(4, 11, 14, 0.96) 0%, rgba(4, 11, 14, 0.82) 36%, rgba(4, 11, 14, 0.42) 63%, rgba(4, 11, 14, 0.14) 100%),
     url('assets/images/NomadCanvas.jpg') center / cover no-repeat,
     #071115;
-  filter: blur(4px) brightness(0.8) saturate(0.75);
+  filter: brightness(0.8) saturate(0.75);
   transform: translate3d(var(--canvas-parallax-x), var(--canvas-parallax-y), 0) scale(1.04);
   transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
 }
