@@ -413,13 +413,16 @@ section {
   position: absolute;
   inset: 0;
   z-index: 3;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
   pointer-events: none;
   opacity: 1;
   transition: opacity 0.5s ease;
-  /* Soft dark halo so the light spinner keeps contrast over any poster */
-  background: radial-gradient(circle at center, rgba(7, 8, 10, 0.5) 0%, rgba(7, 8, 10, 0) 20%);
+  /* Soft dark halo so the spinner and label keep contrast over any poster */
+  background: radial-gradient(circle at center, rgba(7, 8, 10, 0.62) 0%, rgba(7, 8, 10, 0.32) 16%, rgba(7, 8, 10, 0) 34%);
 }
 
 .hero-section.video-ready .video-loader {
@@ -428,13 +431,23 @@ section {
 }
 
 .video-loader-spinner {
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 246, 231, 0.25);
+  border: 3px solid rgba(255, 246, 231, 0.28);
   border-top-color: #fff6e7;
-  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 1px 5px rgba(0, 0, 0, 0.55));
   animation: video-loader-spin 0.85s linear infinite;
+}
+
+.video-loader-text {
+  color: #fff6e7;
+  font-family: var(--font-title);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
 }
 
 @keyframes video-loader-spin {
