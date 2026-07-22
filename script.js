@@ -48,6 +48,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroContent = document.getElementById('hero-intro');
   const heroScrollIndicator = document.getElementById('hero-scroll-indicator');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nomadCanvasPromo = document.getElementById('nomadcanvas');
+  const canUseCanvasReveal = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  if (nomadCanvasPromo && canUseCanvasReveal && !reducedMotion) {
+    const hideCanvasReveal = () => {
+      nomadCanvasPromo.classList.remove('is-pointer-revealing');
+    };
+
+    const updateCanvasReveal = (event) => {
+      const promoBounds = nomadCanvasPromo.getBoundingClientRect();
+      const revealX = ((event.clientX - promoBounds.left) / promoBounds.width) * 100;
+      const revealY = ((event.clientY - promoBounds.top) / promoBounds.height) * 100;
+
+      nomadCanvasPromo.style.setProperty('--reveal-x', `${revealX}%`);
+      nomadCanvasPromo.style.setProperty('--reveal-y', `${revealY}%`);
+      nomadCanvasPromo.classList.add('is-pointer-revealing');
+    };
+
+    nomadCanvasPromo.addEventListener('pointermove', updateCanvasReveal);
+    nomadCanvasPromo.addEventListener('pointerleave', hideCanvasReveal);
+    document.addEventListener('pointermove', (event) => {
+      if (!nomadCanvasPromo.contains(event.target)) hideCanvasReveal();
+    });
+  }
+
   // On phones the hero copy is shown immediately (to fill the space below the
   // shorter video band) and scrolling is never intercepted — same as the
   // reduced-motion path.
