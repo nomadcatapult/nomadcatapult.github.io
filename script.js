@@ -231,6 +231,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const muteBtn = document.getElementById('video-mute-toggle');
   const video = document.getElementById('hero-video');
   const iconMute = document.getElementById('icon-mute');
+  const replayBtn = document.getElementById('video-replay');
+
+  // Hide the loading spinner once the video can show frames. Cover the cached
+  // case (already buffered before this runs) and a timeout fallback so the
+  // spinner never lingers if autoplay is blocked or a source fails.
+  if (video && heroSection) {
+    const markVideoReady = () => heroSection.classList.add('video-ready');
+    if (video.readyState >= 2) {
+      markVideoReady();
+    } else {
+      ['loadeddata', 'canplay', 'playing'].forEach((evt) =>
+        video.addEventListener(evt, markVideoReady, { once: true })
+      );
+      video.addEventListener('error', markVideoReady, { once: true });
+      window.setTimeout(markVideoReady, 8000);
+    }
+  }
+
+  if (replayBtn && video) {
+    replayBtn.addEventListener('click', () => {
+      video.currentTime = 0;
+      const played = video.play();
+      if (played && typeof played.catch === 'function') played.catch(() => {});
+    });
+  }
 
   if (muteBtn && video) {
     muteBtn.addEventListener('click', () => {
