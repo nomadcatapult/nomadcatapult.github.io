@@ -2359,6 +2359,8 @@ main > section {
 
 /* Pre-AI showreel archive */
 .archive-section {
+  --archive-year-shift-x: 0px;
+  --archive-year-shift-y: 0px;
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -2498,16 +2500,18 @@ main > section {
 .archive-media::before {
   content: '2021';
   position: absolute;
-  top: -4.6rem;
+  top: -6.8rem;
   right: -3.1rem;
   z-index: 1;
-  color: rgba(216, 255, 114, 0.22);
+  color: rgba(216, 255, 114, 0.32);
   font-family: var(--font-title);
   font-size: clamp(4rem, 9vw, 8rem);
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.08em;
   pointer-events: none;
+  transform: translate3d(var(--archive-year-shift-x), var(--archive-year-shift-y), 0);
+  will-change: transform;
 }
 
 .archive-media-frame {
@@ -2636,7 +2640,7 @@ main > section {
   }
 
   .archive-media::before {
-    top: -3.3rem;
+    top: -4.6rem;
     right: -1.65rem;
   }
 
@@ -2818,5 +2822,9 @@ main > section {
   .hero-content {
     transform: none;
     opacity: 1;
+  }
+
+  .archive-media::before {
+    will-change: auto;
   }
 }

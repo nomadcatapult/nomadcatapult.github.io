@@ -74,7 +74,58 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroScrollIndicator = document.getElementById('hero-scroll-indicator');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const nomadCanvasPromo = document.getElementById('nomadcanvas');
+  const archiveSection = document.getElementById('archive');
   const canUseCanvasParallax = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  if (archiveSection && !reducedMotion) {
+    // The year glides within these limits as the archive passes through the viewport.
+    const archiveYearLimits = {
+      minX: -20,
+      maxX: 32,
+      minY: 14,
+      maxY: -24
+    };
+    let archiveYearCurrentX = 0;
+    let archiveYearCurrentY = 0;
+    let archiveYearTargetX = 0;
+    let archiveYearTargetY = 0;
+    let archiveYearFrame;
+
+    const clampArchiveYearProgress = (value) => Math.min(1, Math.max(0, value));
+
+    const renderArchiveYearParallax = () => {
+      archiveYearCurrentX += (archiveYearTargetX - archiveYearCurrentX) * 0.12;
+      archiveYearCurrentY += (archiveYearTargetY - archiveYearCurrentY) * 0.12;
+      archiveSection.style.setProperty('--archive-year-shift-x', `${archiveYearCurrentX.toFixed(2)}px`);
+      archiveSection.style.setProperty('--archive-year-shift-y', `${archiveYearCurrentY.toFixed(2)}px`);
+
+      if (
+        Math.abs(archiveYearTargetX - archiveYearCurrentX) > 0.1 ||
+        Math.abs(archiveYearTargetY - archiveYearCurrentY) > 0.1
+      ) {
+        archiveYearFrame = window.requestAnimationFrame(renderArchiveYearParallax);
+      } else {
+        archiveYearFrame = undefined;
+      }
+    };
+
+    const updateArchiveYearParallax = () => {
+      const archiveBounds = archiveSection.getBoundingClientRect();
+      const travelDistance = window.innerHeight + archiveBounds.height;
+      const progress = clampArchiveYearProgress((window.innerHeight - archiveBounds.top) / travelDistance);
+
+      archiveYearTargetX = archiveYearLimits.minX + (archiveYearLimits.maxX - archiveYearLimits.minX) * progress;
+      archiveYearTargetY = archiveYearLimits.minY + (archiveYearLimits.maxY - archiveYearLimits.minY) * progress;
+
+      if (archiveYearFrame === undefined) {
+        archiveYearFrame = window.requestAnimationFrame(renderArchiveYearParallax);
+      }
+    };
+
+    window.addEventListener('scroll', updateArchiveYearParallax, { passive: true });
+    window.addEventListener('resize', updateArchiveYearParallax);
+    updateArchiveYearParallax();
+  }
 
   if (nomadCanvasPromo && canUseCanvasParallax && !reducedMotion) {
     let parallaxFrame;
