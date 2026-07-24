@@ -250,6 +250,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (beforeVideo && afterVideo) {
     let comparisonInView = false;
     let comparisonManuallyPaused = false;
+    let comparisonLoadRequested = false;
+    let awaitingSynchronizedStart = false;
     let lastRecoveryAt = 0;
 
     const playVideo = (video) => {
@@ -266,9 +268,26 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const pauseComparison = () => {
+      awaitingSynchronizedStart = false;
       beforeVideo.pause();
       afterVideo.pause();
       updatePlaybackButton(false);
+    };
+
+    const comparisonIsVisible = () => (
+      comparisonInView || document.getElementById('vfx-comparison-modal')?.open
+    );
+
+    const bothVideosCanPlay = () => (
+      beforeVideo.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA
+      && afterVideo.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA
+    );
+
+    const requestComparisonLoad = () => {
+      if (comparisonLoadRequested) return;
+      comparisonLoadRequested = true;
+      beforeVideo.load();
+      afterVideo.load();
     };
 
     const alignBeforeToAfter = () => {
@@ -282,10 +301,28 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const playComparison = () => {
+      if (!bothVideosCanPlay()) {
+        requestComparisonLoad();
+        updatePlaybackButton(false);
+        return;
+      }
+
       if (afterVideo.ended) resetComparison();
       if (Math.abs(beforeVideo.currentTime - afterVideo.currentTime) > 0.25) alignBeforeToAfter();
+      if (awaitingSynchronizedStart) return;
+
+      awaitingSynchronizedStart = true;
       playVideo(afterVideo);
       playVideo(beforeVideo);
+    };
+
+    const confirmSynchronizedStart = () => {
+      if (!awaitingSynchronizedStart || beforeVideo.paused || afterVideo.paused) return;
+
+      // One final alignment handles a slower first decode without continuously
+      // seeking during normal playback.
+      if (Math.abs(beforeVideo.currentTime - afterVideo.currentTime) > 0.04) alignBeforeToAfter();
+      awaitingSynchronizedStart = false;
       updatePlaybackButton(true);
     };
 
@@ -305,10 +342,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const visibilityObserver = 'IntersectionObserver' in window
       ? new IntersectionObserver((entries) => {
         comparisonInView = entries.some(entry => entry.isIntersecting);
-        const comparisonIsOpen = document.getElementById('vfx-comparison-modal')?.open;
-        if ((comparisonInView || comparisonIsOpen) && !comparisonManuallyPaused) {
+        if (comparisonIsVisible() && !comparisonManuallyPaused) {
           playComparison();
-        } else if (!comparisonInView && !comparisonIsOpen) {
+        } else if (!comparisonIsVisible()) {
           pauseComparison();
         }
       }, { threshold: 0.35 })
@@ -331,8 +367,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    beforeVideo.addEventListener('canplay', () => {
+      if (comparisonIsVisible() && !comparisonManuallyPaused && !document.hidden) playComparison();
+    });
+    afterVideo.addEventListener('canplay', () => {
+      if (comparisonIsVisible() && !comparisonManuallyPaused && !document.hidden) playComparison();
+    });
+    beforeVideo.addEventListener('playing', confirmSynchronizedStart);
+    afterVideo.addEventListener('playing', confirmSynchronizedStart);
+
     afterVideo.addEventListener('ended', () => {
-      if (comparisonInView && !comparisonManuallyPaused) {
+      if (comparisonIsVisible() && !comparisonManuallyPaused) {
         resetComparison();
         playComparison();
       }
@@ -342,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         pauseComparison();
-      } else if (comparisonInView && !comparisonManuallyPaused) {
+      } else if (comparisonIsVisible() && !comparisonManuallyPaused) {
         playComparison();
       }
     });
