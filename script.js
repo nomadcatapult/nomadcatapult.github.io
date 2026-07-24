@@ -241,6 +241,180 @@ document.addEventListener('DOMContentLoaded', () => {
     sliderRange.addEventListener('change', updateSlider);
   }
 
+  // Play the comparison only while it is on screen. The clips restart together;
+  // raw footage is only re-aligned after a genuine stall, not every frame.
+  const beforeVideo = document.getElementById('vfx-before-video');
+  const afterVideo = document.getElementById('vfx-after-video');
+  const playVfxButton = document.getElementById('vfx-play-button');
+
+  if (beforeVideo && afterVideo) {
+    let comparisonInView = false;
+    let comparisonManuallyPaused = false;
+    let lastRecoveryAt = 0;
+
+    const playVideo = (video) => {
+      const playAttempt = video.play();
+      if (playAttempt) playAttempt.catch(() => {});
+    };
+
+    const updatePlaybackButton = (isPlaying) => {
+      if (!playVfxButton) return;
+      playVfxButton.classList.toggle('is-playing', isPlaying);
+      const labelKey = isPlaying ? 'slider_pause' : 'slider_play';
+      playVfxButton.setAttribute('data-i18n-aria', labelKey);
+      playVfxButton.setAttribute('aria-label', isPlaying ? 'Pause VFX comparison' : 'Play VFX comparison');
+    };
+
+    const pauseComparison = () => {
+      beforeVideo.pause();
+      afterVideo.pause();
+      updatePlaybackButton(false);
+    };
+
+    const alignBeforeToAfter = () => {
+      if (!Number.isFinite(beforeVideo.duration) || !Number.isFinite(afterVideo.currentTime)) return;
+      beforeVideo.currentTime = Math.min(afterVideo.currentTime, Math.max(0, beforeVideo.duration - 0.04));
+    };
+
+    const resetComparison = () => {
+      beforeVideo.currentTime = 0;
+      afterVideo.currentTime = 0;
+    };
+
+    const playComparison = () => {
+      if (afterVideo.ended) resetComparison();
+      if (Math.abs(beforeVideo.currentTime - afterVideo.currentTime) > 0.25) alignBeforeToAfter();
+      playVideo(afterVideo);
+      playVideo(beforeVideo);
+      updatePlaybackButton(true);
+    };
+
+    const recoverBeforeVideo = () => {
+      if (afterVideo.paused || comparisonManuallyPaused || document.hidden) return;
+      const now = performance.now();
+      if (now - lastRecoveryAt < 1200) return;
+
+      const drift = Math.abs(beforeVideo.currentTime - afterVideo.currentTime);
+      if (beforeVideo.paused || drift > 0.35) {
+        lastRecoveryAt = now;
+        alignBeforeToAfter();
+        playVideo(beforeVideo);
+      }
+    };
+
+    const visibilityObserver = 'IntersectionObserver' in window
+      ? new IntersectionObserver((entries) => {
+        comparisonInView = entries.some(entry => entry.isIntersecting);
+        const comparisonIsOpen = document.getElementById('vfx-comparison-modal')?.open;
+        if ((comparisonInView || comparisonIsOpen) && !comparisonManuallyPaused) {
+          playComparison();
+        } else if (!comparisonInView && !comparisonIsOpen) {
+          pauseComparison();
+        }
+      }, { threshold: 0.35 })
+      : null;
+
+    if (visibilityObserver) {
+      visibilityObserver.observe(sliderContainer);
+    } else {
+      comparisonInView = true;
+      playComparison();
+    }
+
+    playVfxButton?.addEventListener('click', () => {
+      if (afterVideo.paused) {
+        comparisonManuallyPaused = false;
+        playComparison();
+      } else {
+        comparisonManuallyPaused = true;
+        pauseComparison();
+      }
+    });
+
+    afterVideo.addEventListener('ended', () => {
+      if (comparisonInView && !comparisonManuallyPaused) {
+        resetComparison();
+        playComparison();
+      }
+    });
+    beforeVideo.addEventListener('waiting', recoverBeforeVideo);
+    beforeVideo.addEventListener('stalled', recoverBeforeVideo);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        pauseComparison();
+      } else if (comparisonInView && !comparisonManuallyPaused) {
+        playComparison();
+      }
+    });
+  }
+
+  // A brief first-view hint makes the comparison interaction discoverable.
+  const comparisonHint = document.getElementById('vfx-compare-hint');
+  const comparisonHintKey = 'nomad_vfx_hint_seen';
+  let comparisonHintTimer;
+
+  const dismissComparisonHint = () => {
+    if (!comparisonHint) return;
+    comparisonHint.classList.remove('is-visible');
+    window.clearTimeout(comparisonHintTimer);
+    localStorage.setItem(comparisonHintKey, 'true');
+  };
+
+  if (comparisonHint && sliderContainer && !localStorage.getItem(comparisonHintKey)) {
+    const showComparisonHint = () => {
+      comparisonHint.classList.add('is-visible');
+      comparisonHintTimer = window.setTimeout(dismissComparisonHint, 3200);
+      hintObserver?.disconnect();
+    };
+
+    const hintObserver = 'IntersectionObserver' in window
+      ? new IntersectionObserver((entries) => {
+        if (entries.some(entry => entry.isIntersecting)) showComparisonHint();
+      }, { threshold: 0.45 })
+      : null;
+
+    if (hintObserver) {
+      hintObserver.observe(sliderContainer);
+    } else {
+      showComparisonHint();
+    }
+
+    sliderRange?.addEventListener('input', dismissComparisonHint, { once: true });
+  }
+
+  // Move the existing comparison into a large dialog so it keeps its video
+  // state and slider position instead of creating a second video pair.
+  const expandVfxButton = document.getElementById('vfx-expand-button');
+  const vfxModal = document.getElementById('vfx-comparison-modal');
+  const vfxModalFrame = document.getElementById('vfx-modal-frame');
+  const closeVfxModalButton = document.getElementById('vfx-modal-close');
+  let sliderPlaceholder = null;
+
+  const returnVfxComparison = () => {
+    if (!sliderContainer || !sliderPlaceholder?.parentNode) return;
+    sliderPlaceholder.parentNode.insertBefore(sliderContainer, sliderPlaceholder);
+    sliderPlaceholder.remove();
+    sliderPlaceholder = null;
+    expandVfxButton?.focus();
+  };
+
+  if (sliderContainer && expandVfxButton && vfxModal && vfxModalFrame && closeVfxModalButton) {
+    expandVfxButton.addEventListener('click', () => {
+      if (vfxModal.open) return;
+      sliderPlaceholder = document.createComment('VFX comparison location');
+      sliderContainer.parentNode.insertBefore(sliderPlaceholder, sliderContainer);
+      vfxModalFrame.appendChild(sliderContainer);
+      vfxModal.showModal();
+      closeVfxModalButton.focus();
+    });
+
+    closeVfxModalButton.addEventListener('click', () => vfxModal.close());
+    vfxModal.addEventListener('close', returnVfxComparison);
+    vfxModal.addEventListener('click', (event) => {
+      if (event.target === vfxModal) vfxModal.close();
+    });
+  }
+
   // 3. Selected Works Category Filtering
   const filterButtons = document.querySelectorAll('.btn-filter');
   const workItems = document.querySelectorAll('.work-item');
@@ -402,11 +576,16 @@ document.addEventListener('DOMContentLoaded', () => {
       work5_summary: "A lightweight, high-performance HTML5 canvas sketching application designed for digital graphics workflow.",
       banner_accent: "// HOW WE LAUNCH",
       banner_quote: "A small core team brings the right specialists together — then carries the idea from a rough brief to final delivery.",
-      slider_tag: "Invisible VFX",
-      slider_title: "Production Cleanup",
-      slider_subtitle: "Slide to check out the details of our cleanup, objects removal, and HUD integration pipeline.",
-      slider_before: "Raw Footage",
-      slider_after: "Cleaned Shot",
+      slider_tag: "Full-Cycle VFX",
+      slider_title: "From Shoot to Final Frame",
+      slider_subtitle: "A full-cycle VFX example — from original footage through camera tracking, compositing, 3D integration, cleanup, screen replacement, and targeted eye retouching.",
+      slider_before: "Original Footage",
+      slider_after: "Final VFX Shot",
+      slider_hint: "Drag the divider to compare",
+      slider_expand: "Open VFX comparison in full screen",
+      slider_close: "Close full-screen VFX comparison",
+      slider_play: "Play VFX comparison",
+      slider_pause: "Pause VFX comparison",
       collab_tag: "Collaboration Formats",
       collab_title: "Flexible Team Scale",
       collab1_title: "01. Freelance Support",
@@ -510,11 +689,16 @@ document.addEventListener('DOMContentLoaded', () => {
       work5_summary: "Легковесное высокопроизводительное приложение для рисования на HTML5 Canvas, созданное для рабочих процессов цифровой графики.",
       banner_accent: "// КАК МЫ ЗАПУСКАЕМ ИДЕИ",
       banner_quote: "Небольшая основная команда собирает нужных специалистов и доводит идею от сырого брифа до готового запуска.",
-      slider_tag: "Невидимый VFX",
-      slider_title: "Производственный клинап",
-      slider_subtitle: "Передвигайте ползунок, чтобы оценить качество клинапа, удаления объектов и интеграции графики.",
-      slider_before: "Исходник",
-      slider_after: "Результат",
+      slider_tag: "Полный VFX-пайплайн",
+      slider_title: "От съёмки до финального кадра",
+      slider_subtitle: "Пример полного VFX-цикла: от исходного материала — к трекингу камеры, композитингу, интеграции 3D-графики, клинапу, замене экранов и точечной ретуши глаз.",
+      slider_before: "Исходный материал",
+      slider_after: "Финальный VFX-кадр",
+      slider_hint: "Потяните разделитель, чтобы сравнить",
+      slider_expand: "Открыть VFX-сравнение в полный экран",
+      slider_close: "Закрыть полноэкранное VFX-сравнение",
+      slider_play: "Включить VFX-сравнение",
+      slider_pause: "Поставить VFX-сравнение на паузу",
       collab_tag: "Форматы сотрудничества",
       collab_title: "Гибкий масштаб команды",
       collab1_title: "01. Поддержка на фрилансе",
@@ -618,11 +802,16 @@ document.addEventListener('DOMContentLoaded', () => {
       work5_summary: "轻量级、高性能的 HTML5 canvas 绘图应用程序，专为数字图形工作流设计。",
       banner_accent: "// 我们如何发射创意",
       banner_quote: "小而核心的团队会为项目集结合适的专家，并将想法从初始简报推进到最终交付。",
-      slider_tag: "无形特效",
-      slider_title: "制作擦除清理",
-      slider_subtitle: "滑动即可查看我们的擦除清理、物体移除和 HUD 集成流程的细节。",
+      slider_tag: "全流程 VFX",
+      slider_title: "从拍摄到最终画面",
+      slider_subtitle: "完整 VFX 流程示例：从原始素材到摄像机跟踪、合成、3D 图形整合、清理、屏幕替换和局部眼部修饰。",
       slider_before: "原始素材",
-      slider_after: "清理后",
+      slider_after: "最终 VFX 镜头",
+      slider_hint: "拖动分隔线进行对比",
+      slider_expand: "全屏打开 VFX 对比",
+      slider_close: "关闭全屏 VFX 对比",
+      slider_play: "播放 VFX 对比",
+      slider_pause: "暂停 VFX 对比",
       collab_tag: "合作模式",
       collab_title: "灵活团队规模",
       collab1_title: "01. 自由职业支持",
@@ -726,11 +915,16 @@ document.addEventListener('DOMContentLoaded', () => {
       work5_summary: "デジタルグラフィックスワークフロー向けに設計された、軽量で高性能なHTML5キャンバススケッチアプリケーション。",
       banner_accent: "// アイデアの打ち上げ方",
       banner_quote: "小さなコアチームが必要な専門家を集め、ラフなブリーフから最終納品までアイデアを伴走します。",
-      slider_tag: "インビジブルVFX",
-      slider_title: "クリンアップ",
-      slider_subtitle: "スライダーを動かして、クリンアップ、オブジェクト除去、およびHUD合成パイプラインの詳細を確認してください。",
-      slider_before: "未調整映像",
-      slider_after: "調整後映像",
+      slider_tag: "フルサイクル VFX",
+      slider_title: "撮影から最終フレームまで",
+      slider_subtitle: "オリジナル映像からカメラトラッキング、コンポジット、3Dグラフィック統合、クリンアップ、画面差し替え、目元の細かなレタッチまでを含むVFX制作例です。",
+      slider_before: "オリジナル映像",
+      slider_after: "最終 VFX ショット",
+      slider_hint: "仕切りをドラッグして比較",
+      slider_expand: "VFX比較を全画面で開く",
+      slider_close: "全画面 VFX 比較を閉じる",
+      slider_play: "VFX比較を再生",
+      slider_pause: "VFX比較を一時停止",
       collab_tag: "コラボレーション形式",
       collab_title: "柔軟なチーム編成",
       collab1_title: "01. フリーランスサポート",
@@ -792,6 +986,13 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           el.textContent = translations[lang][key];
         }
+      }
+    });
+
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+      const key = el.getAttribute('data-i18n-aria');
+      if (translations[lang][key]) {
+        el.setAttribute('aria-label', translations[lang][key]);
       }
     });
 
