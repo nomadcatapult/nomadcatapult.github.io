@@ -1380,37 +1380,43 @@ document.addEventListener('DOMContentLoaded', () => {
         ja: "LADAディーラーカンファレンスのオープニングを飾る3分間のステージ映像。ブランドプラットフォームと新型ラインナップを紹介する内容です。ネオンのワイヤーフレーム車両、ライトトレイルの走行空間、全国ディーラー網のマップ、抽象的なエネルギー表現でビジュアルを構成し、従来のCGアニメーションとAI生成カットを組み合わせました。アートディレクション兼リードアニメーション、モーションデザイナー、エディターの3名体制で、限られたカンファレンス準備期間の中で仕上げています。"
       }
     },
-    'work-aurora': {
+    'work-comet': {
       category: { en: "CGI", ru: "CGI", zh: "CGI", ja: "CGI" },
       title: {
-        en: "Aurora Serum Product Render",
-        ru: "Рендер сыворотки Aurora",
-        zh: "Aurora 精华液产品渲染",
-        ja: "Aurora美容液製品レンダリング"
+        en: "Film Company Intro",
+        ru: "Интро кинокомпании",
+        zh: "电影公司片头",
+        ja: "映画会社イントロ"
       },
       role: {
-        en: "CGI Product Rendering & Material Lookdev",
-        ru: "3D-рендер продукта и разработка материалов",
-        zh: "CGI 产品材质渲染",
-        ja: "CGI製品レンダリング＆質感開発"
+        en: "Full CGI Intro & Logo Animation",
+        ru: "Полностью CGI интро и анимация логотипа",
+        zh: "全 CGI 片头与 Logo 动画",
+        ja: "フル CGI イントロ＆ロゴアニメーション"
       },
       client: {
-        en: "Aurora Cosmetics (Client Work)",
-        ru: "Aurora Cosmetics (Коммерческий проект)",
-        zh: "Aurora Cosmetics (客户项目)",
-        ja: "Aurora Cosmetics (クライアントワーク)"
+        en: "Film Company (Client Work)",
+        ru: "Кинокомпания (Коммерческий проект)",
+        zh: "电影公司（客户项目) ",
+        ja: "映画会社（クライアント案件) "
+        
       },
-      tools: "Blender, Octane Render, Photoshop",
-      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-glass-dropper-dripping-cosmetic-liquid-into-a-bottle-49806-large.mp4",
+      tools: "Blender",
+      videoUrl: "assets/video/comet25_01.mp4",
       images: [
-        "assets/images/work_cgi.png",
-        "assets/images/work_cgi_detail.png"
+        "assets/images/comet25_img01.jpg",
+        "assets/images/comet25_img02.jpg",
+        "assets/images/comet25_img03.jpg",
+        "assets/images/comet25_img04.jpg",
+        "assets/images/comet25_img05.jpg",
+        "assets/images/comet25_img06.jpg",
+        "assets/images/comet25_img07.jpg"
       ],
       desc: {
-        en: "Premium 3D render exploring glass refraction, dispersion, and liquid simulation. Created a photorealistic cosmetics mockup with minimal studio lighting, focused on neon aesthetics and micro-bubbles in the glass bottle structure.",
-        ru: "Премиальный 3D-рендер, исследующий преломление стекла, дисперсию света и симуляцию жидкости. Создан фотореалистичный макет косметики с минималистичным студийным освещением, акцентом на неоновую эстетику и микропузырьки в структуре стеклянного флакона.",
-        zh: "优质 3D 渲染，探索玻璃折射、色散和液体模拟。创建了一个具有极简工作室照明的写实化妆品模型，专注于霓虹美学和玻璃瓶结构中的微小气泡。",
-        ja: "ガラスの屈折、光の分散、液体のシミュレーションを探求するプレミアム3Dレンダリング。ネオンの美学とガラスボトルの構造に含まれるマイクロバブルに焦点を当て、ミニマルなスタジオ照明でフォトリアルな化粧品のモックアップを制作しました。"
+        en: "Cinematic 3D intro created for a film distribution company. A comet made of glowing particles collides with a planet, igniting its surface and gradually filling it with energy. As the camera pulls back, the illuminated planet seamlessly transforms into the company logo.",
+        ru: "Кинематографичное 3D-интро, созданное для кинопрокатной компании. Комета из светящихся частиц врезается в планету, зажигая её поверхность и постепенно наполняя энергией. При отдалении камеры сияющая планета плавно превращается в логотип компании.",
+        zh: "为电影发行公司制作的电影感 3D 片头。一颗由发光粒子组成的彗星撞击行星，点燃其表面，并逐渐用能量将其填满。随着镜头拉远，发光的行星自然地转变为公司标志。",
+        ja: "映画配給会社のために制作したシネマティックな3Dイントロ。発光する粒子で構成された彗星が惑星に衝突し、その表面を燃え上がらせながらエネルギーで満たしていきます。カメラが引いていくと、輝く惑星がシームレスに会社のロゴへと変化します。"
       }
     },
     'work-launch': {
