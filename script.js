@@ -764,13 +764,13 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_ai: "AI Concept Art",
       cat_cleanup: "Compositing & Cleanup",
       cat_interactive: "Interactive Media",
-      cat_motion_ai: "Motion & AI Film",
+      cat_3d_motion_ai: "3D / Motion / AI Film",
       badge_client: "Client Work",
       badge_personal: "Studio Project",
       badge_ai: "AI-Assisted Exploration",
       btn_details: "Details",
       btn_slider: "Interactive Slider",
-      work1_title: "Cinematic Logo Intro",
+      work1_title: "Film Company Logo Intro",
       work1_summary: "A glowing particle comet collides with a planet, igniting its surface before the planet transforms into the company logo.",
       work2_title: "LAUNCH Typographic Promo",
       work2_summary: "Dynamic typography animation integrated with physical simulation ribbons and camera tracking data.",
@@ -887,14 +887,14 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_ai: "ИИ-концепт-арт",
       cat_cleanup: "Композитинг и клинап",
       cat_interactive: "Интерактивные медиа",
-      cat_motion_ai: "Моушн и AI-фильм",
+      cat_3d_motion_ai: "3D / Моушн / AI-фильм",
       badge_client: "Коммерческий проект",
       badge_personal: "Студийный эксперимент",
       badge_ai: "ИИ-исследование",
       btn_details: "Подробнее",
       btn_slider: "Интерактивный слайдер",
-      work1_title: "Кинематографичное интро логотипа",
-      work1_summary: "Комета из светящихся частиц врезается в планету, зажигая её поверхность, после чего планета превращается в логотип компании.",
+      work1_title: "Интро кинокомпании",
+      work1_summary: "Комета из светящихся частиц врезается в планету: поверхность вспыхивает, и планета плавно превращается в логотип компании.",
       work2_title: "Типографическое промо LAUNCH",
       work2_summary: "Динамическая анимация типографики, интегрированная с физической симуляцией лент и данными трекинга камеры.",
       work3_title: "Биолюминесцентный лес с мехом",
@@ -1010,14 +1010,14 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_ai: "AI 概念艺术",
       cat_cleanup: "合成与擦除",
       cat_interactive: "互动媒体",
-      cat_motion_ai: "动态影像与 AI",
+      cat_3d_motion_ai: "3D / 动态影像 / AI",
       badge_client: "客户项目",
       badge_personal: "工作室项目",
       badge_ai: "AI辅助探索",
       btn_details: "详情",
       btn_slider: "双图滑动对比",
-      work1_title: "电影感标志片头",
-      work1_summary: "一颗由发光粒子组成的彗星撞击行星，点燃其表面，随后行星转变为公司标志。",
+      work1_title: "电影公司标志片头",
+      work1_summary: "一颗由发光粒子组成的彗星撞击行星，点燃其表面，随后行星化为公司标志。",
       work2_title: "LAUNCH 文字排版宣传片",
       work2_summary: "集成了物理模拟丝带与摄像机跟踪数据的动态排版动画。",
       work3_title: "机甲生物发光森林",
@@ -1133,14 +1133,14 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_ai: "AIコンセプトアート",
       cat_cleanup: "コンポジット＆クリンアップ",
       cat_interactive: "インタラクティブメディア",
-      cat_motion_ai: "モーション＆AI映像",
+      cat_3d_motion_ai: "3D / モーション / AI映像",
       badge_client: "クライアントワーク",
       badge_personal: "自主制作・実験",
       badge_ai: "AI支援・研究",
       btn_details: "詳細",
       btn_slider: "比較スライダー",
-      work1_title: "シネマティック・ロゴイントロ",
-work1_summary: "発光する粒子で構成された彗星が惑星に衝突して表面を輝かせ、やがて惑星が会社のロゴへと変化します。",
+      work1_title: "映画会社のロゴイントロ",
+      work1_summary: "発光する粒子でできた彗星が惑星に衝突して表面を燃え上がらせ、やがて惑星が会社のロゴへと変化します。",
       work2_title: "LAUNCH タイポグラフィプロモ",
       work2_summary: "物理シミュレーションのリボンとカメラトラッキングデータを統合したダイナミックなタイポグラフィアニメーション。",
       work3_title: "メカ発光森林",
@@ -1383,10 +1383,10 @@ work1_summary: "発光する粒子で構成された彗星が惑星に衝突し�
     'work-comet': {
       category: { en: "CGI", ru: "CGI", zh: "CGI", ja: "CGI" },
       title: {
-        en: "Film Company Intro",
+        en: "Film Company Logo Intro",
         ru: "Интро кинокомпании",
-        zh: "电影公司片头",
-        ja: "映画会社イントロ"
+        zh: "电影公司标志片头",
+        ja: "映画会社のロゴイントロ"
       },
       role: {
         en: "Full CGI Intro & Logo Animation",
@@ -1395,11 +1395,10 @@ work1_summary: "発光する粒子で構成された彗星が惑星に衝突し�
         ja: "フル CGI イントロ＆ロゴアニメーション"
       },
       client: {
-        en: "Film Company (Client Work)",
-        ru: "Кинокомпания (Коммерческий проект)",
-        zh: "电影公司（客户项目) ",
-        ja: "映画会社（クライアント案件) "
-        
+        en: "Film Distribution Company (Client Work)",
+        ru: "Кинопрокатная компания (Коммерческий проект)",
+        zh: "电影发行公司（客户项目）",
+        ja: "映画配給会社（クライアント案件）"
       },
       tools: "Blender",
       videoUrl: "assets/video/comet25_01.mp4",
@@ -1414,9 +1413,9 @@ work1_summary: "発光する粒子で構成された彗星が惑星に衝突し�
       ],
       desc: {
         en: "Cinematic 3D intro created for a film distribution company. A comet made of glowing particles collides with a planet, igniting its surface and gradually filling it with energy. As the camera pulls back, the illuminated planet seamlessly transforms into the company logo.",
-        ru: "Кинематографичное 3D-интро, созданное для кинопрокатной компании. Комета из светящихся частиц врезается в планету, зажигая её поверхность и постепенно наполняя энергией. При отдалении камеры сияющая планета плавно превращается в логотип компании.",
-        zh: "为电影发行公司制作的电影感 3D 片头。一颗由发光粒子组成的彗星撞击行星，点燃其表面，并逐渐用能量将其填满。随着镜头拉远，发光的行星自然地转变为公司标志。",
-        ja: "映画配給会社のために制作したシネマティックな3Dイントロ。発光する粒子で構成された彗星が惑星に衝突し、その表面を燃え上がらせながらエネルギーで満たしていきます。カメラが引いていくと、輝く惑星がシームレスに会社のロゴへと変化します。"
+        ru: "Кинематографичное 3D-интро для кинопрокатной компании. Комета из светящихся частиц врезается в планету: поверхность вспыхивает и постепенно наполняется энергией. Камера отъезжает — и сияющая планета плавно превращается в логотип компании.",
+        zh: "为电影发行公司制作的电影质感 3D 片头。一颗由发光粒子组成的彗星撞击行星，点燃其表面，能量随之蔓延并逐渐充满整颗星球。随着镜头缓缓拉远，发光的行星自然地化为公司标志。",
+        ja: "映画配給会社のために制作したシネマティックな3Dイントロ。発光する粒子でできた彗星が惑星に衝突し、その表面を燃え上がらせながら、やがて全体をエネルギーで満たしていきます。カメラが引いていくにつれ、輝く惑星がそのままなめらかに会社のロゴへと変化します。"
       }
     },
     'work-launch': {
