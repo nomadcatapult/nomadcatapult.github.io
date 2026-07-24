@@ -1356,7 +1356,7 @@ document.addEventListener('DOMContentLoaded', () => {
         zh: "LADA — 2026 经销商大会 (客户项目)",
         ja: "LADA — ディーラーカンファレンス2026 (クライアントワーク)"
       },
-      tools: "After Effects, DaVinci Resolve, AI Generation",
+      tools: "Blender, After Effects, DaVinci Resolve, AI Generation",
       fit: "contain",
       // Every frame of this project is 2.4:1, so the stage takes that shape
       // instead of padding a 16:9 box with bars.
