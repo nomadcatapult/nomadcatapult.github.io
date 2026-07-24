@@ -43,6 +43,31 @@ document.addEventListener('DOMContentLoaded', () => {
     link.classList.remove('is-disabled');
   });
 
+  // YouTube requires an identifiable embedding origin. Assign the player URL
+  // after the page has its final origin so the same embed works on GitHub Pages
+  // and in an HTTP local preview.
+  const archiveShowreelPlayer = document.getElementById('archive-showreel-player');
+  const archiveShowreelId = archiveShowreelPlayer?.dataset.videoId;
+
+  if (archiveShowreelPlayer && archiveShowreelId) {
+    const hasHttpOrigin = ['http:', 'https:'].includes(window.location.protocol);
+    const archivePlayerOrigin = hasHttpOrigin
+      ? window.location.origin
+      : 'https://nomadcatapult.github.io';
+    const archivePlayerReferrer = hasHttpOrigin
+      ? window.location.href
+      : 'https://nomadcatapult.github.io/';
+    const archivePlayerParams = new URLSearchParams({
+      rel: '0',
+      playsinline: '1',
+      enablejsapi: '1',
+      origin: archivePlayerOrigin,
+      widget_referrer: archivePlayerReferrer
+    });
+
+    archiveShowreelPlayer.src = `https://www.youtube.com/embed/${archiveShowreelId}?${archivePlayerParams}`;
+  }
+
   // 0.5. The first downward gesture introduces the hero copy; scrolling stays locked until it finishes.
   const heroSection = document.getElementById('hero');
   const heroContent = document.getElementById('hero-intro');

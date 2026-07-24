@@ -2498,8 +2498,8 @@ main > section {
 .archive-media::before {
   content: '2021';
   position: absolute;
-  top: -1.35rem;
-  right: -0.85rem;
+  top: -4.6rem;
+  right: -3.1rem;
   z-index: 1;
   color: rgba(216, 255, 114, 0.22);
   font-family: var(--font-title);
@@ -2636,7 +2636,8 @@ main > section {
   }
 
   .archive-media::before {
-    right: -0.25rem;
+    top: -3.3rem;
+    right: -1.65rem;
   }
 
   .archive-media-frame {
