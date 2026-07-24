@@ -583,8 +583,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Filter work items with visual transition
         workItems.forEach(item => {
-          const category = item.getAttribute('data-category');
-          if (filterValue === 'all' || category === filterValue) {
+          // data-category holds one or more space-separated tags, so a piece
+          // that is equally motion, CGI and AI shows up under each filter.
+          const categories = (item.getAttribute('data-category') || '').split(/\s+/);
+          if (filterValue === 'all' || categories.includes(filterValue)) {
             item.style.opacity = '0';
             item.classList.remove('hidden');
             // Force reflow
@@ -596,6 +598,49 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
       });
+    });
+  }
+
+  // 3b. Work tile video previews
+  // The showcase is video work, so tiles that ship a loop play it in place: on
+  // hover where there is a pointer, and while the tile is on screen on touch.
+  const loopTiles = document.querySelectorAll('.work-item .work-loop[data-loop-src]');
+
+  if (loopTiles.length > 0 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    loopTiles.forEach(loop => {
+      const tile = loop.closest('.work-item');
+      let loaded = false;
+
+      const attempt = () => loop.play().then(() => tile.classList.add('is-looping')).catch(() => {});
+
+      const start = () => {
+        if (!loaded) {
+          loop.src = loop.dataset.loopSrc;
+          loaded = true;
+        }
+        // Calling play() in the same tick as the first src assignment loses the
+        // race against the pending load request, so wait for the first frame.
+        if (loop.readyState >= 2) attempt();
+        else loop.addEventListener('canplay', attempt, { once: true });
+      };
+
+      const stop = () => {
+        tile.classList.remove('is-looping');
+        loop.pause();
+      };
+
+      if (canHover) {
+        tile.addEventListener('mouseenter', start);
+        tile.addEventListener('focusin', start);
+        tile.addEventListener('mouseleave', stop);
+        tile.addEventListener('focusout', stop);
+      } else if ('IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => {
+          entries.forEach(entry => (entry.isIntersecting ? start() : stop()));
+        }, { threshold: 0.6 }).observe(tile);
+      }
     });
   }
 
@@ -719,6 +764,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_ai: "AI Concept Art",
       cat_cleanup: "Compositing & Cleanup",
       cat_interactive: "Interactive Media",
+      cat_motion_ai: "Motion & AI Film",
       badge_client: "Client Work",
       badge_personal: "Studio Project",
       badge_ai: "AI-Assisted Exploration",
@@ -734,6 +780,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work4_summary: "Clean plate reconstruction, overhead wires removal, and custom holographic logo tracking integration.",
       work5_title: "NomadCanvas",
       work5_summary: "A lightweight, high-performance HTML5 canvas sketching application designed for digital graphics workflow.",
+      work6_title: "LADA 2026 Dealer Conference",
+      work6_summary: "Three minutes of stage content for the LADA brand and new model reveal — neon wireframe vehicles, light-trail environments, and AI-generated sequences, delivered on a compressed conference schedule.",
       banner_accent: "// HOW WE LAUNCH",
       banner_quote: "A small core team brings the right specialists together — then carries the idea from a rough brief to final delivery.",
       slider_tag: "Full-Cycle VFX",
@@ -839,6 +887,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_ai: "ИИ-концепт-арт",
       cat_cleanup: "Композитинг и клинап",
       cat_interactive: "Интерактивные медиа",
+      cat_motion_ai: "Моушн и AI-фильм",
       badge_client: "Коммерческий проект",
       badge_personal: "Студийный эксперимент",
       badge_ai: "ИИ-исследование",
@@ -854,6 +903,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work4_summary: "Реконструкция чистого листа, удаление подвесных проводов и интеграция отслеживаемого голографического логотипа.",
       work5_title: "NomadCanvas",
       work5_summary: "Легковесное высокопроизводительное приложение для рисования на HTML5 Canvas, созданное для рабочих процессов цифровой графики.",
+      work6_title: "Дилерская конференция LADA 2026",
+      work6_summary: "Три минуты сценического контента для презентации бренда и новой модельной линейки LADA — неоновые wireframe-автомобили, световые трассы и AI-генерация, собранные в сжатые сроки подготовки конференции.",
       banner_accent: "// КАК МЫ ЗАПУСКАЕМ ИДЕИ",
       banner_quote: "Небольшая основная команда собирает нужных специалистов и доводит идею от сырого брифа до готового запуска.",
       slider_tag: "Полный VFX-пайплайн",
@@ -959,6 +1010,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_ai: "AI 概念艺术",
       cat_cleanup: "合成与擦除",
       cat_interactive: "互动媒体",
+      cat_motion_ai: "动态影像与 AI",
       badge_client: "客户项目",
       badge_personal: "工作室项目",
       badge_ai: "AI辅助探索",
@@ -974,6 +1026,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work4_summary: "干净的背景板重建、擦除头顶电线，以及集成自定义的全息 Logo 跟踪融合。",
       work5_title: "NomadCanvas",
       work5_summary: "轻量级、高性能的 HTML5 canvas 绘图应用程序，专为数字图形工作流设计。",
+      work6_title: "LADA 2026 经销商大会",
+      work6_summary: "为 LADA 品牌与全新车型发布制作的三分钟舞台内容——霓虹线框车身、光轨场景与 AI 生成镜头，在紧张的会议筹备周期内交付。",
       banner_accent: "// 我们如何发射创意",
       banner_quote: "小而核心的团队会为项目集结合适的专家，并将想法从初始简报推进到最终交付。",
       slider_tag: "全流程 VFX",
@@ -1079,6 +1133,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_ai: "AIコンセプトアート",
       cat_cleanup: "コンポジット＆クリンアップ",
       cat_interactive: "インタラクティブメディア",
+      cat_motion_ai: "モーション＆AI映像",
       badge_client: "クライアントワーク",
       badge_personal: "自主制作・実験",
       badge_ai: "AI支援・研究",
@@ -1094,6 +1149,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work4_summary: "クリーンプレート再構成、頭上電線の除去、およびカスタムホログラフィックロゴトラッキング合成。",
       work5_title: "NomadCanvas",
       work5_summary: "デジタルグラフィックスワークフロー向けに設計された、軽量で高性能なHTML5キャンバススケッチアプリケーション。",
+      work6_title: "LADA 2026 ディーラーカンファレンス",
+      work6_summary: "LADAのブランドと新型ラインナップ発表のための3分間のステージ映像。ネオンのワイヤーフレーム車両、ライトトレイル空間、AI生成カットを、限られた準備期間の中で仕上げました。",
       banner_accent: "// アイデアの打ち上げ方",
       banner_quote: "小さなコアチームが必要な専門家を集め、ラフなブリーフから最終納品までアイデアを伴走します。",
       slider_tag: "フルサイクル VFX",
@@ -1279,6 +1336,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 8. Project Details Modal Logic & Data
   const projectDetailsData = {
+    'work-lada': {
+      category: { en: "Motion / CGI / AI", ru: "Моушн / CGI / AI", zh: "动态 / CGI / AI", ja: "モーション / CGI / AI" },
+      title: {
+        en: "LADA 2026 Dealer Conference",
+        ru: "Дилерская конференция LADA 2026",
+        zh: "LADA 2026 经销商大会",
+        ja: "LADA 2026 ディーラーカンファレンス"
+      },
+      role: {
+        en: "Art Direction & Lead Animation",
+        ru: "Арт-дирекшн и ведущая анимация",
+        zh: "艺术指导与主视觉动画",
+        ja: "アートディレクション＆リードアニメーション"
+      },
+      client: {
+        en: "LADA — Dealer Conference 2026 (Client Work)",
+        ru: "LADA — Дилерская конференция 2026 (Коммерческий проект)",
+        zh: "LADA — 2026 经销商大会 (客户项目)",
+        ja: "LADA — ディーラーカンファレンス2026 (クライアントワーク)"
+      },
+      tools: "After Effects, DaVinci Resolve, AI Generation",
+      fit: "contain",
+      // Every frame of this project is 2.4:1, so the stage takes that shape
+      // instead of padding a 16:9 box with bars.
+      stageAspect: "12 / 5",
+      videos: [
+        { url: "assets/video/lada2026/lada_2026_01.mp4", thumb: "assets/images/work_lada_v01.jpg" },
+        { url: "assets/video/lada2026/lada_2026_02.mp4", thumb: "assets/images/work_lada_v02.jpg" },
+        { url: "assets/video/lada2026/lada_2026_03.mp4", thumb: "assets/images/work_lada_v03.jpg" },
+        { url: "assets/video/lada2026/lada_2026_04.mp4", thumb: "assets/images/work_lada_v04.jpg" }
+      ],
+      images: [
+        "assets/images/work_lada_01.jpg",
+        "assets/images/work_lada_02.jpg",
+        "assets/images/work_lada_03.jpg",
+        "assets/images/work_lada_04.jpg"
+      ],
+      desc: {
+        en: "Three minutes of stage content opening the LADA dealer conference and introducing the brand platform together with the new model line-up. The visual system runs on neon wireframe vehicles, light-trail road environments, a nationwide dealer-network map, and abstract energy sequences, mixing classic CG animation with AI-generated shots. Built by a three-person team — art director and lead animation, a second motion designer, and an editor — on a compressed conference schedule.",
+        ru: "Три минуты сценического контента, открывающего дилерскую конференцию LADA и представляющего платформу бренда вместе с новой модельной линейкой. Визуальная система построена на неоновых wireframe-автомобилях, световых трассах, карте дилерской сети и абстрактных энергетических секвенциях — классическая CG-анимация в связке с AI-генерацией. Команда из трёх человек: арт-директор и ведущая анимация, второй моушн-дизайнер и монтажёр — в сжатые сроки подготовки конференции.",
+        zh: "为 LADA 经销商大会制作的三分钟开场舞台内容，用于发布品牌平台与全新车型阵容。视觉体系由霓虹线框车身、光轨道路场景、全国经销商网络地图以及抽象能量段落构成，将传统 CG 动画与 AI 生成镜头结合。由三人团队完成——艺术指导兼主视觉动画、第二位动态设计师和一位剪辑师——并在紧张的会议筹备周期内交付。",
+        ja: "LADAディーラーカンファレンスのオープニングを飾る3分間のステージ映像。ブランドプラットフォームと新型ラインナップを紹介する内容です。ネオンのワイヤーフレーム車両、ライトトレイルの走行空間、全国ディーラー網のマップ、抽象的なエネルギー表現でビジュアルを構成し、従来のCGアニメーションとAI生成カットを組み合わせました。アートディレクション兼リードアニメーション、モーションデザイナー、エディターの3名体制で、限られたカンファレンス準備期間の中で仕上げています。"
+      }
+    },
     'work-aurora': {
       category: { en: "CGI", ru: "CGI", zh: "CGI", ja: "CGI" },
       title: {
@@ -1475,8 +1576,17 @@ document.addEventListener('DOMContentLoaded', () => {
     thumbnailsContainer.innerHTML = '';
     const mediaItems = [];
     
-    // 1. Loop video as primary focus media
-    if (data.videoUrl) {
+    // 1. Loop video as primary focus media. Projects delivered as a set of
+    //    cuts declare `videos` with their own thumbnails instead.
+    if (Array.isArray(data.videos)) {
+      data.videos.forEach(clip => {
+        mediaItems.push({
+          type: 'video',
+          url: clip.url,
+          thumb: clip.thumb || data.images[0]
+        });
+      });
+    } else if (data.videoUrl) {
       mediaItems.push({
         type: 'video',
         url: data.videoUrl,
@@ -1493,6 +1603,18 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
     
+    // Square stills crop well, but ultra-wide stage frames lose a third of the
+    // image to the 16:10 hero box, so those projects opt into letterboxing.
+    const mediaFit = data.fit === 'contain' ? 'contain' : 'cover';
+    modalVideo.style.objectFit = mediaFit;
+    modalImage.style.objectFit = mediaFit;
+
+    const heroMedia = modalVideo.closest('.modal-hero-media');
+    if (heroMedia) {
+      heroMedia.classList.toggle('is-letterboxed', mediaFit === 'contain');
+      heroMedia.style.aspectRatio = data.stageAspect || '';
+    }
+
     // Dynamic media swap solver
     const showMedia = (item) => {
       if (item.type === 'video') {
@@ -1556,7 +1678,11 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const openModalHandler = (e) => {
         e.preventDefault();
-        
+
+        // The Details chip sits inside the image container, so a tap runs both
+        // listeners; showModal() on an already open dialog throws.
+        if (dialog.open) return;
+
         const projId = card.id;
         const currentLang = document.documentElement.getAttribute('lang') || 'en';
         activeProjectId = projId;

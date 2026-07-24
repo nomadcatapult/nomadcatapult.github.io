@@ -163,7 +163,12 @@
           <span class="section-tag" data-i18n="services_tag">What We Launch</span>
           <h2 class="section-title" data-i18n="services_title">Visual Capabilities</h2>
         </div>
+      </div>
 
+      <!-- The scroller sits outside .container so the strip runs edge to edge
+           instead of being clipped by the centered column. Its inline padding
+           keeps the first and last card aligned with the container. -->
+      <div class="services-scroller">
         <div class="services-grid">
           <div class="service-card" id="service-motion">
             <div class="service-icon">
@@ -254,22 +259,38 @@
           </div>
         </div>
 
+        <!-- Media-first collage: each tile is the work itself, with a compact
+             caption laid over it. Full copy lives in the project modal. -->
         <div class="work-grid" id="work-grid">
+          <!-- LADA 2026 Dealer Conference -->
+          <div class="work-item work-item--featured" data-category="motion ai cgi" id="work-lada">
+            <div class="work-img-container">
+              <img src="assets/images/work_lada.jpg" alt="LADA Azimut neon wireframe key visual from the 2026 dealer conference film" loading="lazy">
+              <video class="work-loop" data-loop-src="assets/video/lada2026/lada_2026_preview.mp4" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+              <div class="work-badge badge-client" data-i18n="badge_client">Client Work</div>
+              <div class="work-caption">
+                <span class="work-cat" data-i18n="cat_motion_ai">Motion &amp; AI Film</span>
+                <h3 class="work-title" data-i18n="work6_title">LADA 2026 Dealer Conference</h3>
+                <p class="work-summary" data-i18n="work6_summary">Three minutes of stage content for the LADA brand and new model reveal — neon wireframe vehicles, light-trail environments, and AI-generated sequences, delivered on a compressed conference schedule.</p>
+              </div>
+              <div class="work-overlay">
+                <span class="btn-work-explore" data-i18n="btn_details">Details</span>
+              </div>
+            </div>
+          </div>
+
           <!-- CGI Shot -->
           <div class="work-item" data-category="cgi" id="work-aurora">
             <div class="work-img-container">
               <img src="assets/images/work_cgi.png" alt="Aurora Neon serum product shot" loading="lazy">
               <div class="work-badge badge-client" data-i18n="badge_client">Client Work</div>
+              <div class="work-caption">
+                <span class="work-cat" data-i18n="cat_cgi">3D / CGI</span>
+                <h3 class="work-title" data-i18n="work1_title">Aurora Serum Product Render</h3>
+                <p class="work-summary" data-i18n="work1_summary">Premium Octane render showing dynamic glass refraction and minimal studio neon lighting.</p>
+              </div>
               <div class="work-overlay">
                 <span class="btn-work-explore" data-i18n="btn_details">Details</span>
-              </div>
-            </div>
-            <div class="work-info">
-              <span class="work-cat" data-i18n="cat_cgi">3D / CGI</span>
-              <h3 class="work-title" data-i18n="work1_title">Aurora Serum Product Render</h3>
-              <p class="work-summary" data-i18n="work1_summary">Premium Octane render showing dynamic glass refraction and minimal studio neon lighting.</p>
-              <div class="work-tags">
-                <span>Octane</span><span>Blender</span><span>Product Shot</span>
               </div>
             </div>
           </div>
@@ -279,16 +300,13 @@
             <div class="work-img-container">
               <img src="assets/images/work_motion.png" alt="LAUNCH Campaign typographic motion design" loading="lazy">
               <div class="work-badge badge-personal" data-i18n="badge_personal">Studio Project</div>
+              <div class="work-caption">
+                <span class="work-cat" data-i18n="cat_motion">Motion Design</span>
+                <h3 class="work-title" data-i18n="work2_title">LAUNCH Typographic Promo</h3>
+                <p class="work-summary" data-i18n="work2_summary">Dynamic typography animation integrated with physical simulation ribbons and camera tracking data.</p>
+              </div>
               <div class="work-overlay">
                 <span class="btn-work-explore" data-i18n="btn_details">Details</span>
-              </div>
-            </div>
-            <div class="work-info">
-              <span class="work-cat" data-i18n="cat_motion">Motion Design</span>
-              <h3 class="work-title" data-i18n="work2_title">LAUNCH Typographic Promo</h3>
-              <p class="work-summary" data-i18n="work2_summary">Dynamic typography animation integrated with physical simulation ribbons and camera tracking data.</p>
-              <div class="work-tags">
-                <span>After Effects</span><span>Cinema 4D</span><span>Typography</span>
               </div>
             </div>
           </div>
@@ -298,16 +316,13 @@
             <div class="work-img-container">
               <img src="assets/images/work_ai.png" alt="Mech figure in bioluminescent jungle concept styleframe" loading="lazy">
               <div class="work-badge badge-ai" data-i18n="badge_ai">AI-Assisted Exploration</div>
+              <div class="work-caption">
+                <span class="work-cat" data-i18n="cat_ai">AI Concept Art</span>
+                <h3 class="work-title" data-i18n="work3_title">Mech Bioluminescent Forest</h3>
+                <p class="work-summary" data-i18n="work3_summary">Hybrid CG composition enhanced by generative AI styleframes for rapid visual prototyping.</p>
+              </div>
               <div class="work-overlay">
                 <span class="btn-work-explore" data-i18n="btn_details">Details</span>
-              </div>
-            </div>
-            <div class="work-info">
-              <span class="work-cat" data-i18n="cat_ai">AI Concept Art</span>
-              <h3 class="work-title" data-i18n="work3_title">Mech Bioluminescent Forest</h3>
-              <p class="work-summary" data-i18n="work3_summary">Hybrid CG composition enhanced by generative AI styleframes for rapid visual prototyping.</p>
-              <div class="work-tags">
-                <span>ComfyUI</span><span>Photoshop</span><span>Concept Art</span>
               </div>
             </div>
           </div>
@@ -317,16 +332,13 @@
             <div class="work-img-container">
               <img src="assets/images/work_cleanup_after.png" alt="Cleaned up city street VFX shot" loading="lazy">
               <div class="work-badge badge-client" data-i18n="badge_client">Client Work</div>
+              <div class="work-caption">
+                <span class="work-cat" data-i18n="cat_cleanup">Compositing &amp; Cleanup</span>
+                <h3 class="work-title" data-i18n="work4_title">Urban Street Invisible VFX</h3>
+                <p class="work-summary" data-i18n="work4_summary">Clean plate reconstruction, overhead wires removal, and custom holographic logo tracking integration.</p>
+              </div>
               <div class="work-overlay">
                 <span class="btn-work-explore" data-i18n="btn_details">Details</span>
-              </div>
-            </div>
-            <div class="work-info">
-              <span class="work-cat" data-i18n="cat_cleanup">Compositing & Cleanup</span>
-              <h3 class="work-title" data-i18n="work4_title">Urban Street Invisible VFX</h3>
-              <p class="work-summary" data-i18n="work4_summary">Clean plate reconstruction, overhead wires removal, and custom holographic logo tracking integration.</p>
-              <div class="work-tags">
-                <span>Nuke</span><span>Mocha Pro</span><span>Invisible VFX</span>
               </div>
             </div>
           </div>
@@ -336,16 +348,13 @@
             <div class="work-img-container">
               <img src="assets/images/work_canvas.png" alt="NomadCanvas web drawing application" loading="lazy">
               <div class="work-badge badge-personal" data-i18n="badge_personal">Studio Project</div>
+              <div class="work-caption">
+                <span class="work-cat" data-i18n="cat_interactive">Interactive Media</span>
+                <h3 class="work-title" data-i18n="work5_title">NomadCanvas</h3>
+                <p class="work-summary" data-i18n="work5_summary">A lightweight, high-performance HTML5 canvas sketching application designed for digital graphics workflow.</p>
+              </div>
               <div class="work-overlay">
                 <span class="btn-work-explore" data-i18n="btn_details">Details</span>
-              </div>
-            </div>
-            <div class="work-info">
-              <span class="work-cat" data-i18n="cat_interactive">Interactive Media</span>
-              <h3 class="work-title" data-i18n="work5_title">NomadCanvas</h3>
-              <p class="work-summary" data-i18n="work5_summary">A lightweight, high-performance HTML5 canvas sketching application designed for digital graphics workflow.</p>
-              <div class="work-tags">
-                <span>Vanilla JS</span><span>HTML5 Canvas</span><span>Creative Tool</span>
               </div>
             </div>
           </div>
@@ -364,15 +373,18 @@
 
         <!-- Video Slider Wrapper -->
         <div class="slider-wrapper" id="vfx-slider-container">
+          <!-- Side labels live outside the video box so small screens can drop
+               them into a strip above the frame instead of over the footage. -->
+          <div class="slider-labels">
+            <span class="slider-label label-before" data-i18n="slider_before">Original Footage</span>
+            <span class="slider-label label-after" data-i18n="slider_after">Final VFX Shot</span>
+          </div>
           <div class="slider-image-container">
             <!-- One side-by-side source keeps before and after on the exact same frame. -->
             <video class="vfx-comparison-source" id="vfx-comparison-video" muted playsinline preload="metadata" aria-hidden="true">
               <source src="assets/video/vfx_compare.mp4" type="video/mp4">
             </video>
             <canvas class="vfx-comparison-canvas" id="vfx-comparison-canvas" aria-hidden="true"></canvas>
-            <span class="slider-label label-after" data-i18n="slider_after">Final VFX Shot</span>
-
-            <span class="slider-label label-before" data-i18n="slider_before">Original Footage</span>
 
             <!-- Handle Line -->
             <div class="slider-handle" id="slider-handle-bar">

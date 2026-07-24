@@ -1596,7 +1596,9 @@ section[id] {
 
 .modal-grid {
   display: grid;
-  grid-template-columns: 5.5fr 4.5fr;
+  /* minmax(0, …) so a long project title or client line wraps instead of
+     widening its track and pushing the details column out of the modal. */
+  grid-template-columns: minmax(0, 5.5fr) minmax(0, 4.5fr);
   gap: 3.5rem;
   align-items: start;
 }
@@ -2826,5 +2828,497 @@ main > section {
 
   .archive-media::before {
     will-change: auto;
+  }
+}
+
+/* Full-bleed services strip
+   ---------------------------------------------------------------------------
+   The scroller sits outside .container, so the strip spans the whole page and
+   cards leave the screen at the viewport edge instead of being cut off inside
+   the centered column. The inline padding is a percentage of the scroller, so
+   the first and last card still line up with the container gutter. */
+.services-scroller {
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  /* No snapping at all: mandatory snapping threw the strip back before the end
+     and proximity snapping still fought the drag. A plain free-scrolling strip
+     behaves predictably in both directions. */
+  scroll-snap-type: none;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-color) rgba(24, 61, 67, 0.1);
+}
+
+.services-scroller::-webkit-scrollbar {
+  height: 6px;
+}
+
+.services-scroller::-webkit-scrollbar-track {
+  background: rgba(24, 61, 67, 0.1);
+  border-radius: 4px;
+}
+
+.services-scroller::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 4px;
+}
+
+html[data-theme='dark'] .services-scroller {
+  scrollbar-color: var(--accent-color) rgba(255, 255, 255, 0.05);
+}
+
+html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.services-grid {
+  /* NOT max-content. A percentage-based padding on a max-content box is sized
+     as zero while the intrinsic width is computed and applied for real during
+     layout, so the scrollable width and the cards' actual positions disagreed:
+     the strip ran off to the left and the scrollbar stopped halfway. An
+     auto-width flex row resolves the leading percentage correctly. */
+  width: auto;
+  overflow: visible;
+  scroll-snap-type: none;
+  /* Vertical padding leaves room for the hover lift and drop shadow, which the
+     scroller would otherwise clip. */
+  padding-block: 0.85rem 1.5rem;
+  padding-left: max(2rem, calc((100% - 1200px) / 2 + 2rem));
+  padding-right: 0;
+}
+
+/* Scroll containers drop trailing padding, and a trailing margin is not always
+   counted in scrollWidth either — a real flex item always is. */
+.services-grid::after {
+  content: '';
+  /* 0.5rem + the 1.5rem flex gap in front of it = the 2rem container gutter. */
+  flex: 0 0 0.5rem;
+}
+
+/* Work collage
+   ---------------------------------------------------------------------------
+   The tile is the work. Media fills the frame edge to edge and the copy sits
+   over it as a compact caption; the full write-up is in the project modal. */
+.work-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  gap: 1.25rem;
+}
+
+.work-item {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  isolation: isolate;
+}
+
+/* The lead piece runs the full width as a cinematic band. */
+.work-item--featured {
+  grid-column: 1 / -1;
+  aspect-ratio: 21 / 9;
+}
+
+.work-img-container {
+  height: 100%;
+  aspect-ratio: auto;
+  border-radius: inherit;
+}
+
+.work-loop {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+
+.work-item.is-looping .work-loop {
+  opacity: 1;
+}
+
+.work-caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 3;
+  /* Generous top padding gives the gradient a long ramp, so the caption stays
+     legible even over a bright frame. */
+  padding: 3.25rem 1.4rem 1.25rem;
+  color: #fff6e7;
+  background: linear-gradient(
+    to top,
+    rgba(7, 8, 10, 0.94) 0%,
+    rgba(7, 8, 10, 0.78) 38%,
+    rgba(7, 8, 10, 0.3) 74%,
+    rgba(7, 8, 10, 0) 100%
+  );
+  pointer-events: none;
+}
+
+.work-caption .work-cat {
+  margin-bottom: 0.3rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+}
+
+.work-caption .work-title {
+  margin-bottom: 0;
+  color: #fff6e7;
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+.work-item--featured .work-caption {
+  padding: 4.5rem 2rem 1.75rem;
+}
+
+.work-item--featured .work-caption .work-title {
+  font-size: 1.75rem;
+}
+
+/* The summary rides along on the lead tile and is a hover detail elsewhere, so
+   a resting collage shows almost nothing but the work. */
+.work-caption .work-summary {
+  max-width: 46ch;
+  margin-bottom: 0;
+  margin-top: 0.5rem;
+  color: rgba(255, 246, 231, 0.82);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .work-item:not(.work-item--featured) .work-caption .work-summary {
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), margin-top 0.4s ease, opacity 0.3s ease;
+  }
+
+  .work-item:not(.work-item--featured):hover .work-caption .work-summary,
+  .work-item:not(.work-item--featured):focus-within .work-caption .work-summary {
+    max-height: 4rem;
+    margin-top: 0.5rem;
+    opacity: 1;
+  }
+}
+
+.work-overlay {
+  z-index: 4;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 1.25rem;
+  background-color: transparent;
+}
+
+.btn-work-explore {
+  transform: none;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.78rem;
+  color: #07080a;
+  background-color: rgba(255, 246, 231, 0.94);
+  box-shadow: 0 0.2rem 0.6rem rgba(7, 8, 10, 0.3);
+}
+
+.work-badge {
+  z-index: 5;
+}
+
+/* Project modal — media first
+   ---------------------------------------------------------------------------
+   The work is video, so the stage takes the room and the write-up sits in a
+   narrow fixed column beside it instead of splitting the modal in half. */
+.project-modal {
+  width: 95%;
+  max-width: min(95vw, 1560px);
+  max-height: 93vh;
+}
+
+.modal-wrapper {
+  padding: 2rem;
+  max-height: 93vh;
+}
+
+.modal-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+  gap: 2rem;
+}
+
+.modal-hero-media {
+  /* A cinematic stage capped against the viewport so the thumbnail collage and
+     the first lines of copy stay visible without scrolling. */
+  aspect-ratio: 16 / 9;
+  max-height: 64vh;
+  margin-bottom: 0.75rem;
+  background: #07080a;
+}
+
+/* Thumbnails become a collage grid under the stage rather than a strip that
+   scrolls sideways. */
+.modal-thumbnails {
+  display: grid;
+  /* auto-fit, not auto-fill: the actual media stretches to fill the row instead
+     of leaving empty tracks at the end of the collage. */
+  grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+  gap: 0.6rem;
+  overflow: visible;
+  padding-bottom: 0;
+}
+
+.modal-thumb {
+  width: auto;
+}
+
+/* Copy column: present, but no longer half the window. */
+.modal-title {
+  font-size: clamp(1.35rem, 1.6vw, 1.8rem);
+  margin-bottom: 1.25rem;
+}
+
+.modal-meta-table {
+  gap: 0.7rem;
+  padding: 1rem 0;
+  margin-bottom: 1.25rem;
+}
+
+.modal-meta-row .meta-value {
+  font-size: 0.86rem;
+}
+
+.modal-description-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.modal-close-btn {
+  top: 1rem;
+  right: 1rem;
+}
+
+/* Below this the fixed copy column would squeeze the stage, so it stacks. */
+@media (max-width: 1024px) {
+  .modal-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  .modal-hero-media {
+    max-height: 52vh;
+  }
+}
+
+@media (max-width: 640px) {
+  .modal-wrapper {
+    padding: 3rem 1rem 1.5rem;
+  }
+
+  /* Every pixel of width counts for a 2.4:1 frame on a phone, so the stage
+     bleeds to the modal edges. */
+  .modal-hero-media {
+    width: auto;
+    margin-inline: -1rem;
+    max-height: none;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .modal-thumbnails {
+    grid-template-columns: repeat(auto-fit, minmax(4.5rem, 1fr));
+    gap: 0.45rem;
+  }
+}
+
+/* VFX comparison labels
+   ---------------------------------------------------------------------------
+   Labels live in their own strip element now. On wide screens it is laid over
+   the top of the frame exactly as before; on phones it becomes a real row
+   above the video (see the mobile block below). */
+.slider-labels {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  right: 1.5rem;
+  z-index: 12;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.slider-label {
+  position: static;
+  top: auto;
+  left: auto;
+  right: auto;
+}
+
+@media (max-width: 768px) {
+  /* Six filter pills never fit one phone-width row. Wrapping keeps every
+     filter reachable instead of clipping the last ones off the pill. */
+  .section-header-flex {
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  /* A fixed three-column grid splits the six filters evenly across two rows in
+     every language, instead of letting flex wrapping leave a stray pill alone
+     on the second line. */
+  .filter-controls {
+    display: grid;
+    /* minmax(0, 1fr) so a long label (Japanese runs widest) shrinks its track
+       instead of pushing the whole pill past the container edge. */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    gap: 0.35rem;
+    padding: 0.45rem;
+    border-radius: 1rem;
+  }
+
+  .btn-filter {
+    padding: 0.5rem 0.4rem;
+    font-size: 0.74rem;
+    line-height: 1.25;
+  }
+
+  /* Collage on a phone: one column, tiles sized by aspect ratio so the media
+     always fits the screen width and the page only ever scrolls down. */
+  .work-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  /* One aspect for every tile: the lead piece should not end up the shortest
+     item in the column just because its frame is wider. */
+  .work-item,
+  .work-item--featured {
+    aspect-ratio: 4 / 3;
+  }
+
+  .work-caption,
+  .work-item--featured .work-caption {
+    padding: 2.75rem 1rem 0.9rem;
+  }
+
+  .work-caption .work-cat {
+    font-size: 0.65rem;
+    letter-spacing: 0.09em;
+    margin-bottom: 0.2rem;
+  }
+
+  .work-caption .work-title,
+  .work-item--featured .work-caption .work-title {
+    font-size: 1.05rem;
+  }
+
+  .work-caption .work-summary {
+    display: none;
+  }
+
+  .work-badge {
+    top: 0.8rem;
+    left: 0.8rem;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.68rem;
+  }
+
+  .work-overlay {
+    padding: 0.8rem;
+  }
+
+  /* Labels drop out of the overlay and into a strip above the video. */
+  .slider-labels {
+    position: static;
+    padding: 0.55rem 0.65rem;
+    gap: 0.5rem;
+  }
+
+  .slider-label {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.68rem;
+  }
+
+  /* Icon-only controls: the round plates ate a large share of a phone-width
+     frame. A hard shadow keeps the glyph readable over both the bright plate
+     and the dark graded half of the comparison. */
+  .vfx-expand-button,
+  .vfx-play-button,
+  .vfx-expand-button:hover,
+  .vfx-play-button:hover,
+  .vfx-expand-button:focus-visible,
+  .vfx-play-button:focus-visible {
+    width: 2.1rem;
+    height: 2.1rem;
+    bottom: 0.55rem;
+    color: #fff6e7;
+    background: none;
+    border-color: transparent;
+    box-shadow: none;
+    transform: none;
+    /* Tight shadow first: it reads as an outline on the blown-out side of the
+       comparison, where a soft glow alone would wash out. */
+    filter:
+      drop-shadow(0 0 1px rgba(7, 8, 10, 0.95))
+      drop-shadow(0 1px 2px rgba(7, 8, 10, 0.9))
+      drop-shadow(0 0 8px rgba(7, 8, 10, 0.55));
+  }
+
+  .vfx-expand-button {
+    right: 0.5rem;
+  }
+
+  .vfx-play-button {
+    right: 3.15rem;
+  }
+
+  .vfx-expand-button svg,
+  .vfx-play-button svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .vfx-compare-hint {
+    bottom: 0.7rem;
+    padding: 0.4rem 0.65rem;
+    font-size: 0.62rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .btn-filter {
+    padding: 0.45rem 0.7rem;
+    font-size: 0.72rem;
+  }
+}
+
+/* Two columns once three would squeeze the tiles; the lead piece keeps the
+   full width at every size. */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .work-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .work-item--featured {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* Touch devices never fire the hover overlay, so a tile gave no sign that it
+   opens anything — keep the Details chip permanently visible there. */
+@media (hover: none), (pointer: coarse) {
+  .work-overlay {
+    opacity: 1;
+  }
+
+  .btn-work-explore {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.72rem;
   }
 }
