@@ -30,7 +30,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20260724b">
+  <link rel="stylesheet" href="style.css?v=20260724c">
 </head>
 <body>
   <!-- Easter Egg Cat -->
@@ -364,19 +364,14 @@
         <!-- Video Slider Wrapper -->
         <div class="slider-wrapper" id="vfx-slider-container">
           <div class="slider-image-container">
-            <!-- After (Background) -->
-            <video class="image-after" id="vfx-after-video" muted playsinline preload="metadata" aria-hidden="true">
-              <source src="assets/video/vfx_after.mp4" type="video/mp4">
+            <!-- One side-by-side source keeps before and after on the exact same frame. -->
+            <video class="vfx-comparison-source" id="vfx-comparison-video" muted playsinline preload="metadata" aria-hidden="true">
+              <source src="assets/video/vfx_compare.mp4" type="video/mp4">
             </video>
+            <canvas class="vfx-comparison-canvas" id="vfx-comparison-canvas" aria-hidden="true"></canvas>
             <span class="slider-label label-after" data-i18n="slider_after">Final VFX Shot</span>
 
-            <!-- Before (Overlapping Clip) -->
-            <div class="before-wrapper" id="before-img-clip">
-              <video class="image-before" id="vfx-before-video" muted playsinline preload="metadata" aria-hidden="true">
-                <source src="assets/video/vfx_before.mp4" type="video/mp4">
-              </video>
-              <span class="slider-label label-before" data-i18n="slider_before">Original Footage</span>
-            </div>
+            <span class="slider-label label-before" data-i18n="slider_before">Original Footage</span>
 
             <!-- Handle Line -->
             <div class="slider-handle" id="slider-handle-bar">
@@ -393,7 +388,7 @@
                 <path d="M8 3H3v5M16 3h5v5M21 16v5h-5M3 16v5h5"/>
               </svg>
             </button>
-            <button class="vfx-play-button" id="vfx-play-button" type="button" aria-label="Play VFX comparison" data-i18n-aria="slider_play">
+            <button class="vfx-play-button" id="vfx-play-button" type="button" aria-label="Play VFX comparison" data-i18n-aria="slider_play" disabled>
               <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="currentColor">
                 <path class="vfx-play-icon" d="M8 5v14l11-7z"/>
                 <path class="vfx-pause-icon" d="M7 5h4v14H7zm6 0h4v14h-4z"/>
@@ -568,6 +563,6 @@
   </dialog>
 
   <!-- Main Logic -->
-  <script src="script.js?v=20260724b"></script>
+  <script src="script.js?v=20260724c"></script>
 </body>
 </html>

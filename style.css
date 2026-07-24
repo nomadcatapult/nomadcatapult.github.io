@@ -917,32 +917,23 @@ section[id] {
   user-select: none;
 }
 
-/* Base image (After) */
-.image-after {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none;
-}
-
-/* Overlapping clipped container (Before) */
-.before-wrapper {
+/* The source contains raw footage and final VFX side by side. It is decoded
+   once, while the canvas reveals either half at the slider position. */
+.vfx-comparison-source {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
   pointer-events: none;
-  /* Use modern clip-path linked to the custom property */
-  clip-path: inset(0 calc(100% - var(--split-percent)) 0 0);
 }
 
-.image-before {
+.vfx-comparison-canvas {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   display: block;
+  pointer-events: none;
 }
 
 /* Text tags inside slider */
@@ -1071,6 +1062,11 @@ section[id] {
   border-color: var(--accent-color);
   outline: none;
   transform: scale(1.08);
+}
+
+.vfx-play-button:disabled {
+  cursor: wait;
+  opacity: 0.48;
 }
 
 .vfx-play-button .vfx-pause-icon,

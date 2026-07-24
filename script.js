@@ -241,23 +241,20 @@ document.addEventListener('DOMContentLoaded', () => {
     sliderRange.addEventListener('change', updateSlider);
   }
 
-  // Play the comparison only while it is on screen. The clips restart together;
-  // raw footage is only re-aligned after a genuine stall, not every frame.
-  const beforeVideo = document.getElementById('vfx-before-video');
-  const afterVideo = document.getElementById('vfx-after-video');
+  // The source contains raw footage and final VFX side by side. Both halves are
+  // drawn from one decoded frame, so a timing mismatch is not possible.
+  const comparisonVideo = document.getElementById('vfx-comparison-video');
+  const comparisonCanvas = document.getElementById('vfx-comparison-canvas');
   const playVfxButton = document.getElementById('vfx-play-button');
+  let redrawVfxComparison = () => {};
+  let resumeVfxComparison = () => {};
 
-  if (beforeVideo && afterVideo) {
+  if (comparisonVideo && comparisonCanvas && sliderContainer) {
     let comparisonInView = false;
     let comparisonManuallyPaused = false;
     let comparisonLoadRequested = false;
-    let awaitingSynchronizedStart = false;
-    let lastRecoveryAt = 0;
-
-    const playVideo = (video) => {
-      const playAttempt = video.play();
-      if (playAttempt) playAttempt.catch(() => {});
-    };
+    let frameRequestPending = false;
+    const comparisonContext = comparisonCanvas.getContext('2d', { alpha: false });
 
     const updatePlaybackButton = (isPlaying) => {
       if (!playVfxButton) return;
@@ -268,74 +265,98 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const pauseComparison = () => {
-      awaitingSynchronizedStart = false;
-      beforeVideo.pause();
-      afterVideo.pause();
+      comparisonVideo.pause();
       updatePlaybackButton(false);
+      redrawVfxComparison();
     };
 
     const comparisonIsVisible = () => (
       comparisonInView || document.getElementById('vfx-comparison-modal')?.open
     );
 
-    const bothVideosCanPlay = () => (
-      beforeVideo.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA
-      && afterVideo.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA
-    );
-
     const requestComparisonLoad = () => {
       if (comparisonLoadRequested) return;
       comparisonLoadRequested = true;
-      beforeVideo.load();
-      afterVideo.load();
+      comparisonVideo.load();
     };
 
-    const alignBeforeToAfter = () => {
-      if (!Number.isFinite(beforeVideo.duration) || !Number.isFinite(afterVideo.currentTime)) return;
-      beforeVideo.currentTime = Math.min(afterVideo.currentTime, Math.max(0, beforeVideo.duration - 0.04));
+    const resizeComparisonCanvas = () => {
+      const bounds = comparisonCanvas.getBoundingClientRect();
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      const width = Math.max(1, Math.round(bounds.width * pixelRatio));
+      const height = Math.max(1, Math.round(bounds.height * pixelRatio));
+
+      if (comparisonCanvas.width !== width || comparisonCanvas.height !== height) {
+        comparisonCanvas.width = width;
+        comparisonCanvas.height = height;
+      }
     };
 
-    const resetComparison = () => {
-      beforeVideo.currentTime = 0;
-      afterVideo.currentTime = 0;
+    redrawVfxComparison = () => {
+      if (!comparisonContext) return;
+      resizeComparisonCanvas();
+
+      const { width, height } = comparisonCanvas;
+      comparisonContext.fillStyle = '#0c0e11';
+      comparisonContext.fillRect(0, 0, width, height);
+
+      if (comparisonVideo.readyState < HTMLMediaElement.HAVE_CURRENT_DATA
+        || !comparisonVideo.videoWidth || !comparisonVideo.videoHeight) return;
+
+      const sourceHalfWidth = comparisonVideo.videoWidth / 2;
+      const splitPosition = Math.max(0, Math.min(1, Number(sliderRange?.value || 50) / 100));
+
+      // Final VFX is the base image; original footage is clipped on top.
+      comparisonContext.drawImage(
+        comparisonVideo,
+        sourceHalfWidth, 0, sourceHalfWidth, comparisonVideo.videoHeight,
+        0, 0, width, height
+      );
+      comparisonContext.save();
+      comparisonContext.beginPath();
+      comparisonContext.rect(0, 0, width * splitPosition, height);
+      comparisonContext.clip();
+      comparisonContext.drawImage(
+        comparisonVideo,
+        0, 0, sourceHalfWidth, comparisonVideo.videoHeight,
+        0, 0, width, height
+      );
+      comparisonContext.restore();
+    };
+
+    const scheduleComparisonFrame = () => {
+      if (frameRequestPending || comparisonVideo.paused || comparisonVideo.ended) return;
+      frameRequestPending = true;
+      const renderFrame = () => {
+        frameRequestPending = false;
+        redrawVfxComparison();
+        scheduleComparisonFrame();
+      };
+
+      if ('requestVideoFrameCallback' in comparisonVideo) {
+        comparisonVideo.requestVideoFrameCallback(renderFrame);
+      } else {
+        window.requestAnimationFrame(renderFrame);
+      }
     };
 
     const playComparison = () => {
-      if (!bothVideosCanPlay()) {
+      if (comparisonVideo.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) {
         requestComparisonLoad();
         updatePlaybackButton(false);
         return;
       }
 
-      if (afterVideo.ended) resetComparison();
-      if (Math.abs(beforeVideo.currentTime - afterVideo.currentTime) > 0.25) alignBeforeToAfter();
-      if (awaitingSynchronizedStart) return;
-
-      awaitingSynchronizedStart = true;
-      playVideo(afterVideo);
-      playVideo(beforeVideo);
+      if (comparisonVideo.ended) comparisonVideo.currentTime = 0;
+      const playAttempt = comparisonVideo.play();
+      if (playAttempt) {
+        playAttempt.catch(() => updatePlaybackButton(false));
+      }
     };
 
-    const confirmSynchronizedStart = () => {
-      if (!awaitingSynchronizedStart || beforeVideo.paused || afterVideo.paused) return;
-
-      // One final alignment handles a slower first decode without continuously
-      // seeking during normal playback.
-      if (Math.abs(beforeVideo.currentTime - afterVideo.currentTime) > 0.04) alignBeforeToAfter();
-      awaitingSynchronizedStart = false;
-      updatePlaybackButton(true);
-    };
-
-    const recoverBeforeVideo = () => {
-      if (afterVideo.paused || comparisonManuallyPaused || document.hidden) return;
-      const now = performance.now();
-      if (now - lastRecoveryAt < 1200) return;
-
-      const drift = Math.abs(beforeVideo.currentTime - afterVideo.currentTime);
-      if (beforeVideo.paused || drift > 0.35) {
-        lastRecoveryAt = now;
-        alignBeforeToAfter();
-        playVideo(beforeVideo);
+    resumeVfxComparison = () => {
+      if (comparisonIsVisible() && !comparisonManuallyPaused && !document.hidden) {
+        playComparison();
       }
     };
 
@@ -343,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ? new IntersectionObserver((entries) => {
         comparisonInView = entries.some(entry => entry.isIntersecting);
         if (comparisonIsVisible() && !comparisonManuallyPaused) {
-          playComparison();
+          resumeVfxComparison();
         } else if (!comparisonIsVisible()) {
           pauseComparison();
         }
@@ -354,11 +375,11 @@ document.addEventListener('DOMContentLoaded', () => {
       visibilityObserver.observe(sliderContainer);
     } else {
       comparisonInView = true;
-      playComparison();
+      resumeVfxComparison();
     }
 
     playVfxButton?.addEventListener('click', () => {
-      if (afterVideo.paused) {
+      if (comparisonVideo.paused) {
         comparisonManuallyPaused = false;
         playComparison();
       } else {
@@ -367,23 +388,29 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    beforeVideo.addEventListener('canplay', () => {
-      if (comparisonIsVisible() && !comparisonManuallyPaused && !document.hidden) playComparison();
+    comparisonVideo.addEventListener('loadeddata', redrawVfxComparison);
+    comparisonVideo.addEventListener('canplay', () => {
+      if (playVfxButton) playVfxButton.disabled = false;
+      redrawVfxComparison();
+      resumeVfxComparison();
     });
-    afterVideo.addEventListener('canplay', () => {
-      if (comparisonIsVisible() && !comparisonManuallyPaused && !document.hidden) playComparison();
+    comparisonVideo.addEventListener('playing', () => {
+      updatePlaybackButton(true);
+      scheduleComparisonFrame();
     });
-    beforeVideo.addEventListener('playing', confirmSynchronizedStart);
-    afterVideo.addEventListener('playing', confirmSynchronizedStart);
-
-    afterVideo.addEventListener('ended', () => {
+    comparisonVideo.addEventListener('pause', () => {
+      updatePlaybackButton(false);
+      redrawVfxComparison();
+    });
+    comparisonVideo.addEventListener('ended', () => {
+      comparisonVideo.currentTime = 0;
       if (comparisonIsVisible() && !comparisonManuallyPaused) {
-        resetComparison();
         playComparison();
       }
     });
-    beforeVideo.addEventListener('waiting', recoverBeforeVideo);
-    beforeVideo.addEventListener('stalled', recoverBeforeVideo);
+    sliderRange?.addEventListener('input', redrawVfxComparison);
+    sliderRange?.addEventListener('change', redrawVfxComparison);
+    new ResizeObserver(redrawVfxComparison).observe(sliderContainer);
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         pauseComparison();
@@ -440,6 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sliderPlaceholder.parentNode.insertBefore(sliderContainer, sliderPlaceholder);
     sliderPlaceholder.remove();
     sliderPlaceholder = null;
+    window.requestAnimationFrame(redrawVfxComparison);
     expandVfxButton?.focus();
   };
 
@@ -450,6 +478,10 @@ document.addEventListener('DOMContentLoaded', () => {
       sliderContainer.parentNode.insertBefore(sliderPlaceholder, sliderContainer);
       vfxModalFrame.appendChild(sliderContainer);
       vfxModal.showModal();
+      window.requestAnimationFrame(() => {
+        redrawVfxComparison();
+        resumeVfxComparison();
+      });
       closeVfxModalButton.focus();
     });
 
