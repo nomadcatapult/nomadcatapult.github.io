@@ -30,7 +30,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20260724e">
+  <link rel="stylesheet" href="style.css?v=20260725a">
 </head>
 <body>
   <!-- Easter Egg Cat -->
@@ -279,7 +279,7 @@
             </div>
           </div>
 
-          <!-- CGI Shot -->
+          <!-- CGI Shot Comet-->
           <div class="work-item" data-category="cgi" id="work-comet">
             <div class="work-img-container">
               <img
@@ -296,11 +296,11 @@
                 <span class="work-cat" data-i18n="cat_cgi">3D / CGI</span>
 
                 <h3 class="work-title" data-i18n="work1_title">
-                  Film Company Logo Intro
+                  Dragon Mountain — Animated Series
                 </h3>
 
                 <p class="work-summary" data-i18n="work1_summary">
-                  A glowing particle comet collides with a planet, igniting its surface before the planet transforms into the company logo.
+                  A 22-minute family adventure animation produced through a complete end-to-end pipeline. The pilot episode is currently in production.
                 </p>
               </div>
 
@@ -312,15 +312,15 @@
             </div>
           </div>
 
-          <!-- Motion Typography -->
-          <div class="work-item" data-category="motion" id="work-launch">
+          <!--Dragon Mountain — Animated Series -->
+          <div class="work-item" data-category="animation illustration script" id="work-gd">
             <div class="work-img-container">
-              <img src="assets/images/work_motion.png" alt="LAUNCH Campaign typographic motion design" loading="lazy">
+              <img src="assets/images/work_dm.jpg" alt="Dragon Mountain — Animated Series" loading="lazy">
               <div class="work-badge badge-personal" data-i18n="badge_personal">Studio Project</div>
               <div class="work-caption">
-                <span class="work-cat" data-i18n="cat_motion">Motion Design</span>
-                <h3 class="work-title" data-i18n="work2_title">LAUNCH Typographic Promo</h3>
-                <p class="work-summary" data-i18n="work2_summary">Dynamic typography animation integrated with physical simulation ribbons and camera tracking data.</p>
+                <span class="work-cat" data-i18n="cat_animation">Animation &amp; Storyboards</span>
+                <h3 class="work-title" data-i18n="work2_title">Dragon Mountain — Animated Series</h3>
+                <p class="work-summary" data-i18n="work2_summary">A 22-minute family adventure animation produced through a complete end-to-end pipeline. The pilot episode is currently in production.</p>
               </div>
               <div class="work-overlay">
                 <span class="btn-work-explore" data-i18n="btn_details">Details</span>
@@ -578,10 +578,18 @@
       <div class="modal-grid">
         <!-- Media Section -->
         <div class="modal-media-col">
-          <div class="modal-hero-media">
+          <!-- Standard landscape media viewer. Existing projects continue to use this. -->
+          <div class="modal-hero-media" id="modal-hero-media">
             <video id="modal-video" muted loop playsinline controls class="modal-video" style="display: none;"></video>
             <img id="modal-image" class="modal-image" src="" alt="" style="display: none;">
           </div>
+
+          <!-- Optional portrait-video gallery. Enabled per project in script.js. -->
+          <div class="modal-vertical-gallery" id="modal-vertical-gallery" hidden></div>
+
+          <!-- Landscape stills used together with the portrait-video gallery. -->
+          <div class="modal-horizontal-gallery" id="modal-horizontal-gallery" hidden></div>
+
           <div class="modal-thumbnails" id="modal-thumbnails"></div>
         </div>
         <!-- Info Section -->
@@ -629,6 +637,6 @@
   </dialog>
 
   <!-- Main Logic -->
-  <script src="script.js?v=20260724e"></script>
+  <script src="script.js?v=20260725a"></script>
 </body>
 </html>

@@ -762,6 +762,8 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_cgi: "3D / CGI",
       cat_motion: "Motion Design",
       cat_ai: "AI Concept Art",
+      cat_animation: "Animation & Storyboards",
+      cat_all: "Complete production pipeline",
       cat_cleanup: "Compositing & Cleanup",
       cat_interactive: "Interactive Media",
       cat_3d_motion_ai: "3D / Motion / AI Film",
@@ -772,8 +774,8 @@ document.addEventListener('DOMContentLoaded', () => {
       btn_slider: "Interactive Slider",
       work1_title: "Film Company Logo Intro",
       work1_summary: "A glowing particle comet collides with a planet, igniting its surface before the planet transforms into the company logo.",
-      work2_title: "LAUNCH Typographic Promo",
-      work2_summary: "Dynamic typography animation integrated with physical simulation ribbons and camera tracking data.",
+      work2_title: "Dragon Mountain — Animated Series",
+      work2_summary: "A 22-minute family adventure animation produced through a complete end-to-end pipeline. The pilot episode is currently in production.",
       work3_title: "Mech Bioluminescent Forest",
       work3_summary: "Hybrid CG composition enhanced by generative AI styleframes for rapid visual prototyping.",
       work4_title: "Urban Street Invisible VFX",
@@ -884,6 +886,8 @@ document.addEventListener('DOMContentLoaded', () => {
       filter_interactive: "Интерактив",
       cat_cgi: "3D / CGI",
       cat_motion: "Моушн-дизайн",
+      cat_animation: "Анимация и раскадровки",
+      cat_all: "Полный цикл производства",
       cat_ai: "ИИ-концепт-арт",
       cat_cleanup: "Композитинг и клинап",
       cat_interactive: "Интерактивные медиа",
@@ -895,8 +899,8 @@ document.addEventListener('DOMContentLoaded', () => {
       btn_slider: "Интерактивный слайдер",
       work1_title: "Интро кинокомпании",
       work1_summary: "Комета из светящихся частиц врезается в планету: поверхность вспыхивает, и планета плавно превращается в логотип компании.",
-      work2_title: "Типографическое промо LAUNCH",
-      work2_summary: "Динамическая анимация типографики, интегрированная с физической симуляцией лент и данными трекинга камеры.",
+      work2_title: "Анимационный сериал Dragon Mountain",
+      work2_summary: "22-минутный семейный приключенческий мультфильм полного цикла производства. Пилотный эпизод находится в разработке.",
       work3_title: "Биолюминесцентный лес с мехом",
       work3_summary: "Гибридный CG-композит, улучшенный генеративными ИИ-стайлфреймами для быстрого визуального прототипирования.",
       work4_title: "Невидимый VFX городской улицы",
@@ -1007,6 +1011,8 @@ document.addEventListener('DOMContentLoaded', () => {
       filter_interactive: "互动",
       cat_cgi: "3D / CGI",
       cat_motion: "动态设计",
+      cat_animation: "动画与分镜设计",
+      cat_all: "完整制作流程",
       cat_ai: "AI 概念艺术",
       cat_cleanup: "合成与擦除",
       cat_interactive: "互动媒体",
@@ -1018,8 +1024,8 @@ document.addEventListener('DOMContentLoaded', () => {
       btn_slider: "双图滑动对比",
       work1_title: "电影公司标志片头",
       work1_summary: "一颗由发光粒子组成的彗星撞击行星，点燃其表面，随后行星化为公司标志。",
-      work2_title: "LAUNCH 文字排版宣传片",
-      work2_summary: "集成了物理模拟丝带与摄像机跟踪数据的动态排版动画。",
+      work2_title: "《龙之山》— 动画系列",
+      work2_summary: "一部面向全家观众的22分钟冒险动画，涵盖从创意开发到后期制作的完整流程。目前试播集正在制作中。",
       work3_title: "机甲生物发光森林",
       work3_summary: "混合 CG 构图，通过生成式 AI 风格帧进行增强，以实现快速的视觉原型设计。",
       work4_title: "城市街道无形特效",
@@ -1130,6 +1136,8 @@ document.addEventListener('DOMContentLoaded', () => {
       filter_interactive: "インタラクティブ",
       cat_cgi: "3D / CGI",
       cat_motion: "モーションデザイン",
+      cat_animation: "アニメーション＆絵コンテ",
+      cat_all: "フルサイクル制作",
       cat_ai: "AIコンセプトアート",
       cat_cleanup: "コンポジット＆クリンアップ",
       cat_interactive: "インタラクティブメディア",
@@ -1141,8 +1149,8 @@ document.addEventListener('DOMContentLoaded', () => {
       btn_slider: "比較スライダー",
       work1_title: "映画会社のロゴイントロ",
       work1_summary: "発光する粒子でできた彗星が惑星に衝突して表面を燃え上がらせ、やがて惑星が会社のロゴへと変化します。",
-      work2_title: "LAUNCH タイポグラフィプロモ",
-      work2_summary: "物理シミュレーションのリボンとカメラトラッキングデータを統合したダイナミックなタイポグラフィアニメーション。",
+      work2_title: "ドラゴン・マウンテン — アニメーションシリーズ",
+      work2_summary: "22分構成のファミリー向け冒険アニメーション。企画からポストプロダクションまで一貫して制作し、現在パイロット版を制作中です。",
       work3_title: "メカ発光森林",
       work3_summary: "迅速なビジュアルプロトタイピングのために生成AIスタイルフレームによって強化されたハイブリッドCGコンポジション。",
       work4_title: "都市のストリートのインビジブルVFX",
@@ -1418,19 +1426,19 @@ document.addEventListener('DOMContentLoaded', () => {
         ja: "映画配給会社のために制作したシネマティックな3Dイントロ。発光する粒子でできた彗星が惑星に衝突し、その表面を燃え上がらせながら、やがて全体をエネルギーで満たしていきます。カメラが引いていくにつれ、輝く惑星がそのままなめらかに会社のロゴへと変化します。"
       }
     },
-    'work-launch': {
-      category: { en: "Motion", ru: "Моушн", zh: "动态设计", ja: "モーション" },
+    'work-gd': {
+      category: { en: "Animation & Storyboards", ru: "Анимация и раскадровки", zh: "动画与分镜设计", ja: "アニメーション＆絵コンテ" },
       title: {
-        en: "LAUNCH Typographic Promo",
-        ru: "Типографическое промо LAUNCH",
-        zh: "LAUNCH 文字排版宣传片",
-        ja: "LAUNCH タイポグラフィプロモ"
+        en: "Dragon Mountain — Animated Series",
+        ru: "Анимационный сериал Dragon Mountain",
+        zh: "《龙之山》— 动画系列",
+        ja: "ドラゴン・マウンテン — アニメーションシリーズ"
       },
       role: {
-        en: "3D Typography & Motion Graphics",
-        ru: "3D-типографика и моушн-графика",
-        zh: "3D 排版与动态图形设计",
-        ja: "3Dタイポグラフィ＆モーショングラフィックス"
+        en: "Full-Cycle Animation Production",
+        ru: "Полный цикл производства анимации",
+        zh: "动画全流程制作",
+        ja: "アニメーション制作全般"
       },
       client: {
         en: "Studio Project",
@@ -1438,17 +1446,23 @@ document.addEventListener('DOMContentLoaded', () => {
         zh: "工作室项目",
         ja: "自主制作・実験"
       },
-      tools: "After Effects, Cinema 4D, Typography",
-      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-abstract-laser-lights-background-loop-42930-large.mp4",
-      images: [
-        "assets/images/work_motion.png",
-        "assets/images/work_motion_detail.png"
+      tools: "Procreate, Moho, After Effects, Blender",
+      mediaLayout: "vertical-grid",
+      videoAspect: "9 / 16",
+      videos: [
+        { url: "assets/video/work_dm_01.mp4", poster: "assets/images/work_dm_01_th.jpg" },
+        { url: "assets/video/work_dm_02.mp4", poster: "assets/images/work_dm_02_th.jpg" },
+        { url: "assets/video/work_dm_03.mp4", poster: "assets/images/work_dm_03_th.jpg" }
       ],
-      desc: {
-        en: "A promotional typographic motion design piece. Integrates complex 3D typography geometry with physical simulation ribbons running along splines, tracked with real camera moves. Sound and rhythm drive the animation speed.",
-        ru: "Промо-ролик с акцентом на типографику и движение. Интегрирует сложную 3D-типографику с физическими симуляциями лент, движущихся по сплайнам, с привязкой к реальному движению камеры. Скорость анимации определяется звуком и ритмом.",
-        zh: "创意文字排版宣传动态视频。将复杂的 3D 字体几何体与沿着样条曲线的物理模拟丝带相结合，并与真实的相机运动进行同步跟踪。动画节奏由音乐与音效驱动。",
-        ja: "プロモーション用のタイポグラフィモーションデザイン。複雑な3Dタイポグラフィの形状と、スプラインに沿って動く物理シミュレーションのリボンを統合し、実写のカメラワークとトラッキングしました。音楽とリズムがアニメーションのスピードを駆動します。"
+      images: [
+        "assets/images/work_dm.jpg",
+        "assets/images/work_dm_chars.jpg"
+      ],
+     desc: {
+        en: "Dragon Mountain is a 22-minute animated adventure series for the whole family. The story follows four teenagers who are transported to a mysterious parallel world filled with strange creatures, ancient mysteries, humour and unexpected challenges. The project covers the complete production pipeline, from concept development, writing and visual design to animation, compositing and post-production. The pilot episode is currently in production.",
+        ru: "«Dragon Mountain» — 22-минутный приключенческий анимационный сериал для всей семьи. История рассказывает о четырёх подростках, которые попадают в загадочный параллельный мир, наполненный необычными существами, древними тайнами, юмором и неожиданными испытаниями. Проект охватывает полный цикл производства — от разработки концепции, сценария и визуального стиля до анимации, композитинга и постпродакшена. Пилотный эпизод находится в производстве.",  
+        zh: "《龙之山》是一部面向全家观众的22分钟冒险动画系列。故事讲述四名少年意外进入一个神秘的平行世界，那里充满了奇异生物、古老谜团、幽默情节和意想不到的挑战。项目涵盖完整的动画制作流程，包括概念开发、剧本创作、视觉设计、动画制作、合成与后期制作。目前，试播集正在制作中。",
+        ja: "『ドラゴン・マウンテン』は、家族で楽しめる22分構成の冒険アニメーションシリーズです。物語は、4人の少年少女が不思議な生き物、古代の謎、ユーモア、そして予想外の試練に満ちた並行世界へ迷い込むところから始まります。企画開発、脚本、ビジュアルデザイン、アニメーション、コンポジット、ポストプロダクションまで、制作工程全体を手がけています。現在、パイロットエピソードを制作中です。"
       }
     },
     'work-jungle': {
@@ -1553,109 +1567,248 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const stopAllProjectModalVideos = (clearSources = false) => {
+    const modal = document.getElementById('project-details-modal');
+    if (!modal) return;
+
+    modal.querySelectorAll('video').forEach(video => {
+      video.pause();
+
+      if (clearSources) {
+        video.removeAttribute('src');
+        video.load();
+      }
+    });
+  };
+
   const populateModal = (projId, lang) => {
     const data = projectDetailsData[projId];
     if (!data) return;
-    
-    // Set dynamic text elements
-    document.getElementById('modal-project-category').textContent = data.category[lang] || data.category['en'];
-    document.getElementById('modal-project-title').textContent = data.title[lang] || data.title['en'];
-    document.getElementById('modal-project-role').textContent = data.role[lang] || data.role['en'];
-    document.getElementById('modal-project-client').textContent = data.client[lang] || data.client['en'];
-    document.getElementById('modal-project-tools').textContent = data.tools;
-    document.getElementById('modal-project-description').textContent = data.desc[lang] || data.desc['en'];
-    
-    // Show/hide before-after slider quick link action
-    const sliderActionWrapper = document.getElementById('modal-slider-action-wrapper');
-    if (projId === 'work-street') {
-      sliderActionWrapper.style.display = 'block';
-    } else {
-      sliderActionWrapper.style.display = 'none';
-    }
 
-    // Media element containers
+    // Stop and unload media left by the previously opened project.
+    stopAllProjectModalVideos(true);
+
+    // Set dynamic text elements.
+    document.getElementById('modal-project-category').textContent = data.category[lang] || data.category.en;
+    document.getElementById('modal-project-title').textContent = data.title[lang] || data.title.en;
+    document.getElementById('modal-project-role').textContent = data.role[lang] || data.role.en;
+    document.getElementById('modal-project-client').textContent = data.client[lang] || data.client.en;
+    document.getElementById('modal-project-tools').textContent = data.tools;
+    document.getElementById('modal-project-description').textContent = data.desc[lang] || data.desc.en;
+
+    // Show/hide before-after slider quick link action.
+    const sliderActionWrapper = document.getElementById('modal-slider-action-wrapper');
+    sliderActionWrapper.style.display = projId === 'work-street' ? 'block' : 'none';
+
+    const heroMedia = document.getElementById('modal-hero-media');
     const modalVideo = document.getElementById('modal-video');
     const modalImage = document.getElementById('modal-image');
     const thumbnailsContainer = document.getElementById('modal-thumbnails');
-    
+    const verticalGallery = document.getElementById('modal-vertical-gallery');
+    const horizontalGallery = document.getElementById('modal-horizontal-gallery');
+
+    if (
+      !heroMedia ||
+      !modalVideo ||
+      !modalImage ||
+      !thumbnailsContainer ||
+      !verticalGallery ||
+      !horizontalGallery
+    ) return;
+
+    const images = Array.isArray(data.images) ? data.images : [];
+    const videos = Array.isArray(data.videos) ? data.videos : [];
+    const useVerticalGallery = data.mediaLayout === 'vertical-grid' && videos.length > 0;
+
     thumbnailsContainer.innerHTML = '';
+    verticalGallery.innerHTML = '';
+    horizontalGallery.innerHTML = '';
+
+    modalVideo.style.display = 'none';
+    modalImage.style.display = 'none';
+    modalImage.removeAttribute('src');
+
+    heroMedia.hidden = useVerticalGallery;
+    thumbnailsContainer.hidden = useVerticalGallery;
+    verticalGallery.hidden = !useVerticalGallery;
+    horizontalGallery.hidden = !useVerticalGallery || images.length === 0;
+
+    /* Portrait-video mode --------------------------------------------------
+       Only projects with mediaLayout: "vertical-grid" use this branch.
+       Existing landscape projects continue through the original viewer below. */
+    if (useVerticalGallery) {
+      verticalGallery.style.setProperty('--vertical-video-aspect', data.videoAspect || '9 / 16');
+
+      videos.forEach((clip, index) => {
+        if (!clip?.url) return;
+
+        const card = document.createElement('article');
+        card.className = 'modal-vertical-card';
+
+        const frame = document.createElement('div');
+        frame.className = 'modal-vertical-video-frame';
+
+        const video = document.createElement('video');
+        video.className = 'modal-vertical-video';
+        video.src = clip.url;
+        video.poster = clip.poster || clip.thumb || images[0] || '';
+        video.preload = 'metadata';
+        video.playsInline = true;
+        video.loop = clip.loop !== false;
+        video.muted = clip.muted === true;
+        video.controls = false;
+
+        const indexLabel = document.createElement('span');
+        indexLabel.className = 'modal-vertical-index';
+        indexLabel.textContent = String(index + 1).padStart(2, '0');
+
+        const playButton = document.createElement('button');
+        playButton.className = 'modal-vertical-play';
+        playButton.type = 'button';
+        playButton.setAttribute(
+          'aria-label',
+          `${data.title[lang] || data.title.en}: video ${index + 1}`
+        );
+        playButton.innerHTML = `
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+            <path d="M8 5v14l11-7z"></path>
+          </svg>
+        `;
+
+        video.addEventListener('play', () => {
+          verticalGallery.querySelectorAll('video').forEach(otherVideo => {
+            if (otherVideo !== video) otherVideo.pause();
+          });
+
+          card.classList.add('has-started', 'is-playing');
+          video.controls = true;
+        });
+
+        video.addEventListener('pause', () => {
+          card.classList.remove('is-playing');
+        });
+
+        video.addEventListener('ended', () => {
+          card.classList.remove('is-playing');
+        });
+
+        playButton.addEventListener('click', () => {
+          video.play().catch(error => {
+            console.warn('Could not play project video:', error);
+          });
+        });
+
+        frame.appendChild(video);
+        frame.appendChild(indexLabel);
+        frame.appendChild(playButton);
+        card.appendChild(frame);
+        verticalGallery.appendChild(card);
+      });
+
+      /* Landscape stills shown below the portrait clips. */
+      images.forEach((imageUrl, index) => {
+        if (!imageUrl) return;
+
+        const figure = document.createElement('figure');
+        figure.className = 'modal-horizontal-card';
+
+        const image = document.createElement('img');
+        image.className = 'modal-horizontal-image';
+        image.src = imageUrl;
+        image.alt = `${data.title[lang] || data.title.en}: image ${index + 1}`;
+        image.loading = 'lazy';
+
+        figure.appendChild(image);
+        horizontalGallery.appendChild(figure);
+      });
+
+      return;
+    }
+
+    /* Standard landscape mode -------------------------------------------- */
     const mediaItems = [];
-    
-    // 1. Loop video as primary focus media. Projects delivered as a set of
-    //    cuts declare `videos` with their own thumbnails instead.
-    if (Array.isArray(data.videos)) {
-      data.videos.forEach(clip => {
+    const fallbackThumb = images[0] || '';
+
+    if (videos.length > 0) {
+      videos.forEach(clip => {
+        if (!clip?.url) return;
+
         mediaItems.push({
           type: 'video',
           url: clip.url,
-          thumb: clip.thumb || data.images[0]
+          thumb: clip.thumb || clip.poster || fallbackThumb
         });
       });
     } else if (data.videoUrl) {
       mediaItems.push({
         type: 'video',
         url: data.videoUrl,
-        thumb: data.images[0]
+        thumb: fallbackThumb
       });
     }
-    
-    // 2. Add sub-images for slider thumbnails
-    data.images.forEach(imgUrl => {
+
+    images.forEach(imgUrl => {
       mediaItems.push({
         type: 'image',
         url: imgUrl,
         thumb: imgUrl
       });
     });
-    
-    // Square stills crop well, but ultra-wide stage frames lose a third of the
-    // image to the 16:10 hero box, so those projects opt into letterboxing.
+
+    // Square stills crop well, but ultra-wide stage frames can opt into contain.
     const mediaFit = data.fit === 'contain' ? 'contain' : 'cover';
     modalVideo.style.objectFit = mediaFit;
     modalImage.style.objectFit = mediaFit;
+    heroMedia.classList.toggle('is-letterboxed', mediaFit === 'contain');
+    heroMedia.style.aspectRatio = data.stageAspect || '';
 
-    const heroMedia = modalVideo.closest('.modal-hero-media');
-    if (heroMedia) {
-      heroMedia.classList.toggle('is-letterboxed', mediaFit === 'contain');
-      heroMedia.style.aspectRatio = data.stageAspect || '';
-    }
-
-    // Dynamic media swap solver
-    const showMedia = (item) => {
+    const showMedia = item => {
       if (item.type === 'video') {
         modalImage.style.display = 'none';
         modalVideo.style.display = 'block';
+        modalVideo.muted = true;
+        modalVideo.loop = true;
+        modalVideo.controls = true;
         modalVideo.src = item.url;
         modalVideo.play().catch(() => {});
       } else {
         modalVideo.pause();
+        modalVideo.removeAttribute('src');
+        modalVideo.load();
         modalVideo.style.display = 'none';
         modalImage.style.display = 'block';
         modalImage.src = item.url;
       }
     };
-    
-    // Render thumbnails gallery
+
     mediaItems.forEach((item, index) => {
       const thumbBtn = document.createElement('button');
       thumbBtn.className = 'modal-thumb';
+      thumbBtn.type = 'button';
+      thumbBtn.setAttribute('aria-label', `Open media ${index + 1}`);
       if (index === 0) thumbBtn.classList.add('active');
-      
-      const img = document.createElement('img');
-      img.src = item.thumb;
-      img.alt = `Thumb ${index + 1}`;
-      thumbBtn.appendChild(img);
-      
+
+      if (item.thumb) {
+        const img = document.createElement('img');
+        img.src = item.thumb;
+        img.alt = '';
+        thumbBtn.appendChild(img);
+      } else {
+        const fallbackIcon = document.createElement('span');
+        fallbackIcon.className = 'modal-thumb-fallback';
+        fallbackIcon.textContent = item.type === 'video' ? '▶' : '•';
+        thumbBtn.appendChild(fallbackIcon);
+      }
+
       thumbBtn.addEventListener('click', () => {
         thumbnailsContainer.querySelectorAll('.modal-thumb').forEach(btn => btn.classList.remove('active'));
         thumbBtn.classList.add('active');
         showMedia(item);
       });
-      
+
       thumbnailsContainer.appendChild(thumbBtn);
     });
-    
-    // Launch first asset default
+
     if (mediaItems.length > 0) {
       showMedia(mediaItems[0]);
     }
@@ -1668,12 +1821,10 @@ document.addEventListener('DOMContentLoaded', () => {
   
   if (dialog && closeBtn) {
     const closeModal = () => {
-      const modalVideo = document.getElementById('modal-video');
-      if (modalVideo) {
-        modalVideo.pause();
-        modalVideo.src = '';
-      }
-      dialog.close();
+      stopAllProjectModalVideos(true);
+      document.getElementById('modal-vertical-gallery')?.replaceChildren();
+
+      if (dialog.open) dialog.close();
       activeProjectId = null;
       document.body.style.overflow = '';
     };
@@ -1725,11 +1876,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Clean up media streams if browser forces close (Esc key)
     dialog.addEventListener('cancel', () => {
-      const modalVideo = document.getElementById('modal-video');
-      if (modalVideo) {
-        modalVideo.pause();
-        modalVideo.src = '';
-      }
+      stopAllProjectModalVideos(true);
+      document.getElementById('modal-vertical-gallery')?.replaceChildren();
       activeProjectId = null;
       document.body.style.overflow = '';
     });
