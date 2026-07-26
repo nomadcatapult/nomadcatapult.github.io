@@ -571,6 +571,52 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. Selected Works Category Filtering
   const filterButtons = document.querySelectorAll('.btn-filter');
   const workItems = document.querySelectorAll('.work-item');
+  const workRail = document.getElementById('work-rail');
+  const workRailPrevious = document.getElementById('work-rail-previous');
+  const workRailNext = document.getElementById('work-rail-next');
+
+  const updateWorkRailControls = () => {
+    if (!workRail || !workRailPrevious || !workRailNext) return;
+
+    const maxScrollLeft = Math.max(0, workRail.scrollWidth - workRail.clientWidth);
+    // Ignore the tiny measurement difference caused by scrollbar/padding so
+    // controls never appear as two disabled buttons when the rail fits.
+    const hasOverflow = maxScrollLeft > 24;
+    const atStart = workRail.scrollLeft <= 8;
+    const atEnd = workRail.scrollLeft >= maxScrollLeft - 8;
+
+    workRailPrevious.hidden = !hasOverflow;
+    workRailNext.hidden = !hasOverflow;
+    workRailPrevious.disabled = atStart;
+    workRailNext.disabled = atEnd;
+  };
+
+  const scrollWorkRail = direction => {
+    if (!workRail) return;
+
+    workRail.scrollBy({
+      left: direction * Math.max(workRail.clientWidth * 0.78, 260),
+      behavior: 'smooth'
+    });
+  };
+
+  if (workRail && workRailPrevious && workRailNext) {
+    workRailPrevious.addEventListener('click', () => scrollWorkRail(-1));
+    workRailNext.addEventListener('click', () => scrollWorkRail(1));
+    workRail.addEventListener('scroll', updateWorkRailControls, { passive: true });
+    workRail.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        scrollWorkRail(-1);
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        scrollWorkRail(1);
+      }
+    });
+
+    window.addEventListener('resize', updateWorkRailControls);
+    window.requestAnimationFrame(updateWorkRailControls);
+  }
 
   if (filterButtons.length > 0 && workItems.length > 0) {
     filterButtons.forEach(btn => {
@@ -597,6 +643,9 @@ document.addEventListener('DOMContentLoaded', () => {
             item.classList.add('hidden');
           }
         });
+
+        if (workRail) workRail.scrollTo({ left: 0, behavior: 'auto' });
+        window.requestAnimationFrame(updateWorkRailControls);
       });
     });
   }
@@ -759,6 +808,9 @@ document.addEventListener('DOMContentLoaded', () => {
       filter_cleanup: "Cleanup",
       filter_ai: "AI Concept",
       filter_interactive: "Interactive",
+      work_rail_aria: "Selected projects",
+      work_rail_previous: "Show previous projects",
+      work_rail_next: "Show next projects",
       cat_cgi: "3D / CGI",
       cat_3d_compositing: "3D / CGI / Compositing",
       cat_motion: "Motion Design",
@@ -887,6 +939,9 @@ document.addEventListener('DOMContentLoaded', () => {
       filter_cleanup: "Клинап",
       filter_ai: "ИИ-концепт",
       filter_interactive: "Интерактив",
+      work_rail_aria: "Избранные проекты",
+      work_rail_previous: "Показать предыдущие проекты",
+      work_rail_next: "Показать следующие проекты",
       cat_cgi: "3D / CGI",
       cat_3d_compositing: "3D / CGI / Композитинг",
       cat_motion: "Моушн-дизайн",
@@ -1015,6 +1070,9 @@ document.addEventListener('DOMContentLoaded', () => {
       filter_cleanup: "合成擦除",
       filter_ai: "AI概念",
       filter_interactive: "互动",
+      work_rail_aria: "精选项目",
+      work_rail_previous: "显示上一组项目",
+      work_rail_next: "显示下一组项目",
       cat_cgi: "3D / CGI",
       cat_3d_compositing: "3D / CGI / 合成",
       cat_motion: "动态设计",
@@ -1143,6 +1201,9 @@ document.addEventListener('DOMContentLoaded', () => {
       filter_cleanup: "クリンアップ",
       filter_ai: "AIコンセプト",
       filter_interactive: "インタラクティブ",
+      work_rail_aria: "主なプロジェクト",
+      work_rail_previous: "前のプロジェクトを表示",
+      work_rail_next: "次のプロジェクトを表示",
       cat_cgi: "3D / CGI",
       cat_3d_compositing: "3D / CGI / コンポジット",
       cat_motion: "モーションデザイン",
