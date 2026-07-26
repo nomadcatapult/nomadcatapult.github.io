@@ -823,6 +823,8 @@ document.addEventListener('DOMContentLoaded', () => {
       modal_client: "Client / Type",
       modal_tools: "Tools & Tech",
       modal_overview: "Overview",
+      modal_video_aria: "{title}: video {index}",
+      modal_image_aria: "{title}: image {index}",
       btn_view_slider: "View Interactive Slider"
     },
     ru: {
@@ -849,7 +851,7 @@ document.addEventListener('DOMContentLoaded', () => {
       canvas_download_macos: "macOS · скоро",
       canvas_download_windows: "Windows · скоро",
       canvas_download_linux: "Linux · скоро",
-      canvas_promo_subtitle: "Visual workspace for motion, media and ideas.",
+      canvas_promo_subtitle: "Визуальное рабочее пространство для моушна, медиа и идей.",
       canvas_promo_description: "Локальное приложение с бесконечным холстом для референсов, медиа, раскадровок, заметок и таймлайнов. Проекты сохраняются в переносимом формате .nmc.",
       canvas_promo_repo: "Смотреть на GitHub",
       canvas_promo_release: "Скачать релиз",
@@ -893,14 +895,14 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_interactive: "Интерактивные медиа",
       cat_3d_motion_ai: "3D / Моушн / AI-фильм",
       badge_client: "Коммерческий проект",
-      badge_personal: "Студийный эксперимент",
+      badge_personal: "Студийный проект",
       badge_ai: "ИИ-исследование",
       btn_details: "Подробнее",
       btn_slider: "Интерактивный слайдер",
       work1_title: "Интро кинокомпании",
       work1_summary: "Комета из светящихся частиц врезается в планету: поверхность вспыхивает, и планета плавно превращается в логотип компании.",
       work2_title: "Анимационный сериал Dragon Mountain",
-      work2_summary: "22-минутный семейный приключенческий мультфильм полного цикла производства. Пилотный эпизод находится в разработке.",
+      work2_summary: "22-минутный семейный приключенческий мультфильм полного цикла производства. Пилотный эпизод находится в производстве.",
       work3_title: "Биолюминесцентный лес с мехом",
       work3_summary: "Гибридный CG-композит, улучшенный генеративными ИИ-стайлфреймами для быстрого визуального прототипирования.",
       work4_title: "Невидимый VFX городской улицы",
@@ -948,6 +950,8 @@ document.addEventListener('DOMContentLoaded', () => {
       modal_client: "Клиент / Тип",
       modal_tools: "Инструменты и технологии",
       modal_overview: "Описание проекта",
+      modal_video_aria: "{title}: видео {index}",
+      modal_image_aria: "{title}: изображение {index}",
       btn_view_slider: "Открыть интерактивный слайдер"
     },
     zh: {
@@ -994,7 +998,7 @@ document.addEventListener('DOMContentLoaded', () => {
       service_cgi_title: "3D / CGI",
       service_cgi_desc: "高端产品视觉渲染、大气的外观开发、风格化的抽象场景以及动画商业视觉循环。",
       service_cleanup_title: "合成与擦除",
-      service_cleanup_desc: "制作级擦除钢丝、物体移除、屏幕替换、摄像机反求跟踪以及无缝视觉融合。",
+      service_cleanup_desc: "制作级的钢丝擦除、物体移除、屏幕替换、摄像机跟踪与无缝视觉融合。",
       service_ai_title: "AI 视觉开发",
       service_ai_desc: "快速的视觉构思、生成的风格化帧、概念艺术探索，以及加速竞标提案的混合工作流。",
       service_campaign_title: "现场与活动资产",
@@ -1035,7 +1039,7 @@ document.addEventListener('DOMContentLoaded', () => {
       work6_title: "LADA 2026 经销商大会",
       work6_summary: "为 LADA 品牌与全新车型发布制作的三分钟舞台内容——霓虹线框车身、光轨场景与 AI 生成镜头，在紧张的会议筹备周期内交付。",
       banner_accent: "// 我们如何发射创意",
-      banner_quote: "小而核心的团队会为项目集结合适的专家，并将想法从初始简报推进到最终交付。",
+      banner_quote: "精干的核心团队汇集合适的专家，把想法从初步简报推进到最终交付。",
       slider_tag: "全流程 VFX",
       slider_title: "从拍摄到最终画面",
       slider_subtitle: "完整 VFX 流程示例：从原始素材到摄像机跟踪、合成、3D 图形整合、清理、屏幕替换和局部眼部修饰。",
@@ -1073,6 +1077,8 @@ document.addEventListener('DOMContentLoaded', () => {
       modal_client: "客户 / 类型",
       modal_tools: "工具与技术",
       modal_overview: "项目概述",
+      modal_video_aria: "{title}：视频 {index}",
+      modal_image_aria: "{title}：图片 {index}",
       btn_view_slider: "查看双图对比"
     },
     ja: {
@@ -1119,9 +1125,9 @@ document.addEventListener('DOMContentLoaded', () => {
       service_cgi_title: "3D / CGI",
       service_cgi_desc: "ハイエンドな製品ビジュアルレンダリング、アトモスフェリックなルックデベロップメント、スタイライズドされた抽象的シーン、商業用ループアニメーション。",
       service_cleanup_title: "コンポジット＆クリンアップ",
-      service_cleanup_desc: "プロダクションクオリティ of ワイヤー消し、オブジェクト除去、スクリーンはめ込み、カメラトラッキング、シームレスな実写合成。",
+      service_cleanup_desc: "プロダクションクオリティのワイヤー除去、オブジェクト除去、スクリーン差し替え、カメラトラッキング、シームレスな実写合成。",
       service_ai_title: "AIビジュアル支援",
-      service_ai_desc: "迅速なビジュアルの具現化、生成されたスタイルフレーム、コンセプトアートの探索、およびピッチ提案を加速する hybrid ワークフロー。",
+      service_ai_desc: "迅速なビジュアルの具現化、生成されたスタイルフレーム、コンセプトアートの探索、およびピッチ提案を加速するハイブリッドワークフロー。",
       service_campaign_title: "ライブ＆キャンペーン",
       service_campaign_desc: "SNSパッケージ、ステージや音楽ショーのビジュアル、DOOHループ、プレゼン背景、サウンドと連動するスクリーンコンテンツ。",
       service_interactive_title: "インタラクティブメディア",
@@ -1143,7 +1149,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_interactive: "インタラクティブメディア",
       cat_3d_motion_ai: "3D / モーション / AI映像",
       badge_client: "クライアントワーク",
-      badge_personal: "自主制作・実験",
+      badge_personal: "自主制作プロジェクト",
       badge_ai: "AI支援・研究",
       btn_details: "詳細",
       btn_slider: "比較スライダー",
@@ -1198,6 +1204,8 @@ document.addEventListener('DOMContentLoaded', () => {
       modal_client: "クライアント・タイプ",
       modal_tools: "使用ツール・技術",
       modal_overview: "プロジェクト概要",
+      modal_video_aria: "{title}：動画 {index}",
+      modal_image_aria: "{title}：画像 {index}",
       btn_view_slider: "比較スライダーを見る"
     }
   };
@@ -1353,10 +1361,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ja: "LADA 2026 ディーラーカンファレンス"
       },
       role: {
-        en: "Art Direction & Lead Animation",
-        ru: "Арт-дирекшн и ведущая анимация",
-        zh: "艺术指导与主视觉动画",
-        ja: "アートディレクション＆リードアニメーション"
+        en: "Art Direction & Lead Animator",
+        ru: "Арт-директор и ведущий аниматор",
+        zh: "艺术指导兼动画总监",
+        ja: "アートディレクター兼リードアニメーター"
       },
       client: {
         en: "LADA — Dealer Conference 2026 (Client Work)",
@@ -1382,10 +1390,10 @@ document.addEventListener('DOMContentLoaded', () => {
         "assets/images/work_lada_04.jpg"
       ],
       desc: {
-        en: "Three minutes of stage content opening the LADA dealer conference and introducing the brand platform together with the new model line-up. The visual system runs on neon wireframe vehicles, light-trail road environments, a nationwide dealer-network map, and abstract energy sequences, mixing classic CG animation with AI-generated shots. Built by a three-person team — art director and lead animation, a second motion designer, and an editor — on a compressed conference schedule.",
-        ru: "Три минуты сценического контента, открывающего дилерскую конференцию LADA и представляющего платформу бренда вместе с новой модельной линейкой. Визуальная система построена на неоновых wireframe-автомобилях, световых трассах, карте дилерской сети и абстрактных энергетических секвенциях — классическая CG-анимация в связке с AI-генерацией. Команда из трёх человек: арт-директор и ведущая анимация, второй моушн-дизайнер и монтажёр — в сжатые сроки подготовки конференции.",
-        zh: "为 LADA 经销商大会制作的三分钟开场舞台内容，用于发布品牌平台与全新车型阵容。视觉体系由霓虹线框车身、光轨道路场景、全国经销商网络地图以及抽象能量段落构成，将传统 CG 动画与 AI 生成镜头结合。由三人团队完成——艺术指导兼主视觉动画、第二位动态设计师和一位剪辑师——并在紧张的会议筹备周期内交付。",
-        ja: "LADAディーラーカンファレンスのオープニングを飾る3分間のステージ映像。ブランドプラットフォームと新型ラインナップを紹介する内容です。ネオンのワイヤーフレーム車両、ライトトレイルの走行空間、全国ディーラー網のマップ、抽象的なエネルギー表現でビジュアルを構成し、従来のCGアニメーションとAI生成カットを組み合わせました。アートディレクション兼リードアニメーション、モーションデザイナー、エディターの3名体制で、限られたカンファレンス準備期間の中で仕上げています。"
+        en: "Three minutes of stage content opening the LADA dealer conference and introducing the brand platform together with the new model line-up. The visual system is built around neon wireframe vehicles, light-trail road environments, a nationwide dealer-network map, and abstract energy sequences, mixing classic CG animation with AI-generated shots. A three-person team — an art director/lead animator, a second motion designer, and an editor — delivered it on a compressed conference schedule.",
+        ru: "Три минуты сценического контента, открывающего дилерскую конференцию LADA и представляющего платформу бренда вместе с новой модельной линейкой. Визуальная система построена на неоновых wireframe-автомобилях, световых трассах, карте дилерской сети и абстрактных энергетических секвенциях — классическая CG-анимация в связке с AI-генерацией. Команда из трёх человек — арт-директор и ведущий аниматор, второй моушн-дизайнер и монтажёр — выполнила проект в сжатые сроки подготовки конференции.",
+        zh: "为 LADA 经销商大会制作的三分钟开场舞台内容，用于发布品牌平台与全新车型阵容。视觉体系由霓虹线框车身、光轨道路场景、全国经销商网络地图以及抽象能量段落构成，将传统 CG 动画与 AI 生成镜头结合。三人团队——艺术指导兼动画总监、第二位动态设计师和一位剪辑师——在紧张的会议筹备周期内完成交付。",
+        ja: "LADAディーラーカンファレンスのオープニングを飾る3分間のステージ映像。ブランドプラットフォームと新型ラインナップを紹介する内容です。ネオンのワイヤーフレーム車両、ライトトレイルの走行空間、全国ディーラー網のマップ、抽象的なエネルギー表現でビジュアルを構成し、従来のCGアニメーションとAI生成カットを組み合わせました。アートディレクター兼リードアニメーター、モーションデザイナー、エディターの3名体制で、限られたカンファレンス準備期間の中で仕上げています。"
       }
     },
     'work-comet': {
@@ -1442,9 +1450,9 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       client: {
         en: "Studio Project",
-        ru: "Студийный эксперимент",
+        ru: "Студийный проект",
         zh: "工作室项目",
-        ja: "自主制作・実験"
+        ja: "自主制作プロジェクト"
       },
       tools: "Procreate, Moho, After Effects, Blender",
       mediaLayout: "vertical-grid",
@@ -1481,9 +1489,9 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       client: {
         en: "Studio Project",
-        ru: "Студийный эксперимент",
+        ru: "Студийный проект",
         zh: "工作室项目",
-        ja: "自主制作・実験"
+        ja: "自主制作プロジェクト"
       },
       tools: "ComfyUI, Photoshop, Concept Art",
       videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-flying-through-neon-wires-and-dust-in-a-futuristic-tunnel-41712-large.mp4",
@@ -1515,7 +1523,7 @@ document.addEventListener('DOMContentLoaded', () => {
       client: {
         en: "Client Work",
         ru: "Коммерческий проект",
-        zh: "Коммерческий проект",
+        zh: "客户项目",
         ja: "クライアントワーク"
       },
       tools: "Nuke, Mocha Pro, Invisible VFX",
@@ -1548,9 +1556,9 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       client: {
         en: "Studio Project",
-        ru: "Студийный эксперимент",
+        ru: "Студийный проект",
         zh: "工作室项目",
-        ja: "自主制作・実験"
+        ja: "自主制作プロジェクト"
       },
       tools: "Vanilla JS, HTML5 Canvas, Creative Tool",
       videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-color-ink-dripping-in-water-underwater-closeup-41584-large.mp4",
@@ -1638,6 +1646,13 @@ document.addEventListener('DOMContentLoaded', () => {
        Existing landscape projects continue through the original viewer below. */
     if (useVerticalGallery) {
       verticalGallery.style.setProperty('--vertical-video-aspect', data.videoAspect || '9 / 16');
+      const localizedTitle = data.title[lang] || data.title.en;
+      const formatMediaAriaLabel = (key, index) => {
+        const template = translations[lang]?.[key] || translations.en[key];
+        return template
+          .replace('{title}', localizedTitle)
+          .replace('{index}', String(index + 1));
+      };
 
       videos.forEach((clip, index) => {
         if (!clip?.url) return;
@@ -1667,7 +1682,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playButton.type = 'button';
         playButton.setAttribute(
           'aria-label',
-          `${data.title[lang] || data.title.en}: video ${index + 1}`
+          formatMediaAriaLabel('modal_video_aria', index)
         );
         playButton.innerHTML = `
           <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
@@ -1715,7 +1730,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const image = document.createElement('img');
         image.className = 'modal-horizontal-image';
         image.src = imageUrl;
-        image.alt = `${data.title[lang] || data.title.en}: image ${index + 1}`;
+        image.alt = formatMediaAriaLabel('modal_image_aria', index);
         image.loading = 'lazy';
 
         figure.appendChild(image);
