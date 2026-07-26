@@ -2918,6 +2918,119 @@ html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
   aspect-ratio: 21 / 9;
 }
 
+.featured-work-stage {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+.featured-work-placeholder {
+  display: none;
+}
+
+/* On a spacious screen, the single lead is framed by two playful side scenes.
+   They make the showcase feel open-ended today and can turn into real featured
+   projects later without changing the composition. */
+@media (min-width: 1440px) {
+  .featured-work-stage {
+    --featured-work-width: min(1136px, calc(100vw - 4rem));
+    --featured-work-slot-width: var(--featured-work-width);
+    display: grid;
+    grid-template-columns: var(--featured-work-slot-width) var(--featured-work-width) var(--featured-work-slot-width);
+    align-items: stretch;
+    justify-content: center;
+    gap: 1.25rem;
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    overflow: visible;
+  }
+
+  .featured-work-stage .work-item--featured {
+    grid-column: 2;
+    width: 100%;
+  }
+
+  .featured-work-placeholder {
+    display: grid;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-width: 0;
+    background: linear-gradient(135deg, rgba(24, 61, 67, 0.58), rgba(var(--accent-color-rgb), 0.12));
+    border: 1px solid var(--border-color);
+    border-radius: 0.55rem 1.5rem 0.55rem 1.5rem;
+  }
+
+  .featured-work-illustration {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+  }
+
+  .featured-work-placeholder--left .featured-work-illustration {
+    object-position: right center;
+  }
+
+  .featured-work-placeholder--right .featured-work-illustration {
+    object-position: left center;
+  }
+
+  .featured-work-placeholder::before,
+  .featured-work-placeholder::after,
+  .work-rail-cta::before,
+  .work-rail-cta::after {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    content: '';
+    pointer-events: none;
+  }
+
+  /* A slow transform-only colour drift gives the side panels some life without
+     adding a canvas, video, or WebGL layer to the page. */
+  .featured-work-placeholder::before,
+  .work-rail-cta::before {
+    inset: -38%;
+    z-index: 1;
+    opacity: 0.42;
+    background:
+      radial-gradient(circle at 22% 28%, rgba(var(--accent-color-rgb), 0.5), transparent 32%),
+      radial-gradient(circle at 78% 66%, rgba(93, 203, 199, 0.38), transparent 36%),
+      linear-gradient(120deg, transparent 28%, rgba(255, 248, 233, 0.12) 51%, transparent 72%);
+    transform: translate3d(-8%, -4%, 0) rotate(-7deg);
+    will-change: transform;
+    animation: featured-placeholder-drift 16s ease-in-out infinite alternate;
+  }
+
+  .featured-work-placeholder::after,
+  .work-rail-cta::after {
+    z-index: 2;
+    opacity: 0.1;
+    background-image:
+      linear-gradient(rgba(255, 248, 233, 0.24) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 248, 233, 0.24) 1px, transparent 1px);
+    background-size: 1.25rem 1.25rem;
+    mask-image: linear-gradient(90deg, transparent, #000 24%, #000 76%, transparent);
+  }
+
+}
+
+@keyframes featured-placeholder-drift {
+  to {
+    transform: translate3d(8%, 5%, 0) rotate(7deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .featured-work-placeholder::before,
+  .work-rail-cta::before {
+    animation: none;
+  }
+}
+
 /* The archive intentionally grows sideways in one clean row below the lead
    film. It keeps the current showcase compact, while a future second lead can
    become part of a shared two-tier rail without changing the card system. */
@@ -2939,7 +3052,9 @@ html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
   overflow-y: hidden;
   overscroll-behavior-x: contain;
   scroll-behavior: smooth;
-  scroll-snap-type: x proximity;
+  /* Native free scrolling is more predictable here than snapping, especially
+     when a trackpad reverses direction near either deliberate end position. */
+  scroll-snap-type: none;
   scrollbar-width: thin;
   scrollbar-color: var(--accent-color) rgba(24, 61, 67, 0.12);
   padding: 0.2rem 0.2rem 0.8rem;
@@ -2962,6 +3077,10 @@ html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
 .work-rail .work-item {
   width: 100%;
   scroll-snap-align: start;
+}
+
+.work-rail-cta {
+  display: none;
 }
 
 .work-rail-control {
@@ -2998,6 +3117,78 @@ html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
 
 .work-rail-control--next {
   right: -1.1rem;
+}
+
+/* The rail is deliberately allowed to leave the text safe area on larger
+   screens. Cards still start on the same line as the LADA lead, but the strip
+   reaches the real window edge, so the partial next card reads as intentional
+   continuation rather than an accidental crop inside the container. */
+@media (min-width: 769px) {
+  .work-rail-shell {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+  }
+
+  .work-rail {
+    --work-rail-content-start: max(2rem, calc((100vw - 1200px) / 2 + 2rem));
+    /* The rail has the same left and right stops as the LADA feature: first
+       project aligns to its left edge, final project aligns to its right edge. */
+    padding-inline: var(--work-rail-content-start);
+    scroll-padding-inline: var(--work-rail-content-start);
+  }
+
+  .work-rail-control--previous {
+    left: 0.85rem;
+  }
+
+  .work-rail-control--next {
+    right: 0.85rem;
+  }
+}
+
+/* On a wide screen the two text cells become actual items in the same rail.
+   Their width is exactly the outer LADA gutter minus the card gap, preserving
+   the project-to-LADA alignment at both ends of the scroll. */
+@media (min-width: 1440px) {
+  .work-rail {
+    display: flex;
+    align-items: stretch;
+    padding-inline: 0;
+    scroll-padding-inline: 0;
+  }
+
+  .work-rail .work-item {
+    flex: 0 0 clamp(15rem, 25vw, 20.5rem);
+    width: auto;
+  }
+
+  .work-rail-cta {
+    position: relative;
+    display: grid;
+    flex: 0 0 calc(var(--work-rail-content-start) - 1.25rem);
+    min-width: 0;
+    overflow: hidden;
+    isolation: isolate;
+    padding: 1rem;
+    color: var(--text-main);
+    background: linear-gradient(135deg, rgba(24, 61, 67, 0.58), rgba(var(--accent-color-rgb), 0.12));
+    border: 1px solid var(--border-color);
+    border-radius: 0.55rem 1.5rem 0.55rem 1.5rem;
+    place-items: center;
+    text-align: center;
+  }
+
+  .work-rail-cta p {
+    position: relative;
+    z-index: 3;
+    max-width: 13ch;
+    font-family: var(--font-title);
+    font-size: clamp(0.72rem, 0.88vw, 0.9rem);
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: 0.04em;
+    text-shadow: 0 1px 1.5rem rgba(7, 8, 10, 0.45);
+  }
 }
 
 .work-rail-control:hover:not(:disabled),
@@ -3256,16 +3447,15 @@ html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
 }
 
 @media (max-width: 768px) {
-  /* Six filter pills never fit one phone-width row. Wrapping keeps every
+  /* Seven filter pills never fit one phone-width row. Wrapping keeps every
      filter reachable instead of clipping the last ones off the pill. */
   .section-header-flex {
     gap: 1.5rem;
     margin-bottom: 3rem;
   }
 
-  /* A fixed three-column grid splits the six filters evenly across two rows in
-     every language, instead of letting flex wrapping leave a stray pill alone
-     on the second line. */
+  /* A fixed three-column grid keeps the controls balanced in every language
+     instead of letting flex wrapping leave a stray pill at the edge. */
   .filter-controls {
     display: grid;
     /* minmax(0, 1fr) so a long label (Japanese runs widest) shrinks its track
@@ -3281,6 +3471,12 @@ html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
     padding: 0.5rem 0.4rem;
     font-size: 0.74rem;
     line-height: 1.25;
+  }
+
+  /* Animation is the seventh and final filter, so it sits under the middle
+     column rather than looking detached at the edge of its own row. */
+  .btn-filter:last-child {
+    grid-column: 2;
   }
 
   /* Collage on a phone: one column, tiles sized by aspect ratio so the media

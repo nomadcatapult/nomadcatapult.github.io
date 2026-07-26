@@ -570,13 +570,82 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 3. Selected Works Category Filtering
   const filterButtons = document.querySelectorAll('.btn-filter');
-  const workItems = document.querySelectorAll('.work-item');
+  const workGrid = document.getElementById('work-grid');
+  const workItems = workGrid?.querySelectorAll('.work-item') || [];
+  const allWorkItems = Array.from(workItems);
+  const featuredWorkStage = workGrid?.querySelector('.featured-work-stage');
+  const featuredWorkStageEnd = featuredWorkStage?.querySelector('.featured-work-placeholder--right');
   const workRail = document.getElementById('work-rail');
+  const workRailShell = document.getElementById('work-rail-shell');
+  const workRailEnd = workRail?.querySelector('.work-rail-cta--right');
   const workRailPrevious = document.getElementById('work-rail-previous');
   const workRailNext = document.getElementById('work-rail-next');
 
+  const workMatchesFilter = (item, filterValue) => {
+    const categories = (item.getAttribute('data-category') || '').split(/\s+/);
+    return filterValue === 'all' || categories.includes(filterValue);
+  };
+
+  // LADA is the preferred lead whenever it belongs to the active filter. For
+  // every other filter, the first matching project in source order takes the
+  // lead automatically. A future card may opt into a stronger lead preference
+  // by receiving a higher data-feature-priority value.
+  const chooseFeaturedWork = matchingItems => matchingItems.reduce((featured, item) => {
+    const featurePriority = Number(item.dataset.featurePriority) || 0;
+    const featuredPriority = Number(featured?.dataset.featurePriority) || 0;
+    return featurePriority > featuredPriority ? item : featured;
+  }, matchingItems[0]);
+
+  const applyWorkFilter = (filterValue, animate = false) => {
+    const matchingItems = allWorkItems.filter(item => workMatchesFilter(item, filterValue));
+    const featuredWork = chooseFeaturedWork(matchingItems);
+    const railItems = matchingItems.filter(item => item !== featuredWork);
+
+    // Restore the authored project order before extracting the active lead.
+    // This keeps the CTA cells on the true outside edges even after switching
+    // through several filters.
+    if (workRail && workRailEnd) {
+      allWorkItems.forEach(item => workRail.insertBefore(item, workRailEnd));
+    }
+
+    if (featuredWork && featuredWorkStage) {
+      if (featuredWorkStageEnd) {
+        featuredWorkStage.insertBefore(featuredWork, featuredWorkStageEnd);
+      } else {
+        featuredWorkStage.appendChild(featuredWork);
+      }
+    }
+
+    allWorkItems.forEach(item => {
+      const isVisible = matchingItems.includes(item);
+      item.classList.toggle('hidden', !isVisible);
+      item.classList.toggle('work-item--featured', item === featuredWork);
+
+      if (animate && isVisible) {
+        item.style.opacity = '0';
+        void item.offsetWidth;
+        item.style.transition = 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+        item.style.opacity = '1';
+      } else if (!isVisible) {
+        item.style.opacity = '';
+      }
+    });
+
+    if (featuredWorkStage) featuredWorkStage.hidden = !featuredWork;
+    if (workRailShell) workRailShell.hidden = railItems.length === 0;
+    if (workRail) workRail.scrollTo({ left: 0, behavior: 'auto' });
+
+    window.requestAnimationFrame(updateWorkRailControls);
+  };
+
   const updateWorkRailControls = () => {
     if (!workRail || !workRailPrevious || !workRailNext) return;
+
+    if (workRailShell?.hidden) {
+      workRailPrevious.hidden = true;
+      workRailNext.hidden = true;
+      return;
+    }
 
     const maxScrollLeft = Math.max(0, workRail.scrollWidth - workRail.clientWidth);
     // Ignore the tiny measurement difference caused by scrollbar/padding so
@@ -618,7 +687,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.requestAnimationFrame(updateWorkRailControls);
   }
 
-  if (filterButtons.length > 0 && workItems.length > 0) {
+  applyWorkFilter('all');
+
+  if (filterButtons.length > 0 && allWorkItems.length > 0) {
     filterButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         // Toggle active button class
@@ -626,26 +697,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.classList.add('active');
 
         const filterValue = btn.getAttribute('data-filter');
-
-        // Filter work items with visual transition
-        workItems.forEach(item => {
-          // data-category holds one or more space-separated tags, so a piece
-          // that is equally motion, CGI and AI shows up under each filter.
-          const categories = (item.getAttribute('data-category') || '').split(/\s+/);
-          if (filterValue === 'all' || categories.includes(filterValue)) {
-            item.style.opacity = '0';
-            item.classList.remove('hidden');
-            // Force reflow
-            void item.offsetWidth;
-            item.style.transition = 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-            item.style.opacity = '1';
-          } else {
-            item.classList.add('hidden');
-          }
-        });
-
-        if (workRail) workRail.scrollTo({ left: 0, behavior: 'auto' });
-        window.requestAnimationFrame(updateWorkRailControls);
+        applyWorkFilter(filterValue, true);
       });
     });
   }
@@ -805,9 +857,12 @@ document.addEventListener('DOMContentLoaded', () => {
       filter_all: "All",
       filter_cgi: "CGI",
       filter_motion: "Motion",
+      filter_animation: "Animation",
       filter_cleanup: "Cleanup",
       filter_ai: "AI Concept",
       filter_interactive: "Interactive",
+      work_rail_cta_left: "Your project could be next.",
+      work_rail_cta_right: "Let’s make it happen.",
       work_rail_aria: "Selected projects",
       work_rail_previous: "Show previous projects",
       work_rail_next: "Show next projects",
@@ -936,9 +991,12 @@ document.addEventListener('DOMContentLoaded', () => {
       filter_all: "Все",
       filter_cgi: "CGI",
       filter_motion: "Моушн",
+      filter_animation: "Анимация",
       filter_cleanup: "Клинап",
       filter_ai: "ИИ-концепт",
       filter_interactive: "Интерактив",
+      work_rail_cta_left: "Здесь может быть ваш проект.",
+      work_rail_cta_right: "Давайте сделаем его вместе.",
       work_rail_aria: "Избранные проекты",
       work_rail_previous: "Показать предыдущие проекты",
       work_rail_next: "Показать следующие проекты",
@@ -1067,9 +1125,12 @@ document.addEventListener('DOMContentLoaded', () => {
       filter_all: "全部",
       filter_cgi: "CGI",
       filter_motion: "动态设计",
+      filter_animation: "动画",
       filter_cleanup: "合成擦除",
       filter_ai: "AI概念",
       filter_interactive: "互动",
+      work_rail_cta_left: "这里可以是你的项目。",
+      work_rail_cta_right: "让我们一起实现它。",
       work_rail_aria: "精选项目",
       work_rail_previous: "显示上一组项目",
       work_rail_next: "显示下一组项目",
@@ -1198,9 +1259,12 @@ document.addEventListener('DOMContentLoaded', () => {
       filter_all: "すべて",
       filter_cgi: "CGI",
       filter_motion: "モーション",
+      filter_animation: "アニメーション",
       filter_cleanup: "クリンアップ",
       filter_ai: "AIコンセプト",
       filter_interactive: "インタラクティブ",
+      work_rail_cta_left: "ここに、あなたのプロジェクトを。",
+      work_rail_cta_right: "一緒に形にしましょう。",
       work_rail_aria: "主なプロジェクト",
       work_rail_previous: "前のプロジェクトを表示",
       work_rail_next: "次のプロジェクトを表示",

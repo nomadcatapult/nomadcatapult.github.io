@@ -30,7 +30,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20260726b">
+  <link rel="stylesheet" href="style.css?v=20260726m">
 </head>
 <body>
   <!-- Easter Egg Cat -->
@@ -256,15 +256,23 @@
             <button class="btn-filter" data-filter="cleanup" data-i18n="filter_cleanup">Cleanup</button>
             <button class="btn-filter" data-filter="ai" data-i18n="filter_ai">AI Concept</button>
             <button class="btn-filter" data-filter="interactive" data-i18n="filter_interactive">Interactive</button>
+            <button class="btn-filter" data-filter="animation" data-i18n="filter_animation">Animation</button>
           </div>
         </div>
 
-        <!-- The lead work is a full-width feature. The growing project archive
-             below it stays one row high and extends sideways. When a second
-             lead case arrives, both can move into a shared featured rail. -->
+        <!-- Filtering promotes one matching card into this full-width feature.
+             New cards only need a data-category; source order defines the
+             fallback lead. data-feature-priority is reserved for a permanent
+             lead such as LADA. The side scenes and CTA cells stay at the
+             outside edges of the active content automatically. -->
         <div class="work-grid" id="work-grid">
           <!-- LADA 2026 Dealer Conference -->
-          <div class="work-item work-item--featured" data-category="motion ai cgi" id="work-lada">
+          <div class="featured-work-stage">
+            <div class="featured-work-placeholder featured-work-placeholder--left" aria-hidden="true">
+              <img class="featured-work-illustration" src="assets/images/featured-slot-rope.jpg" alt="" loading="lazy" decoding="async">
+            </div>
+
+            <div class="work-item work-item--featured" data-category="motion ai cgi" data-feature-priority="100" id="work-lada">
             <div class="work-img-container">
               <img src="assets/images/work_lada.jpg" alt="LADA Azimut neon wireframe key visual from the 2026 dealer conference film" loading="lazy">
               <video class="work-loop" data-loop-src="assets/video/lada2026/lada_2026_preview.mp4" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
@@ -278,10 +286,19 @@
                 <span class="btn-work-explore" data-i18n="btn_details">Details</span>
               </div>
             </div>
+            </div>
+
+            <div class="featured-work-placeholder featured-work-placeholder--right" aria-hidden="true">
+              <img class="featured-work-illustration" src="assets/images/featured-slot-books.jpg" alt="" loading="lazy" decoding="async">
+            </div>
           </div>
 
           <div class="work-rail-shell" id="work-rail-shell">
             <div class="work-rail" id="work-rail" tabindex="0" aria-label="Selected projects" data-i18n-aria="work_rail_aria">
+              <div class="work-rail-cta work-rail-cta--left">
+                <p data-i18n="work_rail_cta_left">Your project could be next.</p>
+              </div>
+
           <!-- CGI Shot Comet-->
           <div class="work-item" data-category="cgi" id="work-comet">
             <div class="work-img-container">
@@ -378,6 +395,10 @@
               </div>
             </div>
           </div>
+
+              <div class="work-rail-cta work-rail-cta--right">
+                <p data-i18n="work_rail_cta_right">Let’s make it happen.</p>
+              </div>
             </div>
 
             <button class="work-rail-control work-rail-control--previous" id="work-rail-previous" type="button" aria-label="Show previous projects" data-i18n-aria="work_rail_previous" hidden>
@@ -653,6 +674,6 @@
   </dialog>
 
   <!-- Main Logic -->
-  <script src="script.js?v=20260726c"></script>
+  <script src="script.js?v=20260726f"></script>
 </body>
 </html>
