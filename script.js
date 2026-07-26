@@ -760,6 +760,7 @@ document.addEventListener('DOMContentLoaded', () => {
       filter_ai: "AI Concept",
       filter_interactive: "Interactive",
       cat_cgi: "3D / CGI",
+      cat_3d_compositing: "3D / CGI / Compositing",
       cat_motion: "Motion Design",
       cat_ai: "AI Concept Art",
       cat_animation: "Animation & Storyboards",
@@ -776,8 +777,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work1_summary: "A glowing particle comet collides with a planet, igniting its surface before the planet transforms into the company logo.",
       work2_title: "Dragon Mountain — Animated Series",
       work2_summary: "A 22-minute family adventure animation produced through a complete end-to-end pipeline. The pilot episode is currently in production.",
-      work3_title: "Mech Bioluminescent Forest",
-      work3_summary: "Hybrid CG composition enhanced by generative AI styleframes for rapid visual prototyping.",
+      work3_title: "Somat — TV Commercial",
+      work3_summary: "Full-CG product commercial for Somat, combining dishwasher interior shots, product animation, and compositing for broadcast.",
       work4_title: "Urban Street Invisible VFX",
       work4_summary: "Clean plate reconstruction, overhead wires removal, and custom holographic logo tracking integration.",
       work5_title: "NomadCanvas",
@@ -887,6 +888,7 @@ document.addEventListener('DOMContentLoaded', () => {
       filter_ai: "ИИ-концепт",
       filter_interactive: "Интерактив",
       cat_cgi: "3D / CGI",
+      cat_3d_compositing: "3D / CGI / Композитинг",
       cat_motion: "Моушн-дизайн",
       cat_animation: "Анимация и раскадровки",
       cat_all: "Полный цикл производства",
@@ -903,8 +905,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work1_summary: "Комета из светящихся частиц врезается в планету: поверхность вспыхивает, и планета плавно превращается в логотип компании.",
       work2_title: "Анимационный сериал Dragon Mountain",
       work2_summary: "22-минутный семейный приключенческий мультфильм полного цикла производства. Пилотный эпизод находится в производстве.",
-      work3_title: "Биолюминесцентный лес с мехом",
-      work3_summary: "Гибридный CG-композит, улучшенный генеративными ИИ-стайлфреймами для быстрого визуального прототипирования.",
+      work3_title: "Somat — ТВ-реклама",
+      work3_summary: "Полностью 3D-реклама Somat: сцены внутри посудомоечной машины, продукт и композитинг для телеэфира.",
       work4_title: "Невидимый VFX городской улицы",
       work4_summary: "Реконструкция чистого листа, удаление подвесных проводов и интеграция отслеживаемого голографического логотипа.",
       work5_title: "NomadCanvas",
@@ -1014,6 +1016,7 @@ document.addEventListener('DOMContentLoaded', () => {
       filter_ai: "AI概念",
       filter_interactive: "互动",
       cat_cgi: "3D / CGI",
+      cat_3d_compositing: "3D / CGI / 合成",
       cat_motion: "动态设计",
       cat_animation: "动画与分镜设计",
       cat_all: "完整制作流程",
@@ -1030,8 +1033,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work1_summary: "一颗由发光粒子组成的彗星撞击行星，点燃其表面，随后行星化为公司标志。",
       work2_title: "《龙之山》— 动画系列",
       work2_summary: "一部面向全家观众的22分钟冒险动画，涵盖从创意开发到后期制作的完整流程。目前试播集正在制作中。",
-      work3_title: "机甲生物发光森林",
-      work3_summary: "混合 CG 构图，通过生成式 AI 风格帧进行增强，以实现快速的视觉原型设计。",
+      work3_title: "Somat — 电视广告",
+      work3_summary: "为 Somat 制作的全 CG 产品广告，结合洗碗机内部场景、产品动画与合成，用于电视播出。",
       work4_title: "城市街道无形特效",
       work4_summary: "干净的背景板重建、擦除头顶电线，以及集成自定义的全息 Logo 跟踪融合。",
       work5_title: "NomadCanvas",
@@ -1141,6 +1144,7 @@ document.addEventListener('DOMContentLoaded', () => {
       filter_ai: "AIコンセプト",
       filter_interactive: "インタラクティブ",
       cat_cgi: "3D / CGI",
+      cat_3d_compositing: "3D / CGI / コンポジット",
       cat_motion: "モーションデザイン",
       cat_animation: "アニメーション＆絵コンテ",
       cat_all: "フルサイクル制作",
@@ -1157,8 +1161,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work1_summary: "発光する粒子でできた彗星が惑星に衝突して表面を燃え上がらせ、やがて惑星が会社のロゴへと変化します。",
       work2_title: "ドラゴン・マウンテン — アニメーションシリーズ",
       work2_summary: "22分構成のファミリー向け冒険アニメーション。企画からポストプロダクションまで一貫して制作し、現在パイロット版を制作中です。",
-      work3_title: "メカ発光森林",
-      work3_summary: "迅速なビジュアルプロトタイピングのために生成AIスタイルフレームによって強化されたハイブリッドCGコンポジション。",
+      work3_title: "Somat — テレビCM",
+      work3_summary: "食器洗い機内部のシーン、製品アニメーション、コンポジットを組み合わせた、SomatのフルCGテレビCM。",
       work4_title: "都市のストリートのインビジブルVFX",
       work4_summary: "クリーンプレート再構成、頭上電線の除去、およびカスタムホログラフィックロゴトラッキング合成。",
       work5_title: "NomadCanvas",
@@ -1473,37 +1477,38 @@ document.addEventListener('DOMContentLoaded', () => {
         ja: "『ドラゴン・マウンテン』は、家族で楽しめる22分構成の冒険アニメーションシリーズです。物語は、4人の少年少女が不思議な生き物、古代の謎、ユーモア、そして予想外の試練に満ちた並行世界へ迷い込むところから始まります。企画開発、脚本、ビジュアルデザイン、アニメーション、コンポジット、ポストプロダクションまで、制作工程全体を手がけています。現在、パイロットエピソードを制作中です。"
       }
     },
-    'work-jungle': {
-      category: { en: "AI Concept", ru: "ИИ-концепт", zh: "AI概念", ja: "AIコンセプト" },
+    'work-somat': {
+      category: { en: "3D / CGI / Compositing", ru: "3D / CGI / Композитинг", zh: "3D / CGI / 合成", ja: "3D / CGI / コンポジット" },
       title: {
-        en: "Mech Bioluminescent Forest",
-        ru: "Биолюминесцентный лес с мехом",
-        zh: "机甲生物发光森林",
-        ja: "メカ発光森林"
+        en: "Somat — TV Commercial",
+        ru: "Somat — ТВ-реклама",
+        zh: "Somat — 电视广告",
+        ja: "Somat — テレビCM"
       },
       role: {
-        en: "AI Styleframe Exploration & CG Matte Painting",
-        ru: "ИИ-стайлфреймы и CG Matte Painting",
-        zh: "AI 风格帧探索与 CG 绘景",
-        ja: "AIスタイルフレーム探索＆CGマットペインティング"
+        en: "Full CG Production & Compositing",
+        ru: "Полный 3D-продакшен и композитинг",
+        zh: "全 CG 制作与合成",
+        ja: "フルCG制作＆コンポジット"
       },
       client: {
-        en: "Studio Project",
-        ru: "Студийный проект",
-        zh: "工作室项目",
-        ja: "自主制作プロジェクト"
+        en: "Somat (Client Work)",
+        ru: "Somat (Коммерческий проект)",
+        zh: "Somat（客户项目）",
+        ja: "Somat（クライアントワーク）"
       },
-      tools: "ComfyUI, Photoshop, Concept Art",
-      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-flying-through-neon-wires-and-dust-in-a-futuristic-tunnel-41712-large.mp4",
-      images: [
-        "assets/images/work_ai.png",
-        "assets/images/work_ai_detail.png"
+      tools: "3D / CGI / Compositing",
+      videos: [
+        { url: "assets/video/somat/somat_01.mp4", thumb: "assets/images/work_somat_01.jpg" },
+        { url: "assets/video/somat/somat_02.mp4", thumb: "assets/images/work_somat_02.jpg" },
+        { url: "assets/video/somat/somat_03.mp4", thumb: "assets/images/work_somat_03.jpg" },
+        { url: "assets/video/somat/somat_04.mp4", thumb: "assets/images/work_somat.jpg" }
       ],
       desc: {
-        en: "Hybrid concept art process fusing 3D blockout spaces and Generative AI detailing. By guiding ComfyUI workflows, we generated cinematic styleframes for a bioluminescent jungle forest, adding a sci-fi mech scout without manual high-poly modeling, keeping full lighting consistency.",
-        ru: "Гибридный процесс создания концепт-арта, объединяющий 3D-блокинг сцены и детализацию генеративным ИИ. Управляя рабочими процессами ComfyUI, мы создали кинематографичные стайлфреймы биолюминесцентного леса, добавив научно-фантастического меха-разведчика без ручного высокополигонального моделирования, сохранив полное соответствие освещения.",
-        zh: "融合 3D 场景初步搭建和生成式 AI 细节开发的混合概念艺术工作流。通过引导 ComfyUI 节点流程，我们为生物发光森林生成了电影级别的风格帧，在无需手动进行高精度模型建模的情况下，无缝集成了科幻机甲，并保持了完整的光影一致性。",
-        ja: "3Dでの空間ブロックアウトと生成AIのディテール化を融合したハイブリッドなコンセプトアート構築プロセス。ComfyUIのワークフローを制御し、手作業でのハイポリゴンモデリングを行わずにSFメカ偵察機を生物発光森林のシーンに追加し、完全に一致した光影を保ちながら映画のようなスタイルフレームを生成しました。"
+        en: "A television commercial for Somat dishwasher detergent. Full-CG shots of the dishwasher interior and product were created and composited for the final broadcast delivery.",
+        ru: "Телевизионный рекламный ролик для средств Somat для посудомоечных машин. Полностью 3D-сцены с интерьером посудомоечной машины и продуктом собраны в финальный рекламный ролик с помощью композитинга.",
+        zh: "为 Somat 洗碗机洗涤剂制作的电视广告。洗碗机内部和产品的画面均以全 CG 完成，并通过合成制作成最终电视广告。",
+        ja: "Somatの食器洗い機用洗剤のテレビCM。食器洗い機内部と製品のショットをフルCGで制作し、コンポジットを経て最終放送用映像に仕上げました。"
       }
     },
     'work-street': {
