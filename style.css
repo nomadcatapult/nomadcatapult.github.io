@@ -3057,7 +3057,11 @@ html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
   scroll-snap-type: none;
   scrollbar-width: thin;
   scrollbar-color: var(--accent-color) rgba(24, 61, 67, 0.12);
-  padding: 0.2rem 0.2rem 0.8rem;
+  /* Desktop cards rise by 5px on hover. Keep a real top buffer inside the
+     horizontal scroller so its overflow mask never clips that movement; the
+     matching negative margin preserves the original vertical alignment. */
+  margin-top: -0.35rem;
+  padding: 0.55rem 0.2rem 0.8rem;
 }
 
 .work-rail::-webkit-scrollbar {
