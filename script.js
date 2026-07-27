@@ -874,6 +874,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_all: "Complete production pipeline",
       cat_cleanup: "Compositing & Cleanup",
       cat_interactive: "Interactive Media",
+      cat_social: "2D Animation / Social Ad",
       cat_3d_motion_ai: "3D / Motion / AI Film",
       badge_client: "Client Work",
       badge_personal: "Studio Project",
@@ -886,10 +887,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work2_summary: "A 22-minute family adventure animation produced through a complete end-to-end pipeline. The pilot episode is currently in production.",
       work3_title: "Somat — TV Commercial",
       work3_summary: "Full-CG product commercial for Somat, combining dishwasher interior shots, product animation, and compositing for broadcast.",
-      work4_title: "Urban Street Invisible VFX",
-      work4_summary: "Clean plate reconstruction, overhead wires removal, and custom holographic logo tracking integration.",
-      work5_title: "NomadCanvas",
-      work5_summary: "A lightweight, high-performance HTML5 canvas sketching application designed for digital graphics workflow.",
+      work5_title: "Yerevan — Diseased Trees PSA",
+      work5_summary: "A hand-drawn public-service animation for the Yerevan Municipality, warning residents about the danger of diseased, pest-infested city trees and urging timely treatment.",
       work6_title: "LADA 2026 Dealer Conference",
       work6_summary: "Three minutes of stage content for the LADA brand and new model reveal — neon wireframe vehicles, light-trail environments, and AI-generated sequences, delivered on a compressed conference schedule.",
       banner_accent: "// HOW WE LAUNCH",
@@ -1008,6 +1007,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_ai: "ИИ-концепт-арт",
       cat_cleanup: "Композитинг и клинап",
       cat_interactive: "Интерактивные медиа",
+      cat_social: "2D-анимация / Соцреклама",
       cat_3d_motion_ai: "3D / Моушн / AI-фильм",
       badge_client: "Коммерческий проект",
       badge_personal: "Студийный проект",
@@ -1020,10 +1020,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work2_summary: "22-минутный семейный приключенческий мультфильм полного цикла производства. Пилотный эпизод находится в производстве.",
       work3_title: "Somat — ТВ-реклама",
       work3_summary: "Полностью 3D-реклама Somat: сцены внутри посудомоечной машины, продукт и композитинг для телеэфира.",
-      work4_title: "Невидимый VFX городской улицы",
-      work4_summary: "Реконструкция чистого листа, удаление подвесных проводов и интеграция отслеживаемого голографического логотипа.",
-      work5_title: "NomadCanvas",
-      work5_summary: "Легковесное высокопроизводительное приложение для рисования на HTML5 Canvas, созданное для рабочих процессов цифровой графики.",
+      work5_title: "Ереван — соцролик о больных деревьях",
+      work5_summary: "Рисованный социальный ролик для мэрии Еревана: он предупреждает жителей об опасности больных, заражённых вредителями городских деревьев и призывает вовремя их лечить.",
       work6_title: "Дилерская конференция LADA 2026",
       work6_summary: "Три минуты сценического контента для презентации бренда и новой модельной линейки LADA — неоновые wireframe-автомобили, световые трассы и AI-генерация, собранные в сжатые сроки подготовки конференции.",
       banner_accent: "// КАК МЫ ЗАПУСКАЕМ ИДЕИ",
@@ -1142,6 +1140,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_ai: "AI 概念艺术",
       cat_cleanup: "合成与擦除",
       cat_interactive: "互动媒体",
+      cat_social: "2D 动画 / 公益广告",
       cat_3d_motion_ai: "3D / 动态影像 / AI",
       badge_client: "客户项目",
       badge_personal: "工作室项目",
@@ -1154,10 +1153,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work2_summary: "一部面向全家观众的22分钟冒险动画，涵盖从创意开发到后期制作的完整流程。目前试播集正在制作中。",
       work3_title: "Somat — 电视广告",
       work3_summary: "为 Somat 制作的全 CG 产品广告，结合洗碗机内部场景、产品动画与合成，用于电视播出。",
-      work4_title: "城市街道无形特效",
-      work4_summary: "干净的背景板重建、擦除头顶电线，以及集成自定义的全息 Logo 跟踪融合。",
-      work5_title: "NomadCanvas",
-      work5_summary: "轻量级、高性能的 HTML5 canvas 绘图应用程序，专为数字图形工作流设计。",
+      work5_title: "埃里温 — 病树公益广告",
+      work5_summary: "为埃里温市政府制作的手绘公益动画，提醒居民警惕病树及虫害树木的危险，呼吁及时治疗。",
       work6_title: "LADA 2026 经销商大会",
       work6_summary: "为 LADA 品牌与全新车型发布制作的三分钟舞台内容——霓虹线框车身、光轨场景与 AI 生成镜头，在紧张的会议筹备周期内交付。",
       banner_accent: "// 我们如何发射创意",
@@ -1276,6 +1273,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_ai: "AIコンセプトアート",
       cat_cleanup: "コンポジット＆クリンアップ",
       cat_interactive: "インタラクティブメディア",
+      cat_social: "2Dアニメーション / 社会広告",
       cat_3d_motion_ai: "3D / モーション / AI映像",
       badge_client: "クライアントワーク",
       badge_personal: "自主制作プロジェクト",
@@ -1288,10 +1286,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work2_summary: "22分構成のファミリー向け冒険アニメーション。企画からポストプロダクションまで一貫して制作し、現在パイロット版を制作中です。",
       work3_title: "Somat — テレビCM",
       work3_summary: "食器洗い機内部のシーン、製品アニメーション、コンポジットを組み合わせた、SomatのフルCGテレビCM。",
-      work4_title: "都市のストリートのインビジブルVFX",
-      work4_summary: "クリーンプレート再構成、頭上電線の除去、およびカスタムホログラフィックロゴトラッキング合成。",
-      work5_title: "NomadCanvas",
-      work5_summary: "デジタルグラフィックスワークフロー向けに設計された、軽量で高性能なHTML5キャンバススケッチアプリケーション。",
+      work5_title: "エレバン — 病んだ樹木の啓発動画",
+      work5_summary: "エレバン市役所のために制作した手描きの啓発アニメーション。病気や害虫に侵された街路樹の危険性を住民に伝え、早めの治療を呼びかけます。",
       work6_title: "LADA 2026 ディーラーカンファレンス",
       work6_summary: "LADAのブランドと新型ラインナップ発表のための3分間のステージ映像。ネオンのワイヤーフレーム車両、ライトトレイル空間、AI生成カットを、限られた準備期間の中で仕上げました。",
       banner_accent: "// アイデアの打ち上げ方",
@@ -1636,71 +1632,45 @@ document.addEventListener('DOMContentLoaded', () => {
         ja: "Somatの食器洗い機用洗剤のテレビCM。食器洗い機内部と製品のショットをフルCGで制作し、コンポジットを経て最終放送用映像に仕上げました。"
       }
     },
-    'work-street': {
-      category: { en: "VFX / Cleanup", ru: "VFX / Клинап", zh: "合成擦除", ja: "クリンアップ" },
+    'work-erevan': {
+      category: {
+        en: "2D Animation / Social Ad",
+        ru: "2D-анимация / Соцреклама",
+        zh: "2D 动画 / 公益广告",
+        ja: "2Dアニメーション / 社会広告"
+      },
       title: {
-        en: "Urban Street Invisible VFX",
-        ru: "Невидимый VFX городской улицы",
-        zh: "城市街道无形特效",
-        ja: "都市のストリートのインビジブルVFX"
+        en: "Yerevan — Diseased Trees PSA",
+        ru: "Ереван — соцролик о больных деревьях",
+        zh: "埃里温 — 病树公益广告",
+        ja: "エレバン — 病んだ樹木の啓発動画"
       },
       role: {
-        en: "Clean Plate Reconstruction & Hologram Tracking",
-        ru: "Клинап, реконструкция пластины и трекинг голограммы",
-        zh: "干净背景板重建与全息跟踪",
-        ja: "クリーンプレート再構成＆ホログラム合成"
+        en: "Illustration & 2D Animation",
+        ru: "Иллюстрация и 2D-анимация",
+        zh: "插画与 2D 动画",
+        ja: "イラスト＆2Dアニメーション"
       },
       client: {
-        en: "Client Work",
-        ru: "Коммерческий проект",
-        zh: "客户项目",
-        ja: "クライアントワーク"
+        en: "Yerevan Municipality (Client Work)",
+        ru: "Мэрия Еревана (Коммерческий проект)",
+        zh: "埃里温市政府（客户项目）",
+        ja: "エレバン市役所（クライアントワーク）"
       },
-      tools: "Nuke, Mocha Pro, Invisible VFX",
-      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-time-lapse-of-a-busy-city-street-at-night-40292-large.mp4",
+      tools: "Illustration / 2D Animation / Motion Graphics",
+      videos: [
+        { url: "assets/video/erevan/erevan_01.mp4", thumb: "assets/images/work_erevan_v01.jpg" },
+        { url: "assets/video/erevan/erevan_02.mp4", thumb: "assets/images/work_erevan_v02.jpg" }
+      ],
       images: [
-        "assets/images/work_cleanup_after.png",
-        "assets/images/work_cleanup_before.png",
-        "assets/images/work_cleanup_detail.png"
+        "assets/images/work_erevan_01.jpg",
+        "assets/images/work_erevan_02.jpg"
       ],
       desc: {
-        en: "Invisible visual effects production-grade cleanup shot. Removed overhead cable wires, background modern traffic objects, and visual clutter to reconstruct a clean plate. Integrated camera tracking data to composite a custom holographic neon sign on the brick wall facade.",
-        ru: "Продакшн-клинап в категории «невидимых эффектов». Из кадра удалены подвесные провода, современные автомобили на заднем плане и визуальный мусор для полной реконструкции чистого листа. Данные трекинга камеры использованы для бесшовного композитинга голографической вывески на кирпичной стене здания.",
-        zh: "专业级“无形特效”擦除清理镜头。移除了头顶缠绕的电线、背景中现代的交通工具及杂乱景物以重建干净背景板。结合了摄像机跟踪反求数据，在砖墙立面上无缝合成了自定义的全息霓虹招牌。",
-        ja: "プロダクションクオリティの「インビジブルVFX」クリンアップカット。クリーンプレートを再構成するために、頭上の電線、背景の現代的な通行車、および視覚的な雑音を除去。カメラトラッキングデータを統合し、レンダリングしたカスタムホログラフィックネオン看板を煉瓦壁のファサードに合成しました。"
-      }
-    },
-    'work-canvas': {
-      category: { en: "Creative Tool", ru: "Инструмент", zh: "创意工具", ja: "ツール" },
-      title: {
-        en: "NomadCanvas Studio Project",
-        ru: "Студийный проект NomadCanvas",
-        zh: "NomadCanvas 工作室工具",
-        ja: "NomadCanvas 自主制作"
-      },
-      role: {
-        en: "Front-end Engineering & Canvas Engine",
-        ru: "Фронтенд-разработка и движок рисования",
-        zh: "前端工程与 Canvas 绘图引擎",
-        ja: "フロントエンド開発＆キャンバスエンジン"
-      },
-      client: {
-        en: "Studio Project",
-        ru: "Студийный проект",
-        zh: "工作室项目",
-        ja: "自主制作プロジェクト"
-      },
-      tools: "Vanilla JS, HTML5 Canvas, Creative Tool",
-      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-color-ink-dripping-in-water-underwater-closeup-41584-large.mp4",
-      images: [
-        "assets/images/work_canvas.png",
-        "assets/images/work_canvas_detail.png"
-      ],
-      desc: {
-        en: "Interactive graphic sketching tool built on top of vanilla HTML5 Canvas API. Designed for lightweight vector/raster drawing and concept layouts, featuring customizable brushes, infinite undo/redo stacks, layer blending modes, and rapid export options.",
-        ru: "Интерактивный инструмент для графических набросков на базе чистого HTML5 Canvas API. Разработан для легковесного векторного и растрового рисования и создания концептуальных макетов. Включает настраиваемые кисти, бесконечную историю действий, режимы смешивания слоев и быстрый экспорт.",
-        zh: "基于原生 HTML5 Canvas API 构建的交互式图形手绘草图工具。专为轻量级矢量/栅格绘制和概念布局而设计，支持自定义画笔、无限撤销/重做、图层混合模式以及快速导出功能。",
-        ja: "ネイティブのHTML5 Canvas APIをベースに構築されたインタラクティブなグラフィックスケッチツール。軽量なベクター/ラスター描画やコンセプトレイアウト向けに設計されており、カスタムブラシ、無限のアンドゥ/リドゥ履歴、レイヤーのブレンドモード、迅速な書き出し機能を備えています。"
+        en: "A public-service animation for the Yerevan Municipality raising awareness about the danger of diseased, pest-infested city trees. The film pairs a warm, hand-drawn illustrative style with a clear explainer structure, showing how untreated trees weakened by pests such as nematodes threaten the health of the urban environment and the people living around them, and calling on residents to have their trees examined and treated in time. The project covered illustration, character design, and full 2D animation.",
+        ru: "Социальный анимационный ролик для мэрии Еревана, посвящённый опасности больных и заражённых вредителями городских деревьев. Ролик сочетает тёплую рисованную иллюстрацию с понятной структурой эксплейнера: он показывает, как невылеченные деревья, ослабленные вредителями вроде нематод, угрожают здоровью городской среды и живущих рядом людей, и призывает жителей вовремя обследовать и лечить деревья. Проект охватывал иллюстрацию, дизайн персонажей и полную 2D-анимацию.",
+        zh: "为埃里温市政府制作的公益动画，旨在提高公众对城市中病树及虫害树木危险性的认识。影片将温暖的手绘插画风格与清晰的科普讲解结构相结合，展示未经治疗、被线虫等害虫侵蚀而衰弱的树木如何威胁城市环境以及周边居民的健康，并呼吁居民及时检查和治疗树木。项目涵盖插画、角色设计与完整的 2D 动画制作。",
+        ja: "エレバン市役所のために制作した、病気や害虫に侵された街路樹の危険性を伝える啓発アニメーション。温かみのある手描きイラストの作風と分かりやすいエクスプレイナー構成を組み合わせ、線虫などの害虫で弱った未処置の樹木が都市環境とそこで暮らす人々の健康をどのように脅かすかを描き、住民に樹木の点検と早めの治療を呼びかけます。イラスト、キャラクターデザイン、2Dアニメーション全般を担当しました。"
       }
     }
   };
