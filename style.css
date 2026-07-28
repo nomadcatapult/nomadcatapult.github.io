@@ -1610,6 +1610,8 @@ section[id] {
 }
 
 .modal-hero-media {
+  position: relative;
+  isolation: isolate;
   width: 100%;
   aspect-ratio: 16 / 10;
   background-color: #000;
@@ -1624,6 +1626,10 @@ section[id] {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.modal-video {
+  cursor: pointer;
 }
 
 .modal-thumbnails {
@@ -1642,28 +1648,60 @@ section[id] {
 }
 
 .modal-thumb {
+  position: relative;
   width: 90px;
   aspect-ratio: 16 / 10;
   border-radius: 4px;
   overflow: hidden;
   border: 1px solid var(--border-color);
   cursor: pointer;
-  opacity: 0.45;
+  opacity: 1;
   transition: var(--transition-smooth);
   flex-shrink: 0;
   background-color: #000;
 }
 
-.modal-thumb img {
+.modal-thumb img,
+.modal-thumb-fallback {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  opacity: 0.45;
+  transition: opacity 0.25s ease;
 }
 
 .modal-thumb:hover, .modal-thumb.active {
-  opacity: 1;
   border-color: var(--accent-color);
+}
+
+.modal-thumb:hover img,
+.modal-thumb.active img,
+.modal-thumb:hover .modal-thumb-fallback,
+.modal-thumb.active .modal-thumb-fallback {
+  opacity: 1;
+}
+
+.modal-thumb-video-marker {
+  position: absolute;
+  left: 0.35rem;
+  bottom: 0.35rem;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  padding-left: 0.08rem;
+  color: #fff6e7;
+  background: rgba(7, 8, 10, 0.78);
+  border: 1px solid rgba(255, 246, 231, 0.52);
+  border-radius: 0.3rem 0.55rem 0.3rem 0.55rem;
+  box-shadow: 0 0.18rem 0.55rem rgba(7, 8, 10, 0.34);
+  font-size: 0.52rem;
+  line-height: 1;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 /* Info Column Layout */
@@ -3424,6 +3462,14 @@ html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
     grid-template-columns: repeat(auto-fit, minmax(4.5rem, 1fr));
     gap: 0.45rem;
   }
+
+  .modal-thumb-video-marker {
+    left: 0.25rem;
+    bottom: 0.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    font-size: 0.46rem;
+  }
 }
 
 /* VFX comparison labels
@@ -3679,6 +3725,7 @@ html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
   display: block;
   object-fit: contain;
   background: #07080a;
+  cursor: pointer;
 }
 
 .modal-vertical-index {
@@ -3704,44 +3751,6 @@ html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
   -webkit-backdrop-filter: blur(7px);
 }
 
-.modal-vertical-play {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 3;
-  display: grid;
-  place-items: center;
-  width: clamp(3.2rem, 5vw, 4.2rem);
-  height: clamp(3.2rem, 5vw, 4.2rem);
-  padding: 0;
-  color: var(--text-main);
-  background: rgba(255, 246, 231, 0.94);
-  border: 1px solid rgba(24, 61, 67, 0.22);
-  border-radius: 50%;
-  cursor: pointer;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0.8rem 2rem rgba(7, 8, 10, 0.35);
-  transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
-}
-
-.modal-vertical-play svg {
-  width: 1.45rem;
-  height: 1.45rem;
-  margin-left: 0.12rem;
-}
-
-.modal-vertical-play:hover,
-.modal-vertical-play:focus-visible {
-  background: var(--accent-color);
-  outline: none;
-  transform: translate(-50%, -50%) scale(1.08);
-}
-
-.modal-vertical-card.has-started .modal-vertical-play {
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-50%, -50%) scale(0.82);
-}
 
 /* Process + verticals layout
    ---------------------------------------------------------------------------
@@ -3792,49 +3801,58 @@ html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
   display: block;
   object-fit: contain;
   background: #07080a;
+  cursor: pointer;
 }
 
+.modal-vertical-play,
 .modal-pv-play {
   position: absolute;
   top: 50%;
   left: 50%;
+  bottom: auto;
   z-index: 3;
   display: grid;
   place-items: center;
-  width: clamp(2.5rem, 3.2vw, 3rem);
-  height: clamp(2.5rem, 3.2vw, 3rem);
+  width: 2.45rem;
+  height: 2.45rem;
   padding: 0;
   color: #fff6e7;
-  background: rgba(7, 8, 10, 0.38);
-  border: 1.5px solid rgba(255, 246, 231, 0.9);
-  border-radius: 50%;
+  background: rgba(7, 8, 10, 0.76);
+  border: 1px solid rgba(255, 246, 231, 0.56);
+  border-radius: 0.45rem 0.8rem 0.45rem 0.8rem;
   cursor: pointer;
   transform: translate(-50%, -50%);
+  box-shadow: 0 0.25rem 0.9rem rgba(7, 8, 10, 0.3);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-.modal-pv-play svg {
-  width: 0.95rem;
-  height: 0.95rem;
+.modal-vertical-play span,
+.modal-pv-play span {
+  display: block;
   margin-left: 0.1rem;
+  font-size: 0.72rem;
+  line-height: 1;
 }
 
+.modal-vertical-play:hover,
+.modal-vertical-play:focus-visible,
 .modal-pv-play:hover,
 .modal-pv-play:focus-visible {
-  background: rgba(7, 8, 10, 0.55);
+  background: rgba(7, 8, 10, 0.9);
   border-color: var(--accent-color);
   color: var(--accent-color);
   outline: none;
-  transform: translate(-50%, -50%) scale(1.06);
+  transform: translate(-50%, -50%) scale(1.05);
 }
 
+.modal-vertical-card.has-started .modal-vertical-play,
 .modal-pv-process.has-started .modal-pv-play,
 .modal-pv-vertical.has-started .modal-pv-play {
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transform: translate(-50%, -50%) scale(0.82);
 }
 
 /* On narrow screens the row wraps: the process clip spans the full width and
@@ -3940,14 +3958,221 @@ html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
     scroll-snap-align: center;
   }
 
-  .modal-vertical-play {
-    width: 3.45rem;
-    height: 3.45rem;
+  .modal-vertical-play,
+  .modal-pv-play {
+    width: 2.25rem;
+    height: 2.25rem;
   }
 
   .modal-horizontal-gallery {
     grid-template-columns: minmax(0, 1fr);
     gap: 0.75rem;
     margin-top: 0.85rem;
+  }
+}
+
+/* Video states ------------------------------------------------------------
+   A clip is always announced before it starts: the poster remains visible,
+   while a play affordance and a compact loading state make slow connections
+   feel intentional rather than like an empty frame. */
+.vfx-video-placeholder {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 0.6rem;
+  padding: 1.5rem;
+  color: #fff6e7;
+  background:
+    linear-gradient(135deg, rgba(7, 8, 10, 0.78), rgba(7, 8, 10, 0.36)),
+    url('assets/images/work_cleanup_after.png') center / cover;
+  text-align: center;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+  pointer-events: none;
+}
+
+.vfx-video-placeholder.is-ready {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.vfx-video-placeholder-mark {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  padding-left: 0.12rem;
+  color: var(--text-main);
+  background: rgba(255, 246, 231, 0.94);
+  border: 1px solid rgba(24, 61, 67, 0.22);
+  border-radius: 50%;
+  box-shadow: 0 0.75rem 2rem rgba(7, 8, 10, 0.3);
+}
+
+.vfx-video-placeholder-label,
+.modal-video-gate-type {
+  font-family: var(--font-title);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.vfx-video-placeholder-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 1.5rem;
+}
+
+.vfx-video-placeholder .video-loader-spinner {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-width: 2px;
+}
+
+.vfx-video-placeholder .video-loader-text {
+  font-size: 0.62rem;
+}
+
+.modal-video-gate {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  color: #fff6e7;
+  pointer-events: none;
+  transition: opacity 0.28s ease, visibility 0.28s ease;
+}
+
+.modal-video-gate[hidden] {
+  display: none;
+}
+
+.modal-video-gate.is-ready {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.modal-video-gate-type {
+  display: none;
+}
+
+.modal-video-gate-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  bottom: auto;
+  display: grid;
+  place-items: center;
+  width: 2.45rem;
+  height: 2.45rem;
+  padding: 0;
+  color: #fff6e7;
+  background: rgba(7, 8, 10, 0.76);
+  border: 1px solid rgba(255, 246, 231, 0.56);
+  border-radius: 0.45rem 0.8rem 0.45rem 0.8rem;
+  box-shadow: 0 0.25rem 0.9rem rgba(7, 8, 10, 0.3);
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.modal-video-gate-play > span:first-child {
+  display: block;
+  margin-left: 0.1rem;
+  font-size: 0.72rem;
+  line-height: 1;
+}
+
+.modal-video-gate-play > [data-i18n] {
+  display: none;
+}
+
+.modal-video-gate-play:hover,
+.modal-video-gate-play:focus-visible {
+  color: var(--accent-color);
+  background: rgba(7, 8, 10, 0.9);
+  border-color: var(--accent-color);
+  outline: none;
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.modal-video-gate.is-loading .modal-video-gate-play {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-video-gate-loader,
+.project-video-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.6rem 0.75rem;
+  color: #fff6e7;
+  background: rgba(7, 8, 10, 0.7);
+  border: 1px solid rgba(255, 246, 231, 0.23);
+  border-radius: 999px;
+  box-shadow: 0 0.6rem 1.5rem rgba(7, 8, 10, 0.3);
+  font-family: var(--font-title);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  pointer-events: none;
+}
+
+.modal-video-gate.is-loading .modal-video-gate-loader,
+.modal-pv-process.is-loading .project-video-loader,
+.modal-pv-vertical.is-loading .project-video-loader,
+.modal-vertical-card.is-loading .project-video-loader {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-video-gate-loader .video-loader-spinner,
+.project-video-loader-spinner {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex: 0 0 auto;
+  border: 2px solid rgba(255, 246, 231, 0.3);
+  border-top-color: #fff6e7;
+  border-radius: 50%;
+  animation: video-loader-spin 0.85s linear infinite;
+}
+
+.modal-video-gate-loader .video-loader-text,
+.project-video-loader-text {
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-shadow: none;
+}
+
+.modal-pv-process.is-loading .modal-pv-play,
+.modal-pv-vertical.is-loading .modal-pv-play,
+.modal-vertical-card.is-loading .modal-vertical-play {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .modal-video-gate-play {
+    width: 2.25rem;
+    height: 2.25rem;
   }
 }

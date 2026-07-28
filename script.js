@@ -322,6 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const comparisonVideo = document.getElementById('vfx-comparison-video');
   const comparisonCanvas = document.getElementById('vfx-comparison-canvas');
   const playVfxButton = document.getElementById('vfx-play-button');
+  const comparisonPlaceholder = document.getElementById('vfx-video-placeholder');
   let redrawVfxComparison = () => {};
   let resumeVfxComparison = () => {};
 
@@ -353,6 +354,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const requestComparisonLoad = () => {
       if (comparisonLoadRequested) return;
       comparisonLoadRequested = true;
+      const source = comparisonVideo.dataset.videoSrc;
+      if (!source) return;
+      comparisonVideo.src = source;
+      comparisonPlaceholder?.classList.add('is-loading');
       comparisonVideo.load();
     };
 
@@ -465,8 +470,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     comparisonVideo.addEventListener('loadeddata', redrawVfxComparison);
+    comparisonVideo.addEventListener('loadstart', () => {
+      comparisonPlaceholder?.classList.add('is-loading');
+    });
     comparisonVideo.addEventListener('canplay', () => {
       if (playVfxButton) playVfxButton.disabled = false;
+      comparisonPlaceholder?.classList.add('is-ready');
       redrawVfxComparison();
       resumeVfxComparison();
     });
@@ -483,6 +492,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (comparisonIsVisible() && !comparisonManuallyPaused) {
         playComparison();
       }
+    });
+    comparisonVideo.addEventListener('error', () => {
+      comparisonPlaceholder?.classList.remove('is-loading');
+      comparisonPlaceholder?.classList.add('has-error');
     });
     sliderRange?.addEventListener('input', redrawVfxComparison);
     sliderRange?.addEventListener('change', redrawVfxComparison);
@@ -702,49 +715,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3b. Work tile video previews
-  // The showcase is video work, so tiles that ship a loop play it in place: on
-  // hover where there is a pointer, and while the tile is on screen on touch.
-  const loopTiles = document.querySelectorAll('.work-item .work-loop[data-loop-src]');
-
-  if (loopTiles.length > 0 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-    loopTiles.forEach(loop => {
-      const tile = loop.closest('.work-item');
-      let loaded = false;
-
-      const attempt = () => loop.play().then(() => tile.classList.add('is-looping')).catch(() => {});
-
-      const start = () => {
-        if (!loaded) {
-          loop.src = loop.dataset.loopSrc;
-          loaded = true;
-        }
-        // Calling play() in the same tick as the first src assignment loses the
-        // race against the pending load request, so wait for the first frame.
-        if (loop.readyState >= 2) attempt();
-        else loop.addEventListener('canplay', attempt, { once: true });
-      };
-
-      const stop = () => {
-        tile.classList.remove('is-looping');
-        loop.pause();
-      };
-
-      if (canHover) {
-        tile.addEventListener('mouseenter', start);
-        tile.addEventListener('focusin', start);
-        tile.addEventListener('mouseleave', stop);
-        tile.addEventListener('focusout', stop);
-      } else if ('IntersectionObserver' in window) {
-        new IntersectionObserver((entries) => {
-          entries.forEach(entry => (entry.isIntersecting ? start() : stop()));
-        }, { threshold: 0.6 }).observe(tile);
-      }
-    });
-  }
-
   // 4. Mute / Unmute Hero Video Background
   const muteBtn = document.getElementById('video-mute-toggle');
   const video = document.getElementById('hero-video');
@@ -814,6 +784,11 @@ document.addEventListener('DOMContentLoaded', () => {
       hero_scroll_hint: "Scroll to reveal",
       hero_scroll_continue: "Scroll to explore",
       video_loading: "Loading video…",
+      video_badge: "Video",
+      video_play: "Play video",
+      video_pause: "Pause video",
+      video_retry: "Try again",
+      video_comparison: "VFX video comparison",
       canvas_tag: "Made for makers",
       canvas_title: "NomadCanvas",
       canvas_lead: "A focused drawing space for designers, authors, and creators — from the first loose sketch to a shareable visual idea.",
@@ -949,6 +924,11 @@ document.addEventListener('DOMContentLoaded', () => {
       hero_scroll_hint: "Прокрутите, чтобы открыть",
       hero_scroll_continue: "Прокрутите, чтобы смотреть дальше",
       video_loading: "Загрузка видео…",
+      video_badge: "Видео",
+      video_play: "Смотреть видео",
+      video_pause: "Поставить видео на паузу",
+      video_retry: "Повторить",
+      video_comparison: "VFX-сравнение в видео",
       canvas_tag: "Для тех, кто создаёт",
       canvas_title: "NomadCanvas",
       canvas_lead: "Пространство для рисования для дизайнеров, авторов и креаторов — от первого наброска до визуальной идеи, которой хочется поделиться.",
@@ -1084,6 +1064,11 @@ document.addEventListener('DOMContentLoaded', () => {
       hero_scroll_hint: "向下滚动以展开",
       hero_scroll_continue: "向下探索",
       video_loading: "视频加载中…",
+      video_badge: "视频",
+      video_play: "播放视频",
+      video_pause: "暂停视频",
+      video_retry: "重试",
+      video_comparison: "VFX 视频对比",
       canvas_tag: "为创作者而作",
       canvas_title: "NomadCanvas",
       canvas_lead: "为设计师、作者和创作者打造的专注绘画空间——从最初的草图到可分享的视觉想法。",
@@ -1219,6 +1204,11 @@ document.addEventListener('DOMContentLoaded', () => {
       hero_scroll_hint: "スクロールして表示",
       hero_scroll_continue: "スクロールして探索",
       video_loading: "動画を読み込み中…",
+      video_badge: "動画",
+      video_play: "動画を再生",
+      video_pause: "動画を一時停止",
+      video_retry: "もう一度試す",
+      video_comparison: "VFX動画比較",
       canvas_tag: "つくる人のために",
       canvas_title: "NomadCanvas",
       canvas_lead: "デザイナー、作家、クリエイターのための集中できる描画スペース。最初のラフスケッチから共有したくなるビジュアルアイデアまで支えます。",
@@ -1717,6 +1707,196 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const getVideoCopy = key => {
+    const lang = document.documentElement.getAttribute('lang') || 'en';
+    return translations[lang]?.[key] || translations.en[key] || '';
+  };
+
+  const createProjectVideoLoader = () => {
+    const loader = document.createElement('span');
+    loader.className = 'project-video-loader';
+    loader.setAttribute('role', 'status');
+    loader.setAttribute('aria-live', 'polite');
+
+    const spinner = document.createElement('span');
+    spinner.className = 'project-video-loader-spinner';
+    spinner.setAttribute('aria-hidden', 'true');
+
+    const label = document.createElement('span');
+    label.className = 'project-video-loader-text';
+    label.dataset.i18n = 'video_loading';
+    label.textContent = getVideoCopy('video_loading');
+
+    loader.append(spinner, label);
+    return loader;
+  };
+
+  const prepareProjectVideo = ({ video, source, host, playButton, onPlaying }) => {
+    video.dataset.videoSrc = source;
+    video.removeAttribute('poster');
+    video.preload = 'auto';
+    video.controls = false;
+    video.removeAttribute('src');
+
+    const setLoading = isLoading => host.classList.toggle('is-loading', isLoading);
+    const setRetryLabel = () => playButton.setAttribute('aria-label', getVideoCopy('video_retry'));
+
+    const play = () => {
+      const needsLoad = !video.getAttribute('src') || video.error;
+      host.classList.remove('has-error');
+      setLoading(needsLoad || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA);
+      playButton.disabled = true;
+
+      if (needsLoad) {
+        video.src = video.dataset.videoSrc;
+        video.preload = 'auto';
+        video.load();
+      }
+
+      const playAttempt = video.play();
+      if (playAttempt && typeof playAttempt.catch === 'function') {
+        playAttempt.catch(() => {
+          setLoading(false);
+          host.classList.add('has-error');
+          playButton.disabled = false;
+          setRetryLabel();
+        });
+      }
+    };
+
+    playButton.setAttribute('aria-label', getVideoCopy('video_play'));
+    video.addEventListener('loadstart', () => setLoading(true));
+    video.addEventListener('loadeddata', () => {
+      setLoading(false);
+      host.classList.remove('has-error');
+      playButton.disabled = false;
+    });
+    video.addEventListener('waiting', () => {
+      if (!video.paused) setLoading(true);
+    });
+    video.addEventListener('playing', () => {
+      setLoading(false);
+      host.classList.remove('has-error');
+      host.classList.add('has-started', 'is-playing');
+      video.controls = true;
+      playButton.disabled = false;
+      onPlaying?.();
+    });
+    video.addEventListener('pause', () => host.classList.remove('is-playing'));
+    video.addEventListener('ended', () => host.classList.remove('is-playing'));
+    video.addEventListener('error', () => {
+      setLoading(false);
+      host.classList.remove('has-started', 'is-playing');
+      host.classList.add('has-error');
+      video.controls = false;
+      playButton.disabled = false;
+      setRetryLabel();
+    });
+    video.addEventListener('click', () => {
+      if (!host.classList.contains('has-started')) play();
+    });
+    playButton.addEventListener('click', play);
+
+    // Load the selected/visible clip immediately so the browser can paint a
+    // decoded first frame instead of stretching the low-resolution thumbnail.
+    setLoading(true);
+    video.src = video.dataset.videoSrc;
+    video.load();
+  };
+
+  const modalVideoElement = document.getElementById('modal-video');
+  const modalVideoGate = document.getElementById('modal-video-gate');
+  const modalVideoGatePlay = document.getElementById('modal-video-gate-play');
+
+  const setModalVideoGateLabel = key => {
+    const label = modalVideoGatePlay?.querySelector('[data-i18n]');
+    if (label) label.textContent = getVideoCopy(key);
+    modalVideoGatePlay?.setAttribute('aria-label', getVideoCopy(key));
+  };
+
+  const resetModalVideoGate = () => {
+    if (!modalVideoGate) return;
+    modalVideoGate.hidden = true;
+    modalVideoGate.classList.remove('is-loading', 'has-error', 'is-ready');
+    if (modalVideoGatePlay) modalVideoGatePlay.disabled = false;
+    setModalVideoGateLabel('video_play');
+  };
+
+  const prepareModalVideo = item => {
+    if (!modalVideoElement || !modalVideoGate || !modalVideoGatePlay) return;
+
+    modalVideoElement.pause();
+    modalVideoElement.removeAttribute('src');
+    modalVideoElement.load();
+    modalVideoElement.dataset.videoSrc = item.url;
+    modalVideoElement.removeAttribute('poster');
+    modalVideoElement.preload = 'auto';
+    modalVideoElement.controls = false;
+    modalVideoGate.hidden = false;
+    modalVideoGate.classList.remove('has-error', 'is-ready');
+    modalVideoGate.classList.add('is-loading');
+    modalVideoGatePlay.disabled = false;
+    setModalVideoGateLabel('video_play');
+    modalVideoElement.src = item.url;
+    modalVideoElement.load();
+  };
+
+  const playPreparedModalVideo = () => {
+    if (!modalVideoElement || !modalVideoGate || !modalVideoGatePlay) return;
+    const source = modalVideoElement.dataset.videoSrc;
+    if (!source) return;
+
+    const needsLoad = !modalVideoElement.getAttribute('src') || modalVideoElement.error;
+    modalVideoGate.classList.remove('has-error');
+    modalVideoGate.classList.toggle(
+      'is-loading',
+      needsLoad || modalVideoElement.readyState < HTMLMediaElement.HAVE_CURRENT_DATA
+    );
+    modalVideoGatePlay.disabled = true;
+
+    if (needsLoad) {
+      modalVideoElement.src = source;
+      modalVideoElement.preload = 'auto';
+      modalVideoElement.load();
+    }
+
+    const playAttempt = modalVideoElement.play();
+    if (playAttempt && typeof playAttempt.catch === 'function') {
+      playAttempt.catch(() => {
+        modalVideoGate.classList.remove('is-loading');
+        modalVideoGate.classList.add('has-error');
+        modalVideoGatePlay.disabled = false;
+        setModalVideoGateLabel('video_retry');
+      });
+    }
+  };
+
+  modalVideoGatePlay?.addEventListener('click', playPreparedModalVideo);
+  modalVideoElement?.addEventListener('click', () => {
+    if (!modalVideoGate?.classList.contains('is-ready')) playPreparedModalVideo();
+  });
+  modalVideoElement?.addEventListener('loadstart', () => modalVideoGate?.classList.add('is-loading'));
+  modalVideoElement?.addEventListener('loadeddata', () => {
+    modalVideoGate?.classList.remove('is-loading', 'has-error');
+    if (modalVideoGatePlay) modalVideoGatePlay.disabled = false;
+  });
+  modalVideoElement?.addEventListener('waiting', () => {
+    if (!modalVideoElement.paused) modalVideoGate?.classList.add('is-loading');
+  });
+  modalVideoElement?.addEventListener('playing', () => {
+    modalVideoGate?.classList.remove('is-loading', 'has-error');
+    modalVideoGate?.classList.add('is-ready');
+    modalVideoElement.controls = true;
+    if (modalVideoGatePlay) modalVideoGatePlay.disabled = false;
+  });
+  modalVideoElement?.addEventListener('error', () => {
+    modalVideoGate?.classList.remove('is-loading', 'is-ready');
+    modalVideoGate?.classList.add('has-error');
+    modalVideoElement.controls = false;
+    if (modalVideoGatePlay) modalVideoGatePlay.disabled = false;
+    setModalVideoGateLabel('video_retry');
+  });
+
   const stopAllProjectModalVideos = (clearSources = false) => {
     const modal = document.getElementById('project-details-modal');
     if (!modal) return;
@@ -1729,6 +1909,8 @@ document.addEventListener('DOMContentLoaded', () => {
         video.load();
       }
     });
+
+    if (clearSources) resetModalVideoGate();
   };
 
   const populateModal = (projId, lang) => {
@@ -1795,12 +1977,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const buildAria = index =>
         ariaTemplate.replace('{title}', localizedTitle).replace('{index}', String(index + 1));
 
-      const playIcon = `
-        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
-          <path d="M8 5v14l11-7z"></path>
-        </svg>
-      `;
-
       // Only one clip plays at a time across the whole row.
       const pauseOthers = current => {
         verticalGallery.querySelectorAll('video').forEach(other => {
@@ -1814,9 +1990,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const video = document.createElement('video');
         video.className = videoClass;
-        video.src = clip.url;
         video.poster = clip.poster || '';
-        video.preload = 'metadata';
         video.playsInline = true;
         video.loop = true;
         video.controls = false;
@@ -1825,20 +1999,20 @@ document.addEventListener('DOMContentLoaded', () => {
         playButton.className = 'modal-pv-play';
         playButton.type = 'button';
         playButton.setAttribute('aria-label', buildAria(ariaIndex));
-        playButton.innerHTML = playIcon;
+        playButton.innerHTML = '<span aria-hidden="true">▶</span>';
 
-        video.addEventListener('play', () => {
-          pauseOthers(video);
-          card.classList.add('has-started', 'is-playing');
-          video.controls = true;
-        });
-        video.addEventListener('pause', () => card.classList.remove('is-playing'));
-        video.addEventListener('ended', () => card.classList.remove('is-playing'));
-        playButton.addEventListener('click', () => {
-          video.play().catch(error => console.warn('Could not play project video:', error));
+        prepareProjectVideo({
+          video,
+          source: clip.url,
+          host: card,
+          playButton,
+          onPlaying: () => {
+            pauseOthers(video);
+          }
         });
 
         card.appendChild(video);
+        card.appendChild(createProjectVideoLoader());
         card.appendChild(playButton);
         return card;
       };
@@ -1891,9 +2065,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const video = document.createElement('video');
         video.className = 'modal-vertical-video';
-        video.src = clip.url;
         video.poster = clip.poster || clip.thumb || images[0] || '';
-        video.preload = 'metadata';
         video.playsInline = true;
         video.loop = clip.loop !== false;
         video.muted = clip.muted === true;
@@ -1910,37 +2082,23 @@ document.addEventListener('DOMContentLoaded', () => {
           'aria-label',
           formatMediaAriaLabel('modal_video_aria', index)
         );
-        playButton.innerHTML = `
-          <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
-            <path d="M8 5v14l11-7z"></path>
-          </svg>
-        `;
+        playButton.innerHTML = '<span aria-hidden="true">▶</span>';
 
-        video.addEventListener('play', () => {
-          verticalGallery.querySelectorAll('video').forEach(otherVideo => {
-            if (otherVideo !== video) otherVideo.pause();
-          });
-
-          card.classList.add('has-started', 'is-playing');
-          video.controls = true;
-        });
-
-        video.addEventListener('pause', () => {
-          card.classList.remove('is-playing');
-        });
-
-        video.addEventListener('ended', () => {
-          card.classList.remove('is-playing');
-        });
-
-        playButton.addEventListener('click', () => {
-          video.play().catch(error => {
-            console.warn('Could not play project video:', error);
-          });
+        prepareProjectVideo({
+          video,
+          source: clip.url,
+          host: card,
+          playButton,
+          onPlaying: () => {
+            verticalGallery.querySelectorAll('video').forEach(otherVideo => {
+              if (otherVideo !== video) otherVideo.pause();
+            });
+          }
         });
 
         frame.appendChild(video);
         frame.appendChild(indexLabel);
+        frame.appendChild(createProjectVideoLoader());
         frame.appendChild(playButton);
         card.appendChild(frame);
         verticalGallery.appendChild(card);
@@ -1996,28 +2154,29 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Square stills crop well, but ultra-wide stage frames can opt into contain.
-    const mediaFit = data.fit === 'contain' ? 'contain' : 'cover';
-    modalVideo.style.objectFit = mediaFit;
-    modalImage.style.objectFit = mediaFit;
-    heroMedia.classList.toggle('is-letterboxed', mediaFit === 'contain');
+    // Every video is shown in full inside the project stage. Stills retain the
+    // project's existing crop preference.
+    const imageFit = data.fit === 'contain' ? 'contain' : 'cover';
+    modalVideo.style.objectFit = 'contain';
+    modalImage.style.objectFit = imageFit;
     heroMedia.style.aspectRatio = data.stageAspect || '';
 
     const showMedia = item => {
       if (item.type === 'video') {
+        heroMedia.classList.add('is-letterboxed');
         modalImage.style.display = 'none';
         modalVideo.style.display = 'block';
         modalVideo.muted = true;
         modalVideo.loop = true;
-        modalVideo.controls = true;
-        modalVideo.src = item.url;
-        // Do not autoplay: the clip loads paused with its native play control,
-        // so nothing starts moving until the viewer chooses to press play.
-        modalVideo.pause();
+        // A poster and explicit play gate keep the media recognisable without
+        // starting a network request until the visitor chooses this clip.
+        prepareModalVideo(item);
       } else {
+        heroMedia.classList.toggle('is-letterboxed', imageFit === 'contain');
         modalVideo.pause();
         modalVideo.removeAttribute('src');
         modalVideo.load();
+        resetModalVideoGate();
         modalVideo.style.display = 'none';
         modalImage.style.display = 'block';
         modalImage.src = item.url;
@@ -2028,7 +2187,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const thumbBtn = document.createElement('button');
       thumbBtn.className = 'modal-thumb';
       thumbBtn.type = 'button';
-      thumbBtn.setAttribute('aria-label', `Open media ${index + 1}`);
+      thumbBtn.dataset.mediaType = item.type;
+      thumbBtn.setAttribute(
+        'aria-label',
+        `${item.type === 'video' ? 'Open video' : 'Open image'} ${index + 1}`
+      );
       if (index === 0) thumbBtn.classList.add('active');
 
       if (item.thumb) {
@@ -2041,6 +2204,14 @@ document.addEventListener('DOMContentLoaded', () => {
         fallbackIcon.className = 'modal-thumb-fallback';
         fallbackIcon.textContent = item.type === 'video' ? '▶' : '•';
         thumbBtn.appendChild(fallbackIcon);
+      }
+
+      if (item.type === 'video') {
+        const videoMarker = document.createElement('span');
+        videoMarker.className = 'modal-thumb-video-marker';
+        videoMarker.setAttribute('aria-hidden', 'true');
+        videoMarker.textContent = '▶';
+        thumbBtn.appendChild(videoMarker);
       }
 
       thumbBtn.addEventListener('click', () => {

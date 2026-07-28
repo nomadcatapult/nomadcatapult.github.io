@@ -30,7 +30,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20260726n">
+  <link rel="stylesheet" href="style.css?v=20260728g">
 </head>
 <body>
   <!-- Easter Egg Cat -->
@@ -275,7 +275,6 @@
             <div class="work-item work-item--featured" data-category="motion ai cgi" data-feature-priority="100" id="work-lada">
             <div class="work-img-container">
               <img src="assets/images/work_lada.jpg" alt="LADA Azimut neon wireframe key visual from the 2026 dealer conference film" loading="lazy">
-              <video class="work-loop" data-loop-src="assets/video/lada2026/lada_2026_preview.mp4" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
               <div class="work-badge badge-client" data-i18n="badge_client">Client Work</div>
               <div class="work-caption">
                 <span class="work-cat" data-i18n="cat_3d_motion_ai">3D / Motion / AI Film</span>
@@ -435,10 +434,16 @@
           </div>
           <div class="slider-image-container">
             <!-- One side-by-side source keeps before and after on the exact same frame. -->
-            <video class="vfx-comparison-source" id="vfx-comparison-video" muted playsinline preload="metadata" aria-hidden="true">
-              <source src="assets/video/vfx_compare.mp4" type="video/mp4">
-            </video>
+            <video class="vfx-comparison-source" id="vfx-comparison-video" data-video-src="assets/video/vfx_compare.mp4" muted playsinline preload="none" aria-hidden="true"></video>
             <canvas class="vfx-comparison-canvas" id="vfx-comparison-canvas" aria-hidden="true"></canvas>
+            <div class="vfx-video-placeholder" id="vfx-video-placeholder" role="status" aria-live="polite">
+              <span class="vfx-video-placeholder-mark" aria-hidden="true">▶</span>
+              <span class="vfx-video-placeholder-label" data-i18n="video_comparison">VFX video comparison</span>
+              <span class="vfx-video-placeholder-loading">
+                <span class="video-loader-spinner" aria-hidden="true"></span>
+                <span class="video-loader-text" data-i18n="video_loading">Loading video…</span>
+              </span>
+            </div>
 
             <!-- Handle Line -->
             <div class="slider-handle" id="slider-handle-bar">
@@ -617,8 +622,19 @@
         <div class="modal-media-col">
           <!-- Standard landscape media viewer. Existing projects continue to use this. -->
           <div class="modal-hero-media" id="modal-hero-media">
-            <video id="modal-video" muted loop playsinline controls class="modal-video" style="display: none;"></video>
+            <video id="modal-video" muted loop playsinline preload="none" class="modal-video" style="display: none;"></video>
             <img id="modal-image" class="modal-image" src="" alt="" style="display: none;">
+            <div class="modal-video-gate" id="modal-video-gate" hidden>
+              <span class="modal-video-gate-type" data-i18n="video_badge">Video</span>
+              <span class="modal-video-gate-loader" role="status" aria-live="polite">
+                <span class="video-loader-spinner" aria-hidden="true"></span>
+                <span class="video-loader-text" data-i18n="video_loading">Loading video…</span>
+              </span>
+              <button class="modal-video-gate-play" id="modal-video-gate-play" type="button">
+                <span aria-hidden="true">▶</span>
+                <span data-i18n="video_play">Play video</span>
+              </button>
+            </div>
           </div>
 
           <!-- Optional portrait-video gallery. Enabled per project in script.js. -->
@@ -674,6 +690,6 @@
   </dialog>
 
   <!-- Main Logic -->
-  <script src="script.js?v=20260726f"></script>
+  <script src="script.js?v=20260728g"></script>
 </body>
 </html>
