@@ -891,6 +891,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work5_summary: "A hand-drawn public-service animation for the Yerevan Municipality, warning residents about the danger of diseased, pest-infested city trees and urging timely treatment.",
       work6_title: "LADA 2026 Dealer Conference",
       work6_summary: "Three minutes of stage content for the LADA brand and new model reveal — neon wireframe vehicles, light-trail environments, and AI-generated sequences, delivered on a compressed conference schedule.",
+      work7_title: "LadyBag — TV Commercial",
+      work7_summary: "A CGI toy commercial aired between cartoons on a kids' TV channel — full-CG flying toys composited into live-action bedrooms, with particle FX and green-screen screen replacement for broadcast.",
       banner_accent: "// HOW WE LAUNCH",
       banner_quote: "A small core team brings the right specialists together — then carries the idea from a rough brief to final delivery.",
       slider_tag: "Full-Cycle VFX",
@@ -1024,6 +1026,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work5_summary: "Рисованный социальный ролик для мэрии Еревана: он предупреждает жителей об опасности больных, заражённых вредителями городских деревьев и призывает вовремя их лечить.",
       work6_title: "Дилерская конференция LADA 2026",
       work6_summary: "Три минуты сценического контента для презентации бренда и новой модельной линейки LADA — неоновые wireframe-автомобили, световые трассы и AI-генерация, собранные в сжатые сроки подготовки конференции.",
+      work7_title: "LadyBag — ТВ-реклама",
+      work7_summary: "Рекламный ролик с CGI-игрушками, который выходит между мультфильмами на детском телеканале: полностью 3D-игрушки, вписанные в живую съёмку детских комнат, с эффектами частиц и заменой экранов, снятых на хромакее, — для эфирной выдачи.",
       banner_accent: "// КАК МЫ ЗАПУСКАЕМ ИДЕИ",
       banner_quote: "Небольшая основная команда собирает нужных специалистов и доводит идею от сырого брифа до готового запуска.",
       slider_tag: "Полный VFX-пайплайн",
@@ -1157,6 +1161,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work5_summary: "为埃里温市政府制作的手绘公益动画，提醒居民警惕病树及虫害树木的危险，呼吁及时治疗。",
       work6_title: "LADA 2026 经销商大会",
       work6_summary: "为 LADA 品牌与全新车型发布制作的三分钟舞台内容——霓虹线框车身、光轨场景与 AI 生成镜头，在紧张的会议筹备周期内交付。",
+      work7_title: "LadyBag — 电视广告",
+      work7_summary: "面向儿童电视频道、在动画片之间播出的 CGI 玩具广告：全 CG 飞行玩具合成到实拍儿童房间中，配以粒子特效和绿幕屏幕替换，用于电视播出。",
       banner_accent: "// 我们如何发射创意",
       banner_quote: "精干的核心团队汇集合适的专家，把想法从初步简报推进到最终交付。",
       slider_tag: "全流程 VFX",
@@ -1290,6 +1296,8 @@ document.addEventListener('DOMContentLoaded', () => {
       work5_summary: "エレバン市役所のために制作した手描きの啓発アニメーション。病気や害虫に侵された街路樹の危険性を住民に伝え、早めの治療を呼びかけます。",
       work6_title: "LADA 2026 ディーラーカンファレンス",
       work6_summary: "LADAのブランドと新型ラインナップ発表のための3分間のステージ映像。ネオンのワイヤーフレーム車両、ライトトレイル空間、AI生成カットを、限られた準備期間の中で仕上げました。",
+      work7_title: "LadyBag — テレビCM",
+      work7_summary: "子ども向けテレビ局でアニメの合間に放送される CGI おもちゃの CM。フル CG の飛行おもちゃを実写の子ども部屋に合成し、パーティクル演出とグリーンバックのスクリーン置き換えを加えて放送用に仕上げました。",
       banner_accent: "// アイデアの打ち上げ方",
       banner_quote: "小さなコアチームが必要な専門家を集め、ラフなブリーフから最終納品までアイデアを伴走します。",
       slider_tag: "フルサイクル VFX",
@@ -1672,6 +1680,40 @@ document.addEventListener('DOMContentLoaded', () => {
         zh: "为埃里温市政府制作的公益动画，旨在提高公众对城市中病树及虫害树木危险性的认识。影片将温暖的手绘插画风格与清晰的科普讲解结构相结合，展示未经治疗、被线虫等害虫侵蚀而衰弱的树木如何威胁城市环境以及周边居民的健康，并呼吁居民及时检查和治疗树木。项目涵盖插画、角色设计与完整的 2D 动画制作。",
         ja: "エレバン市役所のために制作した、病気や害虫に侵された街路樹の危険性を伝える啓発アニメーション。温かみのある手描きイラストの作風と分かりやすいエクスプレイナー構成を組み合わせ、線虫などの害虫で弱った未処置の樹木が都市環境とそこで暮らす人々の健康をどのように脅かすかを描き、住民に樹木の点検と早めの治療を呼びかけます。イラスト、キャラクターデザイン、2Dアニメーション全般を担当しました。"
       }
+    },
+    'work-ladybag': {
+      category: { en: "3D / CGI / Compositing", ru: "3D / CGI / Композитинг", zh: "3D / CGI / 合成", ja: "3D / CGI / コンポジット" },
+      title: {
+        en: "LadyBag — TV Commercial",
+        ru: "LadyBag — ТВ-реклама",
+        zh: "LadyBag — 电视广告",
+        ja: "LadyBag — テレビCM"
+      },
+      role: {
+        en: "CGI, VFX & Compositing",
+        ru: "CGI, VFX и композитинг",
+        zh: "CGI、视觉特效与合成",
+        ja: "CGI・VFX・コンポジット"
+      },
+      client: {
+        en: "TV Channel (Client Work)",
+        ru: "Телеканал (Коммерческий проект)",
+        zh: "电视频道（客户项目）",
+        ja: "テレビ局（クライアントワーク）"
+      },
+      tools: "3D / CGI / VFX / Compositing",
+      mediaLayout: "process-verticals",
+      processVideo: { url: "assets/video/ladybag/ladybag_01.mp4", poster: "assets/images/work_ladybag_01.jpg" },
+      verticalVideos: [
+        { url: "assets/video/ladybag/ladybag_02.mp4", poster: "assets/images/work_ladybag_02.jpg" },
+        { url: "assets/video/ladybag/ladybag_03.mp4", poster: "assets/images/work_ladybag_03.jpg" }
+      ],
+      desc: {
+        en: "A television commercial made for a children's TV channel, designed to run between cartoon blocks and advertise a line of toy products. Full-CG flying toys were modelled, animated, and composited into live-action footage of kids' bedrooms, combined with magical particle effects and green-screen replacement of the on-set TV screens. The project covered 3D, VFX, and final compositing for broadcast delivery. The vertical clips show before/after breakdowns; the landscape clip walks through the process.",
+        ru: "Телевизионный рекламный ролик для детского телеканала, рассчитанный на показ между блоками мультфильмов и рекламирующий линейку игрушек. Летающие игрушки полностью созданы в 3D, анимированы и вписаны в живую съёмку детских комнат, дополнены волшебными эффектами частиц и заменой экранов телевизоров, снятых на хромакее. Проект охватывал 3D, VFX и финальный композитинг для эфирной выдачи. Вертикальные ролики показывают сравнение «до/после», горизонтальный — процесс работы.",
+        zh: "为某儿童电视频道制作的电视广告，设计用于在动画片段之间播出，宣传一系列玩具产品。飞行玩具全部以 3D 建模、动画并合成到实拍的儿童房间画面中，结合魔法粒子特效以及对拍摄现场电视绿幕的屏幕替换。项目涵盖 3D、视觉特效以及最终合成，用于电视播出。竖版短片展示前后对比，横版短片则呈现制作流程。",
+        ja: "子ども向けテレビ局のために制作したテレビCMで、アニメ番組の合間に放送し、おもちゃ製品のラインナップを宣伝することを目的としています。飛行するおもちゃはすべて3Dでモデリング・アニメーションし、実写の子ども部屋の映像に合成。魔法のようなパーティクルエフェクトや、撮影現場のテレビのグリーンバックによるスクリーン置き換えを組み合わせました。3D、VFX、そして放送用の最終コンポジットまでを担当しました。縦型クリップはビフォーアフター、横型クリップは制作プロセスを紹介しています。"
+      }
     }
   };
 
@@ -1727,6 +1769,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const images = Array.isArray(data.images) ? data.images : [];
     const videos = Array.isArray(data.videos) ? data.videos : [];
     const useVerticalGallery = data.mediaLayout === 'vertical-grid' && videos.length > 0;
+    const useProcessVerticals = data.mediaLayout === 'process-verticals';
 
     thumbnailsContainer.innerHTML = '';
     verticalGallery.innerHTML = '';
@@ -1736,10 +1779,93 @@ document.addEventListener('DOMContentLoaded', () => {
     modalImage.style.display = 'none';
     modalImage.removeAttribute('src');
 
-    heroMedia.hidden = useVerticalGallery;
-    thumbnailsContainer.hidden = useVerticalGallery;
-    verticalGallery.hidden = !useVerticalGallery;
+    heroMedia.hidden = useVerticalGallery || useProcessVerticals;
+    thumbnailsContainer.hidden = useVerticalGallery || useProcessVerticals;
+    verticalGallery.hidden = !useVerticalGallery && !useProcessVerticals;
     horizontalGallery.hidden = !useVerticalGallery || images.length === 0;
+    verticalGallery.classList.toggle('modal-vertical-gallery--pv', useProcessVerticals);
+
+    /* Process + verticals mode ---------------------------------------------
+       Used by projects with mediaLayout: "process-verticals": a landscape
+       process clip and the portrait before/after clips shown together in one
+       equal-height row. Each plays on click; starting one pauses the others. */
+    if (useProcessVerticals) {
+      const localizedTitle = data.title[lang] || data.title.en;
+      const ariaTemplate = translations[lang]?.modal_video_aria || translations.en.modal_video_aria;
+      const buildAria = index =>
+        ariaTemplate.replace('{title}', localizedTitle).replace('{index}', String(index + 1));
+
+      const playIcon = `
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+          <path d="M8 5v14l11-7z"></path>
+        </svg>
+      `;
+
+      // Only one clip plays at a time across the whole row.
+      const pauseOthers = current => {
+        verticalGallery.querySelectorAll('video').forEach(other => {
+          if (other !== current) other.pause();
+        });
+      };
+
+      const buildClip = (clip, { cardClass, videoClass, ariaIndex }) => {
+        const card = document.createElement('div');
+        card.className = cardClass;
+
+        const video = document.createElement('video');
+        video.className = videoClass;
+        video.src = clip.url;
+        video.poster = clip.poster || '';
+        video.preload = 'metadata';
+        video.playsInline = true;
+        video.loop = true;
+        video.controls = false;
+
+        const playButton = document.createElement('button');
+        playButton.className = 'modal-pv-play';
+        playButton.type = 'button';
+        playButton.setAttribute('aria-label', buildAria(ariaIndex));
+        playButton.innerHTML = playIcon;
+
+        video.addEventListener('play', () => {
+          pauseOthers(video);
+          card.classList.add('has-started', 'is-playing');
+          video.controls = true;
+        });
+        video.addEventListener('pause', () => card.classList.remove('is-playing'));
+        video.addEventListener('ended', () => card.classList.remove('is-playing'));
+        playButton.addEventListener('click', () => {
+          video.play().catch(error => console.warn('Could not play project video:', error));
+        });
+
+        card.appendChild(video);
+        card.appendChild(playButton);
+        return card;
+      };
+
+      // Landscape process clip first, then the portrait before/after clips —
+      // all shown together in one equal-height row (no switching or scrolling).
+      const process = data.processVideo;
+      if (process?.url) {
+        verticalGallery.appendChild(buildClip(process, {
+          cardClass: 'modal-pv-process',
+          videoClass: 'modal-pv-process-video',
+          ariaIndex: 0
+        }));
+      }
+
+      const clips = Array.isArray(data.verticalVideos) ? data.verticalVideos : [];
+      clips.forEach((clip, index) => {
+        if (!clip?.url) return;
+        verticalGallery.appendChild(buildClip(clip, {
+          cardClass: 'modal-pv-vertical',
+          videoClass: 'modal-pv-vertical-video',
+          ariaIndex: index + 1
+        }));
+      });
+
+      return;
+    }
 
     /* Portrait-video mode --------------------------------------------------
        Only projects with mediaLayout: "vertical-grid" use this branch.
@@ -1885,7 +2011,9 @@ document.addEventListener('DOMContentLoaded', () => {
         modalVideo.loop = true;
         modalVideo.controls = true;
         modalVideo.src = item.url;
-        modalVideo.play().catch(() => {});
+        // Do not autoplay: the clip loads paused with its native play control,
+        // so nothing starts moving until the viewer chooses to press play.
+        modalVideo.pause();
       } else {
         modalVideo.pause();
         modalVideo.removeAttribute('src');

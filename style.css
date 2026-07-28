@@ -3743,6 +3743,124 @@ html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
   transform: translate(-50%, -50%) scale(0.82);
 }
 
+/* Process + verticals layout
+   ---------------------------------------------------------------------------
+   Enabled for projects with mediaLayout: "process-verticals". The landscape
+   process clip and both portrait before/after clips are shown together in one
+   equal-height row — nothing hidden behind a toggle or scroll. The container's
+   aspect-ratio makes the row width-driven, so every clip keeps its native
+   proportions at a shared height. (16/9 + 2 × 406/720 ≈ 2.91; the container
+   ratio adds slack for the two gaps.) On narrow screens the row wraps: the
+   process clip takes the full width and the two verticals sit side by side. */
+.modal-vertical-gallery--pv {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0.7rem;
+  width: 100%;
+  aspect-ratio: 3.15 / 1;
+  max-height: 60vh;
+}
+
+.modal-pv-process,
+.modal-pv-vertical {
+  position: relative;
+  height: 100%;
+  width: auto;
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  background: #07080a;
+  border: 1px solid var(--border-color);
+  border-radius: 0.55rem 1.2rem 0.55rem 1.2rem;
+  box-shadow: 0 0.7rem 1.8rem rgba(7, 8, 10, 0.18);
+}
+
+.modal-pv-process {
+  aspect-ratio: 16 / 9;
+}
+
+.modal-pv-vertical {
+  aspect-ratio: 406 / 720;
+}
+
+.modal-pv-process-video,
+.modal-pv-vertical-video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #07080a;
+}
+
+.modal-pv-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: clamp(2.5rem, 3.2vw, 3rem);
+  height: clamp(2.5rem, 3.2vw, 3rem);
+  padding: 0;
+  color: #fff6e7;
+  background: rgba(7, 8, 10, 0.38);
+  border: 1.5px solid rgba(255, 246, 231, 0.9);
+  border-radius: 50%;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.modal-pv-play svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  margin-left: 0.1rem;
+}
+
+.modal-pv-play:hover,
+.modal-pv-play:focus-visible {
+  background: rgba(7, 8, 10, 0.55);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  outline: none;
+  transform: translate(-50%, -50%) scale(1.06);
+}
+
+.modal-pv-process.has-started .modal-pv-play,
+.modal-pv-vertical.has-started .modal-pv-play {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.82);
+}
+
+/* On narrow screens the row wraps: the process clip spans the full width and
+   the two verticals share the row below it. */
+@media (max-width: 640px) {
+  .modal-vertical-gallery--pv {
+    flex-wrap: wrap;
+    aspect-ratio: auto;
+    max-height: none;
+    gap: 0.6rem;
+  }
+
+  .modal-pv-process {
+    flex: 1 1 100%;
+    width: 100%;
+    height: auto;
+  }
+
+  .modal-pv-vertical {
+    flex: 1 1 0;
+    width: auto;
+    height: auto;
+    max-width: calc(50% - 0.3rem);
+  }
+}
+
 .modal-thumb-fallback {
   display: grid;
   place-items: center;
