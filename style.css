@@ -3652,8 +3652,9 @@ html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
    counted in scrollWidth either — a real flex item always is. */
 .services-grid::after {
   content: '';
-  /* 0.5rem + the 1.5rem flex gap in front of it = the 2rem container gutter. */
-  flex: 0 0 0.5rem;
+  /* The preceding 1.5rem flex gap plus this spacer exactly mirrors the
+     container-aligned leading inset at every viewport width. */
+  flex: 0 0 max(0.5rem, calc((100vw - 1200px) / 2 + 0.5rem));
 }
 
 /* Work collage
@@ -4897,4 +4898,270 @@ html[data-theme='dark'] .services-scroller::-webkit-scrollbar-track {
     width: 2.25rem;
     height: 2.25rem;
   }
+}
+
+/* Chapter typography -------------------------------------------------------
+   Major page sections share one editorial scale without repeating the
+   animated collaboration treatment everywhere. The full-bleed titles occupy
+   existing header whitespace; contained sections keep their original grids. */
+.chapter-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+html:lang(ru) .chapter-title {
+  padding-top: 0.07em;
+  font-family: 'Golos Text', sans-serif;
+  font-weight: 900;
+  line-height: 0.88;
+}
+
+html:lang(zh) .chapter-title {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.045em;
+}
+
+html:lang(zh) .chapter-title,
+html:lang(ja) .chapter-title {
+  overflow: visible;
+  padding-top: 0.12em;
+  padding-bottom: 0.14em;
+  line-height: 1;
+}
+
+.services-section .chapter-title,
+.work-section .chapter-title,
+.before-after-section .chapter-title {
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
+  padding-right: clamp(1rem, 2.5vw, 3rem);
+  padding-left: clamp(1rem, 2.5vw, 3rem);
+  color: transparent;
+  background:
+    linear-gradient(
+      105deg,
+      var(--text-main) 4%,
+      var(--accent-teal) 48%,
+      var(--accent-color) 76%,
+      var(--text-main) 100%
+    );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: clamp(4.25rem, 7.6vw, 9.25rem);
+  line-height: 0.82;
+  letter-spacing: -0.078em;
+  text-align: center;
+  white-space: nowrap;
+  filter: drop-shadow(0 10px 28px rgba(24, 61, 67, 0.1));
+}
+
+.work-section .chapter-title {
+  font-size: clamp(4.5rem, 8.6vw, 10.25rem);
+}
+
+.before-after-section .chapter-title {
+  font-size: clamp(3.9rem, 6.5vw, 8rem);
+}
+
+html:lang(ru) .services-section .chapter-title,
+html:lang(ru) .work-section .chapter-title {
+  font-size: clamp(3.8rem, 6.6vw, 8rem);
+}
+
+html:lang(ru) .before-after-section .chapter-title {
+  font-size: clamp(3.45rem, 5.35vw, 6.5rem);
+}
+
+html:lang(zh) .services-section .chapter-title,
+html:lang(zh) .work-section .chapter-title {
+  font-size: clamp(5.5rem, 14vw, 12rem);
+}
+
+html:lang(zh) .before-after-section .chapter-title {
+  font-size: clamp(4.8rem, 10vw, 10rem);
+}
+
+html:lang(ja) .services-section .chapter-title,
+html:lang(ja) .work-section .chapter-title {
+  font-size: clamp(4.8rem, 8.5vw, 10rem);
+}
+
+html:lang(ja) .before-after-section .chapter-title {
+  font-size: clamp(4rem, 6.8vw, 8.25rem);
+}
+
+.services-section {
+  padding-top: clamp(3.25rem, 5vw, 4.5rem);
+}
+
+.services-section .section-header {
+  margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.services-section .services-title {
+  margin-bottom: 0;
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+html:lang(ru) .services-section .services-title {
+  padding-top: 0.06em;
+  font-family: 'Golos Text', sans-serif;
+}
+
+html:lang(zh) .services-section .services-title {
+  padding-block: 0.08em 0.12em;
+  font-family: 'Noto Sans SC', sans-serif;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+
+.work-section {
+  padding-top: clamp(3.25rem, 5vw, 4.5rem);
+}
+
+.work-section .section-header-flex {
+  align-items: flex-start;
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+  margin-bottom: clamp(2.25rem, 4vw, 3.25rem);
+}
+
+.work-section .section-header-flex > div:first-child {
+  width: 100%;
+}
+
+.before-after-section {
+  padding-top: clamp(3.25rem, 5vw, 4.5rem);
+}
+
+.before-after-section .chapter-title {
+  margin-bottom: 0;
+}
+
+.before-after-section .section-subtitle {
+  margin: clamp(1rem, 2vw, 1.5rem) auto clamp(2.5rem, 4vw, 3.5rem);
+}
+
+.nomadcanvas-promo .chapter-title,
+.contact-section .chapter-title {
+  font-size: clamp(3rem, 4.5vw, 5.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.065em;
+}
+
+.archive-section .chapter-title {
+  max-width: 10ch;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-transform: none;
+}
+
+.nomadcanvas-promo .chapter-title {
+  max-width: 9ch;
+  margin-bottom: 0.8rem;
+}
+
+.contact-section .chapter-title {
+  max-width: 10ch;
+  margin-bottom: 1.5rem;
+  font-size: clamp(3rem, 4.15vw, 5rem);
+}
+
+@media (max-width: 900px) {
+  .services-section .chapter-title,
+  .work-section .chapter-title,
+  .before-after-section .chapter-title,
+  html:lang(ru) .services-section .chapter-title,
+  html:lang(ru) .work-section .chapter-title,
+  html:lang(ru) .before-after-section .chapter-title,
+  html:lang(zh) .services-section .chapter-title,
+  html:lang(zh) .work-section .chapter-title,
+  html:lang(zh) .before-after-section .chapter-title,
+  html:lang(ja) .services-section .chapter-title,
+  html:lang(ja) .work-section .chapter-title,
+  html:lang(ja) .before-after-section .chapter-title {
+    font-size: clamp(3.25rem, 8.5vw, 5rem);
+  }
+
+  .archive-section .chapter-title {
+    max-width: 15ch;
+  }
+}
+
+@media (max-width: 768px) {
+  .services-section,
+  .work-section,
+  .before-after-section {
+    padding-top: 4rem;
+  }
+
+  .services-section .chapter-title,
+  .work-section .chapter-title,
+  .before-after-section .chapter-title {
+    width: auto;
+    max-width: 12ch;
+    margin-left: 0;
+    padding-right: 0;
+    padding-left: 0;
+    font-size: clamp(2.65rem, 10.5vw, 4rem);
+    line-height: 0.9;
+    letter-spacing: -0.055em;
+    text-align: left;
+    white-space: normal;
+  }
+
+  html:lang(ru) .services-section .chapter-title,
+  html:lang(ru) .work-section .chapter-title,
+  html:lang(ru) .before-after-section .chapter-title,
+  html:lang(zh) .services-section .chapter-title,
+  html:lang(zh) .work-section .chapter-title,
+  html:lang(zh) .before-after-section .chapter-title,
+  html:lang(ja) .services-section .chapter-title,
+  html:lang(ja) .work-section .chapter-title,
+  html:lang(ja) .before-after-section .chapter-title {
+    font-size: clamp(2.65rem, 10.5vw, 4rem);
+  }
+
+  .before-after-section .chapter-title {
+    max-width: 11ch;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+  }
+
+  .nomadcanvas-promo .chapter-title,
+  .contact-section .chapter-title {
+    font-size: clamp(2.65rem, 10vw, 4rem);
+    line-height: 0.94;
+    letter-spacing: -0.05em;
+  }
+
+  .archive-section .chapter-title {
+    max-width: 15ch;
+    font-size: clamp(2rem, 8vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
