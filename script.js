@@ -882,12 +882,28 @@ document.addEventListener('DOMContentLoaded', () => {
       slider_pause: "Pause VFX comparison",
       collab_tag: "Collaboration Formats",
       collab_title: "Flexible Team Scale",
+      collab_tabs_aria: "Choose a collaboration format",
+      collab1_name: "Freelance Support",
       collab1_title: "01. Freelance Support",
       collab1_desc: "Direct backup for agencies, studios, and production houses that need senior-level support for CGI, motion design, or cleanup tasks. Fits into existing project pipelines.",
+      collab1_team: "One senior specialist",
+      collab1_process: "Inside your existing pipeline",
+      collab1_result: "Focused production support",
+      collab2_name: "Project Production",
       collab2_title: "02. Project Production",
       collab2_desc: "End-to-end production assets for brands and startup teams. We handle the process from brief, styleframes, draft animations, rendering, up to the final deliverables.",
+      collab2_team: "Core team + selected specialists",
+      collab2_process: "From brief to final delivery",
+      collab2_result: "Complete production package",
+      collab3_name: "White-Label",
       collab3_title: "03. White-Label Partner",
       collab3_desc: "Unbranded production partner. We handle backend visual execution, CGI setups, and animations silently while your client-facing account team manages feedback.",
+      collab3_team: "Dedicated backend crew",
+      collab3_process: "Behind your client-facing team",
+      collab3_result: "Unbranded, ready-to-deliver assets",
+      collab_team_label: "Team",
+      collab_process_label: "Process",
+      collab_result_label: "Result",
       contact_tag: "Let's Connect",
       contact_title: "Have a launch or production gap?",
       contact_lead: "We turn pitch decks, rough concepts, visual guidelines, and interactive ideas into finished production assets. Reach out to coordinate your next visual or media project.",
@@ -1022,12 +1038,28 @@ document.addEventListener('DOMContentLoaded', () => {
       slider_pause: "Поставить VFX-сравнение на паузу",
       collab_tag: "Форматы сотрудничества",
       collab_title: "Гибкий масштаб команды",
+      collab_tabs_aria: "Выберите формат сотрудничества",
+      collab1_name: "Фриланс-поддержка",
       collab1_title: "01. Поддержка на фрилансе",
       collab1_desc: "Прямая поддержка для агентств, студий и продакшенов, которым нужна помощь уровня senior в задачах CGI, моушн-дизайна или клинапа. Легко встраивается в текущие пайплайны.",
+      collab1_team: "Один senior-специалист",
+      collab1_process: "Внутри вашего текущего пайплайна",
+      collab1_result: "Точечная поддержка продакшена",
+      collab2_name: "Продакшен проекта",
       collab2_title: "02. Производство под ключ",
       collab2_desc: "Создание визуальных активов от начала до конца для брендов и стартап-команд. Мы ведем весь процесс: бриф, стайлфреймы, анимация, рендеринг и финальная сдача.",
-      collab3_title: "03. White-Label партнерство",
-      collab3_desc: "Небрендированный партнер по продакшену. Мы берем на себя визуальное исполнение, CGI и анимацию, в то время как ваша команда общается с клиентом напрямую.",
+      collab2_team: "Основная команда + профильные специалисты",
+      collab2_process: "От брифа до финальной сдачи",
+      collab2_result: "Полный комплект материалов",
+      collab3_name: "Продакшен без брендинга",
+      collab3_title: "03. Продакшен без брендинга",
+      collab3_desc: "Мы остаемся за кадром и берем на себя визуальный продакшен, CGI и анимацию, пока ваша команда ведет коммуникацию с клиентом.",
+      collab3_team: "Команда за кадром",
+      collab3_process: "Работаем под именем вашей команды",
+      collab3_result: "Готовые материалы без нашего брендинга",
+      collab_team_label: "Команда",
+      collab_process_label: "Процесс",
+      collab_result_label: "Результат",
       contact_tag: "Связаться с нами",
       contact_title: "Предстоит запуск или нужна помощь в продакшене?",
       contact_lead: "Мы превращаем питч-деки, черновые концепты, визуальные гайдлайны и интерактивные идеи в готовые production-активы. Свяжитесь с нами, чтобы обсудить следующий визуальный или медиа-проект.",
@@ -1162,12 +1194,28 @@ document.addEventListener('DOMContentLoaded', () => {
       slider_pause: "暂停 VFX 对比",
       collab_tag: "合作模式",
       collab_title: "灵活团队规模",
+      collab_tabs_aria: "选择合作模式",
+      collab1_name: "自由职业支持",
       collab1_title: "01. 自由职业支持",
       collab1_desc: "为需要 CGI、动态设计或擦除任务方面资深级支持的代理商、工作室和制作公司提供直接后盾。适应现有的项目流程。",
+      collab1_team: "一位资深专项专家",
+      collab1_process: "接入您现有的制作流程",
+      collab1_result: "精准的制作支持",
+      collab2_name: "项目制作",
       collab2_title: "02. 项目制制作",
       collab2_desc: "为品牌和初创团队提供端到端的制作资产。我们处理从简报、风格帧、草稿动画、渲染，一直到最终交付的过程。",
+      collab2_team: "核心团队＋按需专家",
+      collab2_process: "从需求简报到最终交付",
+      collab2_result: "完整的制作成果包",
+      collab3_name: "白标合作",
       collab3_title: "03. 白标合作伙伴",
       collab3_desc: "无品牌制作合作伙伴。我们默默地处理后端的视觉执行、CGI 设置和动画，而您面向客户的团队负责管理反馈。",
+      collab3_team: "专属后端制作团队",
+      collab3_process: "配合您的客户沟通团队",
+      collab3_result: "无品牌、可直接交付的素材",
+      collab_team_label: "团队",
+      collab_process_label: "流程",
+      collab_result_label: "成果",
       contact_tag: "联系我们",
       contact_title: "有发布计划或制作缺口？",
       contact_lead: "我们将路演PPT、粗略概念、视觉指南和互动想法转化为完成的制作资产。联系我们以协调您的下一个视觉或媒体项目。",
@@ -1302,12 +1350,28 @@ document.addEventListener('DOMContentLoaded', () => {
       slider_pause: "VFX比較を一時停止",
       collab_tag: "コラボレーション形式",
       collab_title: "柔軟なチーム編成",
+      collab_tabs_aria: "コラボレーション形式を選択",
+      collab1_name: "フリーランスサポート",
       collab1_title: "01. フリーランスサポート",
       collab1_desc: "CGI、モーションデザイン、またはクリンアップ作業でシニアレベルのサポートを必要とするエージェンシー、スタジオ、プロダクション向けの直接的なバックアップ。既存のパイプラインに適合します。",
+      collab1_team: "シニアスペシャリスト1名",
+      collab1_process: "既存の制作パイプラインに参加",
+      collab1_result: "必要な工程を的確にサポート",
+      collab2_name: "プロジェクト制作",
       collab2_title: "02. プロジェクト制作",
       collab2_desc: "ブランドやスタートアップチーム向けのエンドツーエンドの制作。ブリーフ、スタイルフレーム、ドラフトアニメーション、レンダリングから最終納品まで対応します。",
+      collab2_team: "コアチーム＋必要な専門スタッフ",
+      collab2_process: "ブリーフから最終納品まで",
+      collab2_result: "完成した制作パッケージ",
+      collab3_name: "ホワイトレーベル",
       collab3_title: "03. ホワイトレーベルパートナー",
       collab3_desc: "ブランド名を出さない制作パートナー。クライアント対応のアカウントチームがフィードバックを管理する間、バックエンドのビジュアル実行、CGIセットアップ、アニメーションをサイレントに処理します。",
+      collab3_team: "専任バックエンド制作チーム",
+      collab3_process: "クライアント対応チームの後方で進行",
+      collab3_result: "ブランド表記なしの納品可能素材",
+      collab_team_label: "チーム",
+      collab_process_label: "プロセス",
+      collab_result_label: "成果",
       contact_tag: "お問い合わせ",
       contact_title: "制作のご相談はこちら",
       contact_lead: "ピッチブック、ラフコンセプト、ビジュアルガイドライン、インタラクティブなアイデアを完成した制作アセットに変えます。次のビジュアルまたはメディアプロジェクトについてご相談ください。",
@@ -1335,6 +1399,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Active details modal project tracker
   let activeProjectId = null;
+  let refreshCollabAnimatedText = () => {};
 
   // Switch Language Function
   const setLanguage = (lang) => {
@@ -1391,6 +1456,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (activeProjectId) {
       populateModal(activeProjectId, lang);
     }
+
+    refreshCollabAnimatedText();
   };
 
   // Language buttons click events
@@ -1407,6 +1474,242 @@ document.addEventListener('DOMContentLoaded', () => {
   const browserLanguage = navigator.language.slice(0, 2);
   const initialLanguage = savedLanguage || (translations[browserLanguage] ? browserLanguage : 'en');
   setLanguage(initialLanguage);
+
+  // Collaboration format switcher
+  const collabExplorer = document.querySelector('[data-collab-explorer]');
+  if (collabExplorer) {
+    const collabSection = collabExplorer.closest('.collab-section');
+    const collabTabsShell = collabExplorer.querySelector('.collab-tabs-shell');
+    const collabTabList = collabExplorer.querySelector('[role="tablist"]');
+    const collabStage = collabExplorer.querySelector('.collab-stage');
+    const collabTabs = [...collabExplorer.querySelectorAll('[role="tab"]')];
+    const collabPanels = [...collabExplorer.querySelectorAll('[role="tabpanel"]')];
+    const collabBackdrops = [...(collabSection?.querySelectorAll('[data-collab-backdrop]') || [])];
+    let activeCollabIndex = Math.max(0, collabTabs.findIndex(tab => tab.classList.contains('is-active')));
+    let collabLeavingTimer = null;
+    let collabShellTimer = null;
+    let collabTextGlassTimer = null;
+
+    const positionCollabIndicator = (index = activeCollabIndex) => {
+      const activeTab = collabTabs[index];
+      if (!collabTabList || !activeTab) return;
+
+      collabTabList.style.setProperty('--collab-indicator-x', `${activeTab.offsetLeft}px`);
+      collabTabList.style.setProperty('--collab-indicator-width', `${activeTab.offsetWidth}px`);
+    };
+
+    const warmCollabPanel = (index) => {
+      const image = collabBackdrops[index];
+      if (image && !image.complete && typeof image.decode === 'function') {
+        image.decode().catch(() => {});
+      }
+    };
+
+    const preloadCollabBackdrops = () => {
+      collabBackdrops.forEach(image => {
+        image.loading = 'eager';
+        if (!image.complete && typeof image.decode === 'function') {
+          image.decode().catch(() => {});
+        }
+      });
+    };
+
+    if ('IntersectionObserver' in window && collabSection) {
+      const collabPreloadObserver = new IntersectionObserver(entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        preloadCollabBackdrops();
+        collabPreloadObserver.disconnect();
+      }, { rootMargin: '600px 0px' });
+      collabPreloadObserver.observe(collabSection);
+    } else {
+      preloadCollabBackdrops();
+    }
+
+    const splitCollabTextIntoCharacters = (element) => {
+      const existingAccessibleText = element.querySelector('.collab-accessible-text')?.textContent;
+      const text = (existingAccessibleText || element.textContent).replace(/\s+/g, ' ').trim();
+      if (!text) return;
+
+      element.removeAttribute('aria-label');
+      const accessibleText = document.createElement('span');
+      accessibleText.className = 'collab-accessible-text';
+      accessibleText.textContent = text;
+
+      const animatedText = document.createElement('span');
+      animatedText.className = 'collab-animated-text';
+      animatedText.setAttribute('aria-hidden', 'true');
+      const fragment = document.createDocumentFragment();
+      const characters = [];
+      const hasWhitespace = /\s/.test(text);
+      const tokens = hasWhitespace ? text.split(/(\s+)/) : Array.from(text);
+      const delayStep = element.classList.contains('collab-desc')
+        ? 6
+        : element.classList.contains('collab-type')
+          ? 28
+          : 14;
+
+      tokens.forEach(token => {
+        if (!token) return;
+
+        if (/^\s+$/.test(token)) {
+          const space = document.createElement('span');
+          space.className = 'collab-space';
+          space.setAttribute('aria-hidden', 'true');
+          space.textContent = token;
+          fragment.append(space);
+          return;
+        }
+
+        const word = document.createElement('span');
+        word.className = 'collab-word';
+        word.setAttribute('aria-hidden', 'true');
+
+        Array.from(token).forEach(character => {
+          const characterSpan = document.createElement('span');
+          characterSpan.className = 'collab-char';
+          characterSpan.textContent = character;
+          characterSpan.style.setProperty(
+            '--collab-char-delay',
+            `${Math.min(characters.length * delayStep, 720)}ms`
+          );
+          characters.push(characterSpan);
+          word.append(characterSpan);
+        });
+
+        fragment.append(word);
+      });
+
+      const characterCount = characters.length;
+      characters.forEach((characterSpan, characterIndex) => {
+        characterSpan.style.setProperty(
+          '--collab-char-exit-delay',
+          `${Math.min((characterCount - characterIndex - 1) * 2, 160)}ms`
+        );
+      });
+
+      animatedText.append(fragment);
+      element.replaceChildren(accessibleText, animatedText);
+    };
+
+    refreshCollabAnimatedText = () => {
+      collabPanels.forEach(panel => {
+        panel.querySelectorAll('.collab-type, .collab-desc, .collab-facts dd')
+          .forEach(splitCollabTextIntoCharacters);
+      });
+      window.requestAnimationFrame(() => positionCollabIndicator(activeCollabIndex));
+    };
+
+    refreshCollabAnimatedText();
+
+    const activateCollabPanel = (index, moveFocus = false) => {
+      if (index < 0 || index >= collabTabs.length) return;
+
+      if (index === activeCollabIndex) {
+        positionCollabIndicator(index);
+        if (moveFocus) collabTabs[index].focus();
+        return;
+      }
+
+      const previousIndex = activeCollabIndex;
+      const direction = index > previousIndex ? 'forward' : 'backward';
+      if (collabSection) collabSection.dataset.collabDirection = direction;
+      collabExplorer.classList.add('has-switched');
+
+      window.clearTimeout(collabLeavingTimer);
+      window.clearTimeout(collabShellTimer);
+      window.clearTimeout(collabTextGlassTimer);
+      collabPanels.forEach(panel => panel.classList.remove('is-leaving'));
+      collabBackdrops.forEach(backdrop => backdrop.classList.remove('is-leaving'));
+
+      if (collabTabsShell) {
+        collabTabsShell.classList.remove('is-moving');
+        void collabTabsShell.offsetWidth;
+        collabTabsShell.classList.add('is-moving');
+        collabShellTimer = window.setTimeout(() => {
+          collabTabsShell.classList.remove('is-moving');
+        }, 700);
+      }
+
+      if (collabStage) {
+        collabStage.classList.remove('is-text-changing');
+        void collabStage.offsetWidth;
+        collabStage.classList.add('is-text-changing');
+        collabTextGlassTimer = window.setTimeout(() => {
+          collabStage.classList.remove('is-text-changing');
+        }, 1140);
+      }
+
+      collabPanels[previousIndex]?.classList.add('is-leaving');
+      collabBackdrops[previousIndex]?.classList.add('is-leaving');
+
+      collabTabs.forEach((tab, tabIndex) => {
+        const isActive = tabIndex === index;
+        tab.classList.toggle('is-active', isActive);
+        tab.setAttribute('aria-selected', String(isActive));
+        tab.tabIndex = isActive ? 0 : -1;
+      });
+
+      collabPanels.forEach((panel, panelIndex) => {
+        const isActive = panelIndex === index;
+        panel.classList.toggle('is-active', isActive);
+        panel.setAttribute('aria-hidden', String(!isActive));
+        panel.tabIndex = isActive ? 0 : -1;
+        panel.inert = !isActive;
+      });
+
+      collabBackdrops.forEach((backdrop, backdropIndex) => {
+        backdrop.classList.toggle('is-active', backdropIndex === index);
+      });
+
+      activeCollabIndex = index;
+      warmCollabPanel(index);
+      positionCollabIndicator(index);
+
+      collabLeavingTimer = window.setTimeout(() => {
+        collabPanels[previousIndex]?.classList.remove('is-leaving');
+        collabBackdrops[previousIndex]?.classList.remove('is-leaving');
+      }, 1500);
+
+      if (moveFocus) {
+        collabTabs[index].focus();
+      }
+    };
+
+    collabTabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => activateCollabPanel(index));
+      tab.addEventListener('pointerenter', () => warmCollabPanel(index), { passive: true });
+      tab.addEventListener('focus', () => warmCollabPanel(index));
+
+      tab.addEventListener('keydown', (event) => {
+        let nextIndex = index;
+
+        if (event.key === 'ArrowRight') nextIndex = (index + 1) % collabTabs.length;
+        if (event.key === 'ArrowLeft') nextIndex = (index - 1 + collabTabs.length) % collabTabs.length;
+        if (event.key === 'Home') nextIndex = 0;
+        if (event.key === 'End') nextIndex = collabTabs.length - 1;
+        if (nextIndex === index && !['Home', 'End'].includes(event.key)) return;
+
+        event.preventDefault();
+        activateCollabPanel(nextIndex, true);
+      });
+    });
+
+    collabPanels.forEach((panel, panelIndex) => {
+      panel.inert = panelIndex !== activeCollabIndex;
+    });
+    positionCollabIndicator(activeCollabIndex);
+    warmCollabPanel(activeCollabIndex);
+
+    if ('ResizeObserver' in window && collabTabList) {
+      const collabIndicatorObserver = new ResizeObserver(() => {
+        positionCollabIndicator(activeCollabIndex);
+      });
+      collabIndicatorObserver.observe(collabTabList);
+      collabTabs.forEach(tab => collabIndicatorObserver.observe(tab));
+    }
+
+    document.fonts?.ready.then(() => positionCollabIndicator(activeCollabIndex));
+  }
 
   // 6. Scroll Link Highlighting & Header Visibility
   const sections = document.querySelectorAll('section[id]');

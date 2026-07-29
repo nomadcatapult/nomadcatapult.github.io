@@ -27,10 +27,10 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20260728g">
+  <link rel="stylesheet" href="style.css?v=20260729a">
 </head>
 <body>
   <!-- Easter Egg Cat -->
@@ -476,26 +476,110 @@
 
     <!-- How We Work Section -->
     <section class="collab-section" id="collab">
+      <div class="collab-backdrops" aria-hidden="true">
+        <img class="collab-backdrop is-active" data-collab-backdrop src="assets/images/collab-freelance-support.jpg" alt="" width="1942" height="809" loading="lazy" decoding="async">
+        <img class="collab-backdrop" data-collab-backdrop src="assets/images/collab-project-production.jpg" alt="" width="1942" height="809" loading="lazy" decoding="async">
+        <img class="collab-backdrop" data-collab-backdrop src="assets/images/collab-white-label-v2.jpg" alt="" width="1942" height="809" loading="lazy" decoding="async">
+      </div>
+      <div class="collab-section-scrim" aria-hidden="true"></div>
+
       <div class="container">
         <div class="section-header">
           <span class="section-tag" data-i18n="collab_tag">Collaboration Formats</span>
           <h2 class="section-title" data-i18n="collab_title">Flexible Team Scale</h2>
         </div>
 
-        <div class="collab-grid">
-          <div class="collab-card">
-            <h3 class="collab-type" data-i18n="collab1_title">01. Freelance Support</h3>
-            <p class="collab-desc" data-i18n="collab1_desc">Direct backup for agencies, studios, and production houses that need senior-level support for CGI, motion design, or cleanup tasks. Fits into existing project pipelines.</p>
+        <div class="collab-explorer" data-collab-explorer>
+          <div class="collab-tabs-shell">
+            <div class="collab-tabs" role="tablist" data-i18n-aria="collab_tabs_aria" aria-label="Choose a collaboration format">
+              <span class="collab-tab-indicator" aria-hidden="true"></span>
+              <button class="collab-tab is-active" id="collab-tab-1" type="button" role="tab" aria-selected="true" aria-controls="collab-panel-1" tabindex="0" data-collab-index="0">
+                <span class="collab-tab-number">01</span>
+                <span data-i18n="collab1_name">Freelance Support</span>
+              </button>
+              <button class="collab-tab" id="collab-tab-2" type="button" role="tab" aria-selected="false" aria-controls="collab-panel-2" tabindex="-1" data-collab-index="1">
+                <span class="collab-tab-number">02</span>
+                <span data-i18n="collab2_name">Project Production</span>
+              </button>
+              <button class="collab-tab" id="collab-tab-3" type="button" role="tab" aria-selected="false" aria-controls="collab-panel-3" tabindex="-1" data-collab-index="2">
+                <span class="collab-tab-number">03</span>
+                <span data-i18n="collab3_name">White-Label</span>
+              </button>
+            </div>
           </div>
 
-          <div class="collab-card">
-            <h3 class="collab-type" data-i18n="collab2_title">02. Project Production</h3>
-            <p class="collab-desc" data-i18n="collab2_desc">End-to-end production assets for brands and startup teams. We handle the process from brief, styleframes, draft animations, rendering, up to the final deliverables.</p>
-          </div>
+          <div class="collab-stage">
+            <article class="collab-panel is-active" id="collab-panel-1" role="tabpanel" aria-labelledby="collab-tab-1" aria-hidden="false" tabindex="0">
+              <div class="collab-panel-body">
+                <div class="collab-copy">
+                  <span class="collab-panel-index" aria-hidden="true">01 / 03</span>
+                  <h3 class="collab-type" data-i18n="collab1_name">Freelance Support</h3>
+                  <p class="collab-desc" data-i18n="collab1_desc">Direct backup for agencies, studios, and production houses that need senior-level support for CGI, motion design, or cleanup tasks. Fits into existing project pipelines.</p>
+                </div>
+                <dl class="collab-facts">
+                  <div>
+                    <dt data-i18n="collab_team_label">Team</dt>
+                    <dd data-i18n="collab1_team">One senior specialist</dd>
+                  </div>
+                  <div>
+                    <dt data-i18n="collab_process_label">Process</dt>
+                    <dd data-i18n="collab1_process">Inside your existing pipeline</dd>
+                  </div>
+                  <div>
+                    <dt data-i18n="collab_result_label">Result</dt>
+                    <dd data-i18n="collab1_result">Focused production support</dd>
+                  </div>
+                </dl>
+              </div>
+            </article>
 
-          <div class="collab-card">
-            <h3 class="collab-type" data-i18n="collab3_title">03. White-Label Partner</h3>
-            <p class="collab-desc" data-i18n="collab3_desc">Unbranded production partner. We handle backend visual execution, CGI setups, and animations silently while your client-facing account team manages feedback.</p>
+            <article class="collab-panel" id="collab-panel-2" role="tabpanel" aria-labelledby="collab-tab-2" aria-hidden="true" tabindex="-1">
+              <div class="collab-panel-body">
+                <div class="collab-copy">
+                  <span class="collab-panel-index" aria-hidden="true">02 / 03</span>
+                  <h3 class="collab-type" data-i18n="collab2_name">Project Production</h3>
+                  <p class="collab-desc" data-i18n="collab2_desc">End-to-end production assets for brands and startup teams. We handle the process from brief, styleframes, draft animations, rendering, up to the final deliverables.</p>
+                </div>
+                <dl class="collab-facts">
+                  <div>
+                    <dt data-i18n="collab_team_label">Team</dt>
+                    <dd data-i18n="collab2_team">Core team + selected specialists</dd>
+                  </div>
+                  <div>
+                    <dt data-i18n="collab_process_label">Process</dt>
+                    <dd data-i18n="collab2_process">From brief to final delivery</dd>
+                  </div>
+                  <div>
+                    <dt data-i18n="collab_result_label">Result</dt>
+                    <dd data-i18n="collab2_result">Complete production package</dd>
+                  </div>
+                </dl>
+              </div>
+            </article>
+
+            <article class="collab-panel" id="collab-panel-3" role="tabpanel" aria-labelledby="collab-tab-3" aria-hidden="true" tabindex="-1">
+              <div class="collab-panel-body">
+                <div class="collab-copy">
+                  <span class="collab-panel-index" aria-hidden="true">03 / 03</span>
+                  <h3 class="collab-type" data-i18n="collab3_name">White-Label</h3>
+                  <p class="collab-desc" data-i18n="collab3_desc">Unbranded production partner. We handle backend visual execution, CGI setups, and animations silently while your client-facing account team manages feedback.</p>
+                </div>
+                <dl class="collab-facts">
+                  <div>
+                    <dt data-i18n="collab_team_label">Team</dt>
+                    <dd data-i18n="collab3_team">Dedicated backend crew</dd>
+                  </div>
+                  <div>
+                    <dt data-i18n="collab_process_label">Process</dt>
+                    <dd data-i18n="collab3_process">Behind your client-facing team</dd>
+                  </div>
+                  <div>
+                    <dt data-i18n="collab_result_label">Result</dt>
+                    <dd data-i18n="collab3_result">Unbranded, ready-to-deliver assets</dd>
+                  </div>
+                </dl>
+              </div>
+            </article>
           </div>
         </div>
       </div>
