@@ -1489,6 +1489,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let collabLeavingTimer = null;
     let collabShellTimer = null;
     let collabTextGlassTimer = null;
+    let collabTextRestoreTimer = null;
+    const collabAnimatedTextSelector = '.collab-type, .collab-desc, .collab-facts dd';
 
     const positionCollabIndicator = (index = activeCollabIndex) => {
       const activeTab = collabTabs[index];
@@ -1538,6 +1540,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const animatedText = document.createElement('span');
       animatedText.className = 'collab-animated-text';
       animatedText.setAttribute('aria-hidden', 'true');
+      // The visual copy exists only during our own transition. Keeping it out
+      // of page translation prevents single letters such as "i" being treated
+      // as standalone words, while the complete semantic sentence above stays
+      // available to browser translation.
+      animatedText.setAttribute('translate', 'no');
       const fragment = document.createDocumentFragment();
       const characters = [];
       const hasWhitespace = /\s/.test(text);
@@ -1591,11 +1598,19 @@ document.addEventListener('DOMContentLoaded', () => {
       element.replaceChildren(accessibleText, animatedText);
     };
 
+    const restoreCollabText = (element) => {
+      const accessibleText = element.querySelector('.collab-accessible-text');
+      if (!accessibleText) return;
+      element.textContent = accessibleText.textContent || '';
+    };
+
+    const restoreCollabPanelText = (panel) => {
+      panel?.querySelectorAll(collabAnimatedTextSelector).forEach(restoreCollabText);
+    };
+
     refreshCollabAnimatedText = () => {
-      collabPanels.forEach(panel => {
-        panel.querySelectorAll('.collab-type, .collab-desc, .collab-facts dd')
-          .forEach(splitCollabTextIntoCharacters);
-      });
+      window.clearTimeout(collabTextRestoreTimer);
+      collabPanels.forEach(restoreCollabPanelText);
       window.requestAnimationFrame(() => positionCollabIndicator(activeCollabIndex));
     };
 
@@ -1618,8 +1633,19 @@ document.addEventListener('DOMContentLoaded', () => {
       window.clearTimeout(collabLeavingTimer);
       window.clearTimeout(collabShellTimer);
       window.clearTimeout(collabTextGlassTimer);
-      collabPanels.forEach(panel => panel.classList.remove('is-leaving'));
+      window.clearTimeout(collabTextRestoreTimer);
+      collabPanels.forEach(panel => {
+        panel.classList.remove('is-leaving');
+        restoreCollabPanelText(panel);
+      });
       collabBackdrops.forEach(backdrop => backdrop.classList.remove('is-leaving'));
+
+      if (!reducedMotion) {
+        [collabPanels[previousIndex], collabPanels[index]].forEach(panel => {
+          panel?.querySelectorAll(collabAnimatedTextSelector)
+            .forEach(splitCollabTextIntoCharacters);
+        });
+      }
 
       if (collabTabsShell) {
         collabTabsShell.classList.remove('is-moving');
@@ -1669,6 +1695,13 @@ document.addEventListener('DOMContentLoaded', () => {
         collabPanels[previousIndex]?.classList.remove('is-leaving');
         collabBackdrops[previousIndex]?.classList.remove('is-leaving');
       }, 1500);
+
+      // Return to translation-friendly, unsplit text as soon as the staggered
+      // character transition is complete. The rendered design is unchanged.
+      collabTextRestoreTimer = window.setTimeout(() => {
+        restoreCollabPanelText(collabPanels[previousIndex]);
+        restoreCollabPanelText(collabPanels[index]);
+      }, reducedMotion ? 0 : 1900);
 
       if (moveFocus) {
         collabTabs[index].focus();
