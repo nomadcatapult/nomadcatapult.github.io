@@ -45,6 +45,11 @@ a {
   color: inherit;
 }
 
+/* `hidden` must win over the display values set further down. */
+[hidden] {
+  display: none !important;
+}
+
 ul {
   list-style: none;
 }
@@ -1202,18 +1207,25 @@ section[id] {
 }
 
 .collab-backdrop {
+  /* The bleed must outgrow the blur radius, otherwise blur() samples past the
+     image edge, fades it to transparent inside the visible box and exposes the
+     flat .collab-backdrops backing as a soft-edged rectangle mid-transition.
+     A percentage bleed shrinks with the viewport while the blur stays in px,
+     so both are derived from one variable instead. */
+  --collab-backdrop-blur: 16px;
+  --collab-backdrop-bleed: calc(var(--collab-backdrop-blur) * 3);
   position: absolute;
-  inset: -2%;
+  inset: calc(var(--collab-backdrop-bleed) * -1);
   z-index: 0;
-  width: 104%;
-  height: 104%;
+  width: calc(100% + var(--collab-backdrop-bleed) * 2);
+  height: calc(100% + var(--collab-backdrop-bleed) * 2);
   max-width: none;
   object-fit: cover;
   object-position: center;
   opacity: 0;
   visibility: hidden;
   transform: scale(1.035);
-  filter: blur(16px) saturate(0.88) brightness(0.9);
+  filter: blur(var(--collab-backdrop-blur)) saturate(0.88) brightness(0.9);
   transition: none;
 }
 
@@ -1233,7 +1245,7 @@ section[id] {
   z-index: 2;
   opacity: 0;
   transform: scale(1.02);
-  filter: blur(16px) saturate(0.92);
+  filter: blur(var(--collab-backdrop-blur)) saturate(0.92);
   animation: collab-backdrop-glass-out 1.4s cubic-bezier(0.25, 0.55, 0.45, 1) both;
 }
 
@@ -1246,17 +1258,17 @@ section[id] {
   22% {
     opacity: 0.88;
     transform: scale(1.004);
-    filter: blur(4px) saturate(0.99);
+    filter: blur(calc(var(--collab-backdrop-blur) * 0.25)) saturate(0.99);
   }
   58% {
     opacity: 0.46;
     transform: scale(1.012);
-    filter: blur(9px) saturate(0.96);
+    filter: blur(calc(var(--collab-backdrop-blur) * 0.5625)) saturate(0.96);
   }
   100% {
     opacity: 0;
     transform: scale(1.02);
-    filter: blur(16px) saturate(0.92);
+    filter: blur(var(--collab-backdrop-blur)) saturate(0.92);
   }
 }
 
@@ -1825,29 +1837,61 @@ html[data-theme='dark'] .collab-stage::before {
     font-size: clamp(2.65rem, 9vw, 3.65rem);
   }
 
+  /* A 16px blur costs 48px of bleed on each side, which on a phone-width
+     backdrop would crop the image by a quarter. Scale the blur down instead —
+     at this size it reads the same and keeps the bleed cheap. */
+  .collab-backdrop {
+    --collab-backdrop-blur: 9px;
+  }
+
+  /* Phones get a fitted 3-up segmented control instead of a bleeding
+     horizontal scroller: every format stays visible and tappable. */
   .collab-tabs-shell {
-    width: calc(100% + 2rem);
-    margin-right: -2rem;
-    border-right: 0;
-    border-radius: 999px 0 0 999px;
+    width: 100%;
+    margin-right: 0;
+    border-radius: 1.6rem;
+    /* No backdrop-filter here. The indicator animating inside this pill forces
+       the backdrop layer to re-rasterise every frame, and mid-switch it gets
+       composited at the wrong offset — a stray blurred rectangle flashes just
+       below the toggle. The backdrop is already a blurred, scrimmed image, so
+       a denser fill reads the same without the filter. */
+    background: rgba(255, 248, 233, 0.26);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  html[data-theme='dark'] .collab-tabs-shell {
+    background: rgba(11, 40, 44, 0.52);
   }
 
   .collab-tabs {
-    display: flex;
-    overflow-x: auto;
-    padding-right: 2.35rem;
-    scrollbar-width: none;
-    scroll-snap-type: x proximity;
+    gap: 0.25rem;
+    padding: 0.3rem;
   }
 
-  .collab-tabs::-webkit-scrollbar {
-    display: none;
+  .collab-tab-indicator {
+    top: 0.3rem;
+    bottom: 0.3rem;
+    border-radius: 1.3rem;
   }
 
   .collab-tab {
-    flex: 0 0 auto;
-    min-width: 13rem;
-    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.12rem;
+    min-height: 3.15rem;
+    padding: 0.6rem 0.4rem;
+    border-radius: 1.3rem;
+    font-size: 0.75rem;
+    line-height: 1.18;
+    white-space: normal;
+  }
+
+  .collab-tab-number {
+    margin-right: 0;
+    font-size: 0.62rem;
   }
 
   .collab-panel-body {
@@ -1881,18 +1925,25 @@ html[data-theme='dark'] .collab-stage::before {
     transform: none;
   }
 
-  .collab-tabs-shell {
-    margin-right: -1.25rem;
+  .collab-tabs {
+    gap: 0.2rem;
+    padding: 0.28rem;
   }
 
-  .collab-tabs {
-    padding-right: 1.6rem;
+  .collab-tab-indicator {
+    top: 0.28rem;
+    bottom: 0.28rem;
   }
 
   .collab-tab {
-    min-width: 14rem;
-    padding: 0.82rem 1rem;
-    font-size: 0.82rem;
+    min-height: 3.4rem;
+    padding: 0.55rem 0.3rem;
+    font-size: 0.7rem;
+    letter-spacing: -0.005em;
+  }
+
+  .collab-tab-number {
+    font-size: 0.58rem;
   }
 
   .collab-panel-body {
@@ -1958,6 +2009,142 @@ html[data-theme='dark'] .collab-stage::before {
   color: var(--text-muted);
   margin-bottom: 3rem;
   font-weight: 300;
+}
+
+/* People rail — one card today, a scrollable crew list later */
+.people-block {
+  margin-bottom: 3rem;
+}
+
+.people-label {
+  display: block;
+  margin-bottom: 1rem;
+  color: var(--accent-color);
+  font-family: var(--font-title);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.people-rail {
+  display: flex;
+  gap: 1rem;
+  margin: 0 -0.35rem;
+  padding: 0.35rem;
+  overflow-x: auto;
+  list-style: none;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.people-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.person-card {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 1.15rem;
+  align-items: flex-start;
+  width: min(23rem, 100%);
+  padding: 1.35rem;
+  border: 1px solid var(--border-color);
+  border-radius: 1.1rem;
+  background: var(--bg-card);
+  box-shadow: 0 14px 34px rgba(7, 31, 34, 0.08);
+  scroll-snap-align: start;
+  transition: var(--transition-smooth);
+}
+
+.person-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-3px);
+}
+
+.person-photo {
+  position: relative;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: linear-gradient(150deg, rgba(var(--accent-color-rgb), 0.9), var(--accent-teal));
+}
+
+.person-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Hidden by script.js when the portrait file is missing, so the
+   initials underneath show through instead. */
+.person-photo img[hidden] {
+  display: none;
+}
+
+.person-initials {
+  color: #fff8e9;
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.person-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.person-name {
+  color: var(--text-main);
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.person-role {
+  color: var(--accent-color);
+  font-family: var(--font-title);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.person-bio {
+  margin-top: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+.person-links {
+  display: flex;
+  gap: 1.1rem;
+  margin-top: 0.65rem;
+}
+
+.person-links a {
+  color: var(--text-main);
+  font-family: var(--font-title);
+  font-size: 0.82rem;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(var(--accent-color-rgb), 0.45);
+  transition: var(--transition-smooth);
+}
+
+.person-links a:hover {
+  color: var(--accent-color);
+  border-bottom-color: var(--accent-color);
 }
 
 .contact-methods {

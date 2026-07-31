@@ -907,6 +907,11 @@ document.addEventListener('DOMContentLoaded', () => {
       contact_tag: "Let's Connect",
       contact_title: "Have a launch or production gap?",
       contact_lead: "We turn pitch decks, rough concepts, visual guidelines, and interactive ideas into finished production assets. Reach out to coordinate your next visual or media project.",
+      people_label: "Who you'll be working with",
+      people_rail_aria: "Nomad Catapult crew",
+      person_pavel_name: "Pavel Khaidarov",
+      person_pavel_role: "CG/VFX Artist, Studio Founder",
+      person_pavel_bio: "I take every brief personally — from the first call to the final frame. You always talk to me, not to a support queue.",
       direct_email: "Direct Email:",
       telegram_channel: "Telegram Channel:",
       form_name: "Name",
@@ -1063,6 +1068,11 @@ document.addEventListener('DOMContentLoaded', () => {
       contact_tag: "Связаться с нами",
       contact_title: "Предстоит запуск или нужна помощь в продакшене?",
       contact_lead: "Мы превращаем питч-деки, черновые концепты, визуальные гайдлайны и интерактивные идеи в готовые production-активы. Свяжитесь с нами, чтобы обсудить следующий визуальный или медиа-проект.",
+      people_label: "С кем вы будете работать",
+      people_rail_aria: "Команда Nomad Catapult",
+      person_pavel_name: "Павел Хайдаров",
+      person_pavel_role: "CG/VFX артист, основатель студии",
+      person_pavel_bio: "Каждый проект веду лично — от первого созвона до финального кадра. Вы общаетесь со мной, а не с безымянной поддержкой.",
       direct_email: "Прямой Email:",
       telegram_channel: "Канал в Telegram:",
       form_name: "Имя",
@@ -1219,6 +1229,11 @@ document.addEventListener('DOMContentLoaded', () => {
       contact_tag: "联系我们",
       contact_title: "有发布计划或制作缺口？",
       contact_lead: "我们将路演PPT、粗略概念、视觉指南和互动想法转化为完成的制作资产。联系我们以协调您的下一个视觉或媒体项目。",
+      people_label: "与您对接的人",
+      people_rail_aria: "Nomad Catapult 团队",
+      person_pavel_name: "Pavel Khaidarov",
+      person_pavel_role: "CG/VFX 艺术家，工作室创始人",
+      person_pavel_bio: "每个项目我都亲自跟进——从第一次沟通到最终成片。您对接的始终是我本人，而不是客服队列。",
       direct_email: "直接邮箱:",
       telegram_channel: "电报频道:",
       form_name: "姓名",
@@ -1375,6 +1390,11 @@ document.addEventListener('DOMContentLoaded', () => {
       contact_tag: "お問い合わせ",
       contact_title: "制作のご相談はこちら",
       contact_lead: "ピッチブック、ラフコンセプト、ビジュアルガイドライン、インタラクティブなアイデアを完成した制作アセットに変えます。次のビジュアルまたはメディアプロジェクトについてご相談ください。",
+      people_label: "担当するのはこの人です",
+      people_rail_aria: "Nomad Catapult のチーム",
+      person_pavel_name: "Pavel Khaidarov",
+      person_pavel_role: "CG/VFX アーティスト、スタジオ創設者",
+      person_pavel_bio: "最初の打ち合わせから最終カットまで、すべての案件を私自身が担当します。窓口は常に私で、サポート窓口ではありません。",
       direct_email: "直通メール:",
       telegram_channel: "テレグラムチャンネル:",
       form_name: "名前",
@@ -1743,6 +1763,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.fonts?.ready.then(() => positionCollabIndicator(activeCollabIndex));
   }
+
+  // 5b. People rail — fall back to the initials badge while a portrait
+  // file is still missing, instead of a broken-image icon.
+  document.querySelectorAll('[data-person-photo]').forEach(photo => {
+    const hidePhoto = () => { photo.hidden = true; };
+    photo.addEventListener('error', hidePhoto);
+    if (photo.complete && photo.naturalWidth === 0) hidePhoto();
+  });
 
   // 6. Scroll Link Highlighting & Header Visibility
   const sections = document.querySelectorAll('section[id]');
