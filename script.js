@@ -1414,6 +1414,167 @@ document.addEventListener('DOMContentLoaded', () => {
       modal_video_aria: "{title}：動画 {index}",
       modal_image_aria: "{title}：画像 {index}",
       btn_view_slider: "比較スライダーを見る"
+    },
+    fr: {
+      nav_home: "Accueil",
+      nav_services: "Services",
+      nav_work: "Projets",
+      nav_vfx: "Vitrine VFX",
+      nav_collab: "Notre méthode",
+      nav_archive: "Archives",
+      nav_canvas: "NomadCanvas",
+      nav_contact: "Contact",
+      hero_subtitle: "Studio de production visuelle et interactive 100 % à distance : campagnes, sites web, applications, jeux, spectacles live et médias — le savoir-faire du métier associé aux workflows assistés par l’IA.",
+      hero_scroll_hint: "Faites défiler pour découvrir",
+      hero_scroll_continue: "Faites défiler pour explorer",
+      video_loading: "Chargement de la vidéo…",
+      video_badge: "Vidéo",
+      video_play: "Lire la vidéo",
+      video_pause: "Mettre la vidéo en pause",
+      video_retry: "Réessayer",
+      video_comparison: "Comparaison VFX en vidéo",
+      canvas_tag: "Conçu pour les créateurs",
+      canvas_title: "NomadCanvas",
+      canvas_lead: "Un espace de dessin dédié aux designers, aux auteurs et aux créateurs — du premier croquis à l’idée visuelle prête à partager.",
+      canvas_text: "Développez vos concepts avec des brosses réactives, des calques souples, un contrôle rapide des couleurs et une interface calme qui laisse toute la place à la toile.",
+      canvas_feature_1: "Croquis, peinture, annotations et exploration",
+      canvas_feature_2: "Brosses, calques et exports rapides",
+      canvas_feature_3: "Pensé pour le flux créatif sur ordinateur",
+      canvas_download_label: "Les téléchargements arrivent bientôt",
+      canvas_download_macos: "macOS · bientôt",
+      canvas_download_windows: "Windows · bientôt",
+      canvas_download_linux: "Linux · bientôt",
+      canvas_promo_subtitle: "Un espace de travail visuel pour le motion, les médias et les idées.",
+      canvas_promo_description: "Une application locale avec une toile infinie pour vos références, médias, storyboards, notes et timelines. Les projets sont enregistrés au format portable .nmc.",
+      canvas_promo_repo: "Voir sur GitHub",
+      canvas_promo_release: "Télécharger la version",
+      archive_tag: "// Strate d’archive · 2021",
+      archive_title: "Avant que « générer » ne devienne un bouton.",
+      archive_description: "Un showreel CGI personnel de 2021. Aucun prompt — juste du goût, des outils et un nombre de polygones légèrement déraisonnable.",
+      archive_meta_format: "Showreel pré-IA",
+      archive_meta_aria: "Informations sur le showreel",
+      archive_link: "Regarder sur YouTube ↗",
+      motto: "Exécution directe.<br>Échelle de studio flexible.",
+      lead_text: "Nous aidons les agences, les marques et les équipes créatives à transformer des idées brutes en visuels finis, expériences interactives, outils, jeux, sites web et contenus de spectacle.",
+      body_text: "Nomad Catapult intervient comme partenaire de production créative à distance, pour tous les écrans, toutes les scènes et tous les supports jouables. Sur les missions ciblées, vous travaillez directement avec un artiste senior, pour plus de rapidité et d’efficacité. Sur les productions plus larges, nous réunissons des spécialistes du design visuel, du développement, de l’animation, du son et des workflows assistés par l’IA.",
+      services_tag: "Ce que nous lançons",
+      services_title: "Compétences visuelles",
+      service_motion_title: "Motion design",
+      service_motion_desc: "Graphisme animé dynamique, typographie 3D affirmée, explainers, génériques publicitaires et formats courts percutants pour les réseaux sociaux.",
+      service_cgi_title: "3D / CGI",
+      service_cgi_desc: "Rendus produit haut de gamme, look development atmosphérique, scènes abstraites stylisées et boucles publicitaires animées.",
+      service_cleanup_title: "Compositing et cleanup",
+      service_cleanup_desc: "Effacement de câbles et d’objets de niveau production, remplacement d’écrans, tracking caméra et intégration visuelle invisible.",
+      service_ai_title: "Visuels assistés par l’IA",
+      service_ai_desc: "Idéation visuelle rapide, styleframes générés, exploration de concept art et workflows hybrides pour accélérer vos recommandations.",
+      service_campaign_title: "Live et campagnes",
+      service_campaign_desc: "Packs social media, visuels de scène et de concerts, boucles DOOH, fonds de présentation et contenus d’écran réactifs au son.",
+      service_interactive_title: "Médias interactifs",
+      service_interactive_desc: "Sites web, applications créatives, jeux, prototypes, outils canvas et plateformes interactives où les idées visuelles deviennent des systèmes utilisables.",
+      work_tag: "Missions sélectionnées",
+      work_title: "Vitrine visuelle",
+      filter_all: "Tout",
+      filter_cgi: "CGI",
+      filter_motion: "Motion",
+      filter_animation: "Animation",
+      filter_cleanup: "Cleanup",
+      filter_ai: "Concept IA",
+      filter_interactive: "Interactif",
+      work_rail_cta_left: "Votre projet pourrait être le prochain.",
+      work_rail_cta_right: "Donnons-lui vie.",
+      work_rail_aria: "Projets sélectionnés",
+      work_rail_previous: "Afficher les projets précédents",
+      work_rail_next: "Afficher les projets suivants",
+      cat_cgi: "3D / CGI",
+      cat_3d_compositing: "3D / CGI / Compositing",
+      cat_motion: "Motion design",
+      cat_ai: "Concept art IA",
+      cat_animation: "Animation et storyboards",
+      cat_all: "Pipeline de production complet",
+      cat_cleanup: "Compositing et cleanup",
+      cat_interactive: "Médias interactifs",
+      cat_social: "Animation 2D / Film d’intérêt général",
+      cat_3d_motion_ai: "3D / Motion / Film IA",
+      badge_client: "Projet client",
+      badge_personal: "Projet du studio",
+      badge_ai: "Exploration assistée par l’IA",
+      btn_details: "Détails",
+      btn_slider: "Slider interactif",
+      work1_title: "Intro logo — société de cinéma",
+      work1_summary: "Une comète de particules lumineuses percute une planète et embrase sa surface, avant que celle-ci ne se transforme en logo de la société.",
+      work2_title: "Dragon Mountain — série animée",
+      work2_summary: "Une animation d’aventure familiale de 22 minutes produite de bout en bout, sur un pipeline complet. L’épisode pilote est en cours de production.",
+      work3_title: "Somat — publicité TV",
+      work3_summary: "Publicité produit entièrement en CG pour Somat, associant plans d’intérieur de lave-vaisselle, animation produit et compositing pour la diffusion TV.",
+      work5_title: "Erevan — campagne sur les arbres malades",
+      work5_summary: "Une animation d’intérêt général dessinée à la main pour la mairie d’Erevan, qui alerte les habitants sur le danger des arbres urbains malades et infestés de parasites, et les invite à les faire traiter à temps.",
+      work6_title: "Convention des concessionnaires LADA 2026",
+      work6_summary: "Trois minutes de contenu scénique pour la marque LADA et la révélation de sa nouvelle gamme — véhicules en wireframe néon, environnements de traînées lumineuses et séquences générées par IA, livrés sur un calendrier de convention très serré.",
+      work7_title: "LadyBag — publicité TV",
+      work7_summary: "Une publicité de jouets en CGI diffusée entre deux dessins animés sur une chaîne jeunesse — jouets volants entièrement en CG intégrés à des chambres d’enfants tournées en prises de vues réelles, avec effets de particules et remplacement d’écrans sur fond vert pour l’antenne.",
+      banner_accent: "// NOTRE FAÇON DE LANCER",
+      banner_quote: "Une petite équipe cœur réunit les bons spécialistes — puis porte l’idée du brief initial jusqu’à la livraison finale.",
+      slider_tag: "VFX de bout en bout",
+      slider_title: "Du tournage à l’image finale",
+      slider_subtitle: "Un exemple de chaîne VFX complète — des rushes d’origine au tracking caméra, compositing, intégration 3D, cleanup, remplacement d’écrans et retouche ciblée des regards.",
+      slider_before: "Rushes d’origine",
+      slider_after: "Plan VFX finalisé",
+      slider_hint: "Déplacez le curseur pour comparer",
+      slider_expand: "Ouvrir la comparaison VFX en plein écran",
+      slider_close: "Fermer la comparaison VFX en plein écran",
+      slider_play: "Lire la comparaison VFX",
+      slider_pause: "Mettre la comparaison VFX en pause",
+      collab_tag: "Formats de collaboration",
+      collab_title: "Équipe modulable",
+      collab_tabs_aria: "Choisissez un format de collaboration",
+      collab1_name: "Renfort freelance",
+      collab1_title: "01. Renfort freelance",
+      collab1_desc: "Un renfort direct pour les agences, studios et maisons de production qui ont besoin d’un niveau senior en CGI, motion design ou cleanup. S’intègre à vos pipelines existants.",
+      collab1_team: "Un spécialiste senior",
+      collab1_process: "Au sein de votre pipeline existant",
+      collab1_result: "Un renfort de production ciblé",
+      collab2_name: "Production de projet",
+      collab2_title: "02. Production de projet",
+      collab2_desc: "Production complète des livrables pour les marques et les équipes de startups. Nous prenons en charge tout le processus : brief, styleframes, animatiques, rendu, jusqu’aux livrables finaux.",
+      collab2_team: "Équipe cœur + spécialistes choisis",
+      collab2_process: "Du brief à la livraison finale",
+      collab2_result: "Un pack de production complet",
+      collab3_name: "Marque blanche",
+      collab3_title: "03. Partenaire en marque blanche",
+      collab3_desc: "Un partenaire de production sans signature. Nous assurons discrètement l’exécution visuelle, les setups CGI et les animations pendant que votre équipe garde la main sur la relation client.",
+      collab3_team: "Une équipe dédiée en coulisses",
+      collab3_process: "Derrière votre équipe au contact du client",
+      collab3_result: "Des livrables prêts à remettre, sans notre marque",
+      collab_team_label: "Équipe",
+      collab_process_label: "Processus",
+      collab_result_label: "Résultat",
+      contact_tag: "Parlons-en",
+      contact_title: "Un lancement à préparer ou un manque en production ?",
+      contact_lead: "Nous transformons vos recommandations, concepts bruts, chartes visuelles et idées interactives en livrables de production finis. Écrivez-nous pour organiser votre prochain projet visuel ou média.",
+      people_label: "Avec qui vous allez travailler",
+      people_rail_aria: "L’équipe Nomad Catapult",
+      person_pavel_name: "Pavel Khaidarov",
+      person_pavel_role: "Artiste CG/VFX, fondateur du studio",
+      person_pavel_bio: "Je prends chaque brief personnellement — du premier appel à l’image finale. Vous échangez toujours avec moi, jamais avec un service support.",
+      direct_email: "E-mail direct :",
+      telegram_channel: "Chaîne Telegram :",
+      form_name: "Nom",
+      form_email: "Adresse e-mail",
+      form_project: "Détails du projet",
+      btn_send: "Envoyer le message",
+      footer_text: "&copy; 2026 Nomad Catapult. Tous droits réservés. Studio de production visuelle et interactive à distance.",
+      placeholder_name: "Votre nom",
+      placeholder_email: "hello@company.com",
+      placeholder_project: "Décrivez brièvement vos besoins : visuels, site web, application, jeu, spectacle live, son ou échelle de production...",
+      form_launching: "Envoi du message...",
+      form_success: "Message envoyé ! Nous revenons vers vous sous 24 heures.",
+      modal_role: "Rôle / Services",
+      modal_client: "Client / Type",
+      modal_tools: "Outils et technologies",
+      modal_overview: "Présentation",
+      modal_video_aria: "{title} : vidéo {index}",
+      modal_image_aria: "{title} : image {index}",
+      btn_view_slider: "Ouvrir le slider interactif"
     }
   };
 
@@ -1421,14 +1582,41 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeProjectId = null;
   let refreshCollabAnimatedText = () => {};
 
+  // Language requested through the URL, e.g. /?lang=fr — the /fr/ folder
+  // redirects here, so both link shapes end up in the same place.
+  const getLanguageFromUrl = () => {
+    try {
+      const requested = new URLSearchParams(window.location.search).get('lang');
+      const normalized = (requested || '').trim().slice(0, 2).toLowerCase();
+      return translations[normalized] ? normalized : null;
+    } catch {
+      return null;
+    }
+  };
+
+  // Keep the address bar shareable once a visitor picks a language, so copying
+  // the URL hands the next person the same translation.
+  const syncLanguageToUrl = (lang) => {
+    try {
+      const url = new URL(window.location.href);
+      if (url.searchParams.get('lang') === lang) return;
+      url.searchParams.set('lang', lang);
+      window.history.replaceState(null, '', url);
+    } catch {
+      /* file:// and other opaque origins reject history rewrites — ignore. */
+    }
+  };
+
   // Switch Language Function
-  const setLanguage = (lang) => {
+  const setLanguage = (lang, { updateUrl = false } = {}) => {
     if (!translations[lang]) return;
-    
+
     // Set html attribute
     document.documentElement.setAttribute('lang', lang);
     localStorage.setItem('nomad_lang', lang);
-    
+
+    if (updateUrl) syncLanguageToUrl(lang);
+
     // Update active state in both selectors
     document.querySelectorAll('.btn-lang').forEach(btn => {
       if (btn.getAttribute('data-lang') === lang) {
@@ -1485,14 +1673,17 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation(); // Avoid triggering header click close handlers
       const selectedLang = btn.getAttribute('data-lang');
-      setLanguage(selectedLang);
+      setLanguage(selectedLang, { updateUrl: true });
     });
   });
 
-  // Initialize Language (Check localStorage -> Check Browser Navigator -> Fallback to English)
+  // Initialize Language (URL ?lang= -> localStorage -> Browser Navigator -> English)
+  const urlLanguage = getLanguageFromUrl();
   const savedLanguage = localStorage.getItem('nomad_lang');
   const browserLanguage = navigator.language.slice(0, 2);
-  const initialLanguage = savedLanguage || (translations[browserLanguage] ? browserLanguage : 'en');
+  const initialLanguage = urlLanguage
+    || savedLanguage
+    || (translations[browserLanguage] ? browserLanguage : 'en');
   setLanguage(initialLanguage);
 
   // Collaboration format switcher
@@ -1840,24 +2031,27 @@ document.addEventListener('DOMContentLoaded', () => {
   // 8. Project Details Modal Logic & Data
   const projectDetailsData = {
     'work-lada': {
-      category: { en: "Motion / CGI / AI", ru: "Моушн / CGI / AI", zh: "动态 / CGI / AI", ja: "モーション / CGI / AI" },
+      category: { en: "Motion / CGI / AI", ru: "Моушн / CGI / AI", zh: "动态 / CGI / AI", ja: "モーション / CGI / AI", fr: "Motion / CGI / IA" },
       title: {
         en: "LADA 2026 Dealer Conference",
         ru: "Дилерская конференция LADA 2026",
         zh: "LADA 2026 经销商大会",
-        ja: "LADA 2026 ディーラーカンファレンス"
+        ja: "LADA 2026 ディーラーカンファレンス",
+        fr: "Convention des concessionnaires LADA 2026"
       },
       role: {
         en: "Art Direction & Lead Animator",
         ru: "Арт-директор и ведущий аниматор",
         zh: "艺术指导兼动画总监",
-        ja: "アートディレクター兼リードアニメーター"
+        ja: "アートディレクター兼リードアニメーター",
+        fr: "Direction artistique et animation principale"
       },
       client: {
         en: "LADA — Dealer Conference 2026 (Client Work)",
         ru: "LADA — Дилерская конференция 2026 (Коммерческий проект)",
         zh: "LADA — 2026 经销商大会 (客户项目)",
-        ja: "LADA — ディーラーカンファレンス2026 (クライアントワーク)"
+        ja: "LADA — ディーラーカンファレンス2026 (クライアントワーク)",
+        fr: "LADA — Convention des concessionnaires 2026 (projet client)"
       },
       tools: "Blender, After Effects, DaVinci Resolve, AI Generation",
       fit: "contain",
@@ -1880,28 +2074,32 @@ document.addEventListener('DOMContentLoaded', () => {
         en: "Three minutes of stage content opening the LADA dealer conference and introducing the brand platform together with the new model line-up. The visual system is built around neon wireframe vehicles, light-trail road environments, a nationwide dealer-network map, and abstract energy sequences, mixing classic CG animation with AI-generated shots. A three-person team — an art director/lead animator, a second motion designer, and an editor — delivered it on a compressed conference schedule.",
         ru: "Три минуты сценического контента, открывающего дилерскую конференцию LADA и представляющего платформу бренда вместе с новой модельной линейкой. Визуальная система построена на неоновых wireframe-автомобилях, световых трассах, карте дилерской сети и абстрактных энергетических секвенциях — классическая CG-анимация в связке с AI-генерацией. Команда из трёх человек — арт-директор и ведущий аниматор, второй моушн-дизайнер и монтажёр — выполнила проект в сжатые сроки подготовки конференции.",
         zh: "为 LADA 经销商大会制作的三分钟开场舞台内容，用于发布品牌平台与全新车型阵容。视觉体系由霓虹线框车身、光轨道路场景、全国经销商网络地图以及抽象能量段落构成，将传统 CG 动画与 AI 生成镜头结合。三人团队——艺术指导兼动画总监、第二位动态设计师和一位剪辑师——在紧张的会议筹备周期内完成交付。",
-        ja: "LADAディーラーカンファレンスのオープニングを飾る3分間のステージ映像。ブランドプラットフォームと新型ラインナップを紹介する内容です。ネオンのワイヤーフレーム車両、ライトトレイルの走行空間、全国ディーラー網のマップ、抽象的なエネルギー表現でビジュアルを構成し、従来のCGアニメーションとAI生成カットを組み合わせました。アートディレクター兼リードアニメーター、モーションデザイナー、エディターの3名体制で、限られたカンファレンス準備期間の中で仕上げています。"
+        ja: "LADAディーラーカンファレンスのオープニングを飾る3分間のステージ映像。ブランドプラットフォームと新型ラインナップを紹介する内容です。ネオンのワイヤーフレーム車両、ライトトレイルの走行空間、全国ディーラー網のマップ、抽象的なエネルギー表現でビジュアルを構成し、従来のCGアニメーションとAI生成カットを組み合わせました。アートディレクター兼リードアニメーター、モーションデザイナー、エディターの3名体制で、限られたカンファレンス準備期間の中で仕上げています。",
+        fr: "Trois minutes de contenu scénique ouvrant la convention des concessionnaires LADA et présentant la plateforme de marque ainsi que la nouvelle gamme. Le système visuel repose sur des véhicules en wireframe néon, des environnements routiers de traînées lumineuses, une carte nationale du réseau de concessionnaires et des séquences d’énergie abstraites, mêlant animation CG classique et plans générés par IA. Une équipe de trois personnes — un directeur artistique et animateur principal, un second motion designer et un monteur — a assuré la livraison sur un calendrier de convention très serré."
       }
     },
     'work-comet': {
-      category: { en: "CGI", ru: "CGI", zh: "CGI", ja: "CGI" },
+      category: { en: "CGI", ru: "CGI", zh: "CGI", ja: "CGI", fr: "CGI" },
       title: {
         en: "Film Company Logo Intro",
         ru: "Интро кинокомпании",
         zh: "电影公司标志片头",
-        ja: "映画会社のロゴイントロ"
+        ja: "映画会社のロゴイントロ",
+        fr: "Intro logo — société de cinéma"
       },
       role: {
         en: "Full CGI Intro & Logo Animation",
         ru: "Полностью CGI интро и анимация логотипа",
         zh: "全 CGI 片头与 Logo 动画",
-        ja: "フル CGI イントロ＆ロゴアニメーション"
+        ja: "フル CGI イントロ＆ロゴアニメーション",
+        fr: "Intro et animation de logo entièrement en CGI"
       },
       client: {
         en: "Film Distribution Company (Client Work)",
         ru: "Кинопрокатная компания (Коммерческий проект)",
         zh: "电影发行公司（客户项目）",
-        ja: "映画配給会社（クライアント案件）"
+        ja: "映画配給会社（クライアント案件）",
+        fr: "Société de distribution cinématographique (projet client)"
       },
       tools: "Blender",
       videoUrl: "assets/video/comet25_01.mp4",
@@ -1918,28 +2116,32 @@ document.addEventListener('DOMContentLoaded', () => {
         en: "Cinematic 3D intro created for a film distribution company. A comet made of glowing particles collides with a planet, igniting its surface and gradually filling it with energy. As the camera pulls back, the illuminated planet seamlessly transforms into the company logo.",
         ru: "Кинематографичное 3D-интро для кинопрокатной компании. Комета из светящихся частиц врезается в планету: поверхность вспыхивает и постепенно наполняется энергией. Камера отъезжает — и сияющая планета плавно превращается в логотип компании.",
         zh: "为电影发行公司制作的电影质感 3D 片头。一颗由发光粒子组成的彗星撞击行星，点燃其表面，能量随之蔓延并逐渐充满整颗星球。随着镜头缓缓拉远，发光的行星自然地化为公司标志。",
-        ja: "映画配給会社のために制作したシネマティックな3Dイントロ。発光する粒子でできた彗星が惑星に衝突し、その表面を燃え上がらせながら、やがて全体をエネルギーで満たしていきます。カメラが引いていくにつれ、輝く惑星がそのままなめらかに会社のロゴへと変化します。"
+        ja: "映画配給会社のために制作したシネマティックな3Dイントロ。発光する粒子でできた彗星が惑星に衝突し、その表面を燃え上がらせながら、やがて全体をエネルギーで満たしていきます。カメラが引いていくにつれ、輝く惑星がそのままなめらかに会社のロゴへと変化します。",
+        fr: "Intro 3D cinématographique réalisée pour une société de distribution de films. Une comète faite de particules lumineuses percute une planète, embrase sa surface puis la remplit peu à peu d’énergie. Alors que la caméra recule, la planète illuminée se transforme sans rupture en logo de la société."
       }
     },
     'work-gd': {
-      category: { en: "Animation & Storyboards", ru: "Анимация и раскадровки", zh: "动画与分镜设计", ja: "アニメーション＆絵コンテ" },
+      category: { en: "Animation & Storyboards", ru: "Анимация и раскадровки", zh: "动画与分镜设计", ja: "アニメーション＆絵コンテ", fr: "Animation et storyboards" },
       title: {
         en: "Dragon Mountain — Animated Series",
         ru: "Анимационный сериал Dragon Mountain",
         zh: "《龙之山》— 动画系列",
-        ja: "ドラゴン・マウンテン — アニメーションシリーズ"
+        ja: "ドラゴン・マウンテン — アニメーションシリーズ",
+        fr: "Dragon Mountain — série animée"
       },
       role: {
         en: "Full-Cycle Animation Production",
         ru: "Полный цикл производства анимации",
         zh: "动画全流程制作",
-        ja: "アニメーション制作全般"
+        ja: "アニメーション制作全般",
+        fr: "Production d’animation en cycle complet"
       },
       client: {
         en: "Studio Project",
         ru: "Студийный проект",
         zh: "工作室项目",
-        ja: "自主制作プロジェクト"
+        ja: "自主制作プロジェクト",
+        fr: "Projet du studio"
       },
       tools: "Procreate, Moho, After Effects, Blender",
       mediaLayout: "vertical-grid",
@@ -1957,28 +2159,32 @@ document.addEventListener('DOMContentLoaded', () => {
         en: "Dragon Mountain is a 22-minute animated adventure series for the whole family. The story follows four teenagers who are transported to a mysterious parallel world filled with strange creatures, ancient mysteries, humour and unexpected challenges. The project covers the complete production pipeline, from concept development, writing and visual design to animation, compositing and post-production. The pilot episode is currently in production.",
         ru: "«Dragon Mountain» — 22-минутный приключенческий анимационный сериал для всей семьи. История рассказывает о четырёх подростках, которые попадают в загадочный параллельный мир, наполненный необычными существами, древними тайнами, юмором и неожиданными испытаниями. Проект охватывает полный цикл производства — от разработки концепции, сценария и визуального стиля до анимации, композитинга и постпродакшена. Пилотный эпизод находится в производстве.",  
         zh: "《龙之山》是一部面向全家观众的22分钟冒险动画系列。故事讲述四名少年意外进入一个神秘的平行世界，那里充满了奇异生物、古老谜团、幽默情节和意想不到的挑战。项目涵盖完整的动画制作流程，包括概念开发、剧本创作、视觉设计、动画制作、合成与后期制作。目前，试播集正在制作中。",
-        ja: "『ドラゴン・マウンテン』は、家族で楽しめる22分構成の冒険アニメーションシリーズです。物語は、4人の少年少女が不思議な生き物、古代の謎、ユーモア、そして予想外の試練に満ちた並行世界へ迷い込むところから始まります。企画開発、脚本、ビジュアルデザイン、アニメーション、コンポジット、ポストプロダクションまで、制作工程全体を手がけています。現在、パイロットエピソードを制作中です。"
+        ja: "『ドラゴン・マウンテン』は、家族で楽しめる22分構成の冒険アニメーションシリーズです。物語は、4人の少年少女が不思議な生き物、古代の謎、ユーモア、そして予想外の試練に満ちた並行世界へ迷い込むところから始まります。企画開発、脚本、ビジュアルデザイン、アニメーション、コンポジット、ポストプロダクションまで、制作工程全体を手がけています。現在、パイロットエピソードを制作中です。",
+        fr: "Dragon Mountain est une série d’aventure animée de 22 minutes destinée à toute la famille. L’histoire suit quatre adolescents transportés dans un mystérieux monde parallèle peuplé de créatures étranges, de mystères anciens, d’humour et de défis inattendus. Le projet couvre l’ensemble du pipeline de production, du développement du concept à l’écriture et au design visuel, jusqu’à l’animation, au compositing et à la post-production. L’épisode pilote est actuellement en production."
       }
     },
     'work-somat': {
-      category: { en: "3D / CGI / Compositing", ru: "3D / CGI / Композитинг", zh: "3D / CGI / 合成", ja: "3D / CGI / コンポジット" },
+      category: { en: "3D / CGI / Compositing", ru: "3D / CGI / Композитинг", zh: "3D / CGI / 合成", ja: "3D / CGI / コンポジット", fr: "3D / CGI / Compositing" },
       title: {
         en: "Somat — TV Commercial",
         ru: "Somat — ТВ-реклама",
         zh: "Somat — 电视广告",
-        ja: "Somat — テレビCM"
+        ja: "Somat — テレビCM",
+        fr: "Somat — publicité TV"
       },
       role: {
         en: "Full CG Production & Compositing",
         ru: "Полный 3D-продакшен и композитинг",
         zh: "全 CG 制作与合成",
-        ja: "フルCG制作＆コンポジット"
+        ja: "フルCG制作＆コンポジット",
+        fr: "Production full CG et compositing"
       },
       client: {
         en: "Somat (Client Work)",
         ru: "Somat (Коммерческий проект)",
         zh: "Somat（客户项目）",
-        ja: "Somat（クライアントワーク）"
+        ja: "Somat（クライアントワーク）",
+        fr: "Somat (projet client)"
       },
       tools: "3D / CGI / Compositing",
       videos: [
@@ -1991,7 +2197,8 @@ document.addEventListener('DOMContentLoaded', () => {
         en: "A television commercial for Somat dishwasher detergent. Full-CG shots of the dishwasher interior and product were created and composited for the final broadcast delivery.",
         ru: "Телевизионный рекламный ролик для средств Somat для посудомоечных машин. Полностью 3D-сцены с интерьером посудомоечной машины и продуктом собраны в финальный рекламный ролик с помощью композитинга.",
         zh: "为 Somat 洗碗机洗涤剂制作的电视广告。洗碗机内部和产品的画面均以全 CG 完成，并通过合成制作成最终电视广告。",
-        ja: "Somatの食器洗い機用洗剤のテレビCM。食器洗い機内部と製品のショットをフルCGで制作し、コンポジットを経て最終放送用映像に仕上げました。"
+        ja: "Somatの食器洗い機用洗剤のテレビCM。食器洗い機内部と製品のショットをフルCGで制作し、コンポジットを経て最終放送用映像に仕上げました。",
+        fr: "Un spot télévisé pour les produits Somat destinés au lave-vaisselle. Les plans de l’intérieur du lave-vaisselle et du produit ont été entièrement créés en CG, puis assemblés en compositing pour la livraison à l’antenne."
       }
     },
     'work-erevan': {
@@ -1999,25 +2206,29 @@ document.addEventListener('DOMContentLoaded', () => {
         en: "2D Animation / Social Ad",
         ru: "2D-анимация / Соцреклама",
         zh: "2D 动画 / 公益广告",
-        ja: "2Dアニメーション / 社会広告"
+        ja: "2Dアニメーション / 社会広告",
+        fr: "Animation 2D / Film d’intérêt général"
       },
       title: {
         en: "Yerevan — Diseased Trees PSA",
         ru: "Ереван — соцролик о больных деревьях",
         zh: "埃里温 — 病树公益广告",
-        ja: "エレバン — 病んだ樹木の啓発動画"
+        ja: "エレバン — 病んだ樹木の啓発動画",
+        fr: "Erevan — campagne sur les arbres malades"
       },
       role: {
         en: "Illustration & 2D Animation",
         ru: "Иллюстрация и 2D-анимация",
         zh: "插画与 2D 动画",
-        ja: "イラスト＆2Dアニメーション"
+        ja: "イラスト＆2Dアニメーション",
+        fr: "Illustration et animation 2D"
       },
       client: {
         en: "Yerevan Municipality (Client Work)",
         ru: "Мэрия Еревана (Коммерческий проект)",
         zh: "埃里温市政府（客户项目）",
-        ja: "エレバン市役所（クライアントワーク）"
+        ja: "エレバン市役所（クライアントワーク）",
+        fr: "Mairie d’Erevan (projet client)"
       },
       tools: "Illustration / 2D Animation / Motion Graphics",
       videos: [
@@ -2032,28 +2243,32 @@ document.addEventListener('DOMContentLoaded', () => {
         en: "A public-service animation for the Yerevan Municipality raising awareness about the danger of diseased, pest-infested city trees. The film pairs a warm, hand-drawn illustrative style with a clear explainer structure, showing how untreated trees weakened by pests such as nematodes threaten the health of the urban environment and the people living around them, and calling on residents to have their trees examined and treated in time. The project covered illustration, character design, and full 2D animation.",
         ru: "Социальный анимационный ролик для мэрии Еревана, посвящённый опасности больных и заражённых вредителями городских деревьев. Ролик сочетает тёплую рисованную иллюстрацию с понятной структурой эксплейнера: он показывает, как невылеченные деревья, ослабленные вредителями вроде нематод, угрожают здоровью городской среды и живущих рядом людей, и призывает жителей вовремя обследовать и лечить деревья. Проект охватывал иллюстрацию, дизайн персонажей и полную 2D-анимацию.",
         zh: "为埃里温市政府制作的公益动画，旨在提高公众对城市中病树及虫害树木危险性的认识。影片将温暖的手绘插画风格与清晰的科普讲解结构相结合，展示未经治疗、被线虫等害虫侵蚀而衰弱的树木如何威胁城市环境以及周边居民的健康，并呼吁居民及时检查和治疗树木。项目涵盖插画、角色设计与完整的 2D 动画制作。",
-        ja: "エレバン市役所のために制作した、病気や害虫に侵された街路樹の危険性を伝える啓発アニメーション。温かみのある手描きイラストの作風と分かりやすいエクスプレイナー構成を組み合わせ、線虫などの害虫で弱った未処置の樹木が都市環境とそこで暮らす人々の健康をどのように脅かすかを描き、住民に樹木の点検と早めの治療を呼びかけます。イラスト、キャラクターデザイン、2Dアニメーション全般を担当しました。"
+        ja: "エレバン市役所のために制作した、病気や害虫に侵された街路樹の危険性を伝える啓発アニメーション。温かみのある手描きイラストの作風と分かりやすいエクスプレイナー構成を組み合わせ、線虫などの害虫で弱った未処置の樹木が都市環境とそこで暮らす人々の健康をどのように脅かすかを描き、住民に樹木の点検と早めの治療を呼びかけます。イラスト、キャラクターデザイン、2Dアニメーション全般を担当しました。",
+        fr: "Une animation d’intérêt général réalisée pour la mairie d’Erevan afin de sensibiliser au danger des arbres urbains malades et infestés de parasites. Le film associe un style illustratif chaleureux, dessiné à la main, à une structure d’explainer claire : il montre comment des arbres non traités, affaiblis par des parasites tels que les nématodes, menacent la santé de l’environnement urbain et des habitants qui vivent à proximité, et invite ces derniers à faire examiner et soigner leurs arbres à temps. Le projet couvrait l’illustration, le character design et l’animation 2D complète."
       }
     },
     'work-ladybag': {
-      category: { en: "3D / CGI / Compositing", ru: "3D / CGI / Композитинг", zh: "3D / CGI / 合成", ja: "3D / CGI / コンポジット" },
+      category: { en: "3D / CGI / Compositing", ru: "3D / CGI / Композитинг", zh: "3D / CGI / 合成", ja: "3D / CGI / コンポジット", fr: "3D / CGI / Compositing" },
       title: {
         en: "LadyBag — TV Commercial",
         ru: "LadyBag — ТВ-реклама",
         zh: "LadyBag — 电视广告",
-        ja: "LadyBag — テレビCM"
+        ja: "LadyBag — テレビCM",
+        fr: "LadyBag — publicité TV"
       },
       role: {
         en: "CGI, VFX & Compositing",
         ru: "CGI, VFX и композитинг",
         zh: "CGI、视觉特效与合成",
-        ja: "CGI・VFX・コンポジット"
+        ja: "CGI・VFX・コンポジット",
+        fr: "CGI, VFX et compositing"
       },
       client: {
         en: "TV Channel (Client Work)",
         ru: "Телеканал (Коммерческий проект)",
         zh: "电视频道（客户项目）",
-        ja: "テレビ局（クライアントワーク）"
+        ja: "テレビ局（クライアントワーク）",
+        fr: "Chaîne de télévision (projet client)"
       },
       tools: "3D / CGI / VFX / Compositing",
       mediaLayout: "process-verticals",
@@ -2066,7 +2281,8 @@ document.addEventListener('DOMContentLoaded', () => {
         en: "A television commercial made for a children's TV channel, designed to run between cartoon blocks and advertise a line of toy products. Full-CG flying toys were modelled, animated, and composited into live-action footage of kids' bedrooms, combined with magical particle effects and green-screen replacement of the on-set TV screens. The project covered 3D, VFX, and final compositing for broadcast delivery. The vertical clips show before/after breakdowns; the landscape clip walks through the process.",
         ru: "Телевизионный рекламный ролик для детского телеканала, рассчитанный на показ между блоками мультфильмов и рекламирующий линейку игрушек. Летающие игрушки полностью созданы в 3D, анимированы и вписаны в живую съёмку детских комнат, дополнены волшебными эффектами частиц и заменой экранов телевизоров, снятых на хромакее. Проект охватывал 3D, VFX и финальный композитинг для эфирной выдачи. Вертикальные ролики показывают сравнение «до/после», горизонтальный — процесс работы.",
         zh: "为某儿童电视频道制作的电视广告，设计用于在动画片段之间播出，宣传一系列玩具产品。飞行玩具全部以 3D 建模、动画并合成到实拍的儿童房间画面中，结合魔法粒子特效以及对拍摄现场电视绿幕的屏幕替换。项目涵盖 3D、视觉特效以及最终合成，用于电视播出。竖版短片展示前后对比，横版短片则呈现制作流程。",
-        ja: "子ども向けテレビ局のために制作したテレビCMで、アニメ番組の合間に放送し、おもちゃ製品のラインナップを宣伝することを目的としています。飛行するおもちゃはすべて3Dでモデリング・アニメーションし、実写の子ども部屋の映像に合成。魔法のようなパーティクルエフェクトや、撮影現場のテレビのグリーンバックによるスクリーン置き換えを組み合わせました。3D、VFX、そして放送用の最終コンポジットまでを担当しました。縦型クリップはビフォーアフター、横型クリップは制作プロセスを紹介しています。"
+        ja: "子ども向けテレビ局のために制作したテレビCMで、アニメ番組の合間に放送し、おもちゃ製品のラインナップを宣伝することを目的としています。飛行するおもちゃはすべて3Dでモデリング・アニメーションし、実写の子ども部屋の映像に合成。魔法のようなパーティクルエフェクトや、撮影現場のテレビのグリーンバックによるスクリーン置き換えを組み合わせました。3D、VFX、そして放送用の最終コンポジットまでを担当しました。縦型クリップはビフォーアフター、横型クリップは制作プロセスを紹介しています。",
+        fr: "Un spot télévisé conçu pour une chaîne jeunesse, diffusé entre les blocs de dessins animés pour promouvoir une gamme de jouets. Les jouets volants ont été entièrement modélisés et animés en CG, puis intégrés à des prises de vues réelles de chambres d’enfants, avec des effets de particules magiques et le remplacement sur fond vert des écrans de télévision présents sur le plateau. Le projet couvrait la 3D, les VFX et le compositing final pour la diffusion. Les clips verticaux montrent les comparaisons avant/après ; le clip horizontal détaille le processus."
       }
     }
   };
