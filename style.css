@@ -2272,6 +2272,62 @@ html[data-theme='dark'] .collab-stage::before {
   color: var(--text-muted);
 }
 
+.footer-privacy {
+  margin-top: 0.75rem;
+}
+
+.footer-privacy summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #dcefed;
+  font-size: 0.78rem;
+  text-decoration: underline;
+  text-decoration-color: rgba(220, 239, 237, 0.45);
+  text-underline-offset: 0.25em;
+  cursor: pointer;
+  list-style: none;
+}
+
+.footer-privacy summary::-webkit-details-marker {
+  display: none;
+}
+
+.footer-privacy summary::after {
+  content: "+";
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.footer-privacy[open] summary::after {
+  content: "−";
+}
+
+.footer-privacy summary:hover,
+.footer-privacy summary:focus-visible,
+.footer-privacy-copy a:hover,
+.footer-privacy-copy a:focus-visible {
+  color: var(--accent-color);
+}
+
+.footer-privacy-copy {
+  max-width: 56rem;
+  margin: 0.85rem auto 0;
+}
+
+.site-footer .footer-privacy-copy p {
+  line-height: 1.65;
+  color: #c3d8d6;
+}
+
+.footer-privacy-copy a {
+  display: inline-block;
+  margin-top: 0.55rem;
+  color: #dcefed;
+  font-size: 0.75rem;
+  text-underline-offset: 0.25em;
+}
+
 /* Responsive Breakpoints */
 @media (max-width: 1024px) {
   .main-header {
