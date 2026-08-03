@@ -1999,6 +1999,13 @@ html[data-theme='dark'] .collab-stage::before {
   align-items: start;
 }
 
+/* Let the grid tracks shrink to the container instead of being blown out
+   to their content's min-content width (the crew rail + form fields would
+   otherwise push the columns past the viewport and clip on the right). */
+.contact-grid > * {
+  min-width: 0;
+}
+
 .contact-heading {
   margin-bottom: 1.5rem;
 }
@@ -2047,7 +2054,7 @@ html[data-theme='dark'] .collab-stage::before {
   display: flex;
   flex: 0 0 auto;
   gap: 1.15rem;
-  align-items: flex-start;
+  align-items: stretch;
   width: min(23rem, 100%);
   padding: 1.35rem;
   border: 1px solid var(--border-color);
@@ -2130,7 +2137,8 @@ html[data-theme='dark'] .collab-stage::before {
 .person-links {
   display: flex;
   gap: 1.1rem;
-  margin-top: 0.65rem;
+  margin-top: auto;
+  padding-top: 0.65rem;
 }
 
 .person-links a {
