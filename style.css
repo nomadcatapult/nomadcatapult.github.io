@@ -1999,6 +1999,24 @@ html[data-theme='dark'] .collab-stage::before {
   align-items: start;
 }
 
+/* On desktop the crew rail spans the full section width as its own row
+   below the text/form columns. Squeezed into the narrow text column it
+   clipped the cards even though the screen had plenty of room. */
+.contact-text-column {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.contact-form-column {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.people-block {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
 /* Let the grid tracks shrink to the container instead of being blown out
    to their content's min-content width (the crew rail + form fields would
    otherwise push the columns past the viewport and clip on the right). */
@@ -2016,11 +2034,6 @@ html[data-theme='dark'] .collab-stage::before {
   color: var(--text-muted);
   margin-bottom: 3rem;
   font-weight: 300;
-}
-
-/* People rail — one card today, a scrollable crew list later */
-.people-block {
-  margin-bottom: 3rem;
 }
 
 .people-label {
@@ -2362,6 +2375,15 @@ html[data-theme='dark'] .collab-stage::before {
   .contact-grid {
     grid-template-columns: 1fr;
     gap: 4rem;
+  }
+
+  /* Single-column grid: let the blocks flow in document order
+     (text → crew rail → form) instead of the desktop row placement. */
+  .contact-text-column,
+  .contact-form-column,
+  .people-block {
+    grid-column: auto;
+    grid-row: auto;
   }
 }
 
