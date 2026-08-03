@@ -2042,7 +2042,11 @@ html[data-theme='dark'] .collab-stage::before {
   overflow-x: auto;
   list-style: none;
   scrollbar-width: none;
-  scroll-snap-type: x proximity;
+  /* Free horizontal scrolling: scroll-snap proximity made the rail feel
+     "stuck" at the right edge — a small leftward gesture snapped back to the
+     last card instead of moving. Keep the gesture on the rail at the edges
+     instead of chaining to the page, like the work rail. */
+  overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -3182,10 +3186,6 @@ html[data-theme='dark'] .modal-close-btn {
   background: #173b40;
 }
 
-html[data-theme='dark'] .nav-menu {
-  background: #173b40;
-}
-
 html[data-theme='dark'] .site-footer {
   background: #0c2428;
 }
@@ -3281,10 +3281,6 @@ html[data-theme='dark'] .site-footer {
   color: #dcefed;
 }
 
-.nav-menu {
-  background: #fff6e7;
-}
-
 .modal-wrapper {
   background: #fffdf7;
   border-color: rgba(24, 61, 67, 0.2);
@@ -3367,6 +3363,10 @@ main > section {
   .nav-menu {
     background: #fff6e7;
     box-shadow: -8px 0 26px rgba(24, 61, 67, 0.18);
+  }
+
+  html[data-theme='dark'] .nav-menu {
+    background: #173b40;
   }
 }
 
