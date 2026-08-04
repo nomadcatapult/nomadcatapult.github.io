@@ -2063,7 +2063,7 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         // Deliver the message through the FormSubmit.co AJAX endpoint so the
         // visitor's message actually reaches the studio inbox.
-        const response = await fetch('https://formsubmit.co/ajax/nomad.catapult.team@gmail.com', {
+        const response = await fetch('https://formsubmit.co/ajax/c7bfd6655cc26db8ed8bc28c2691f24d', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
