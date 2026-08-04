@@ -939,7 +939,8 @@ document.addEventListener('DOMContentLoaded', () => {
       modal_overview: "Overview",
       modal_video_aria: "{title}: video {index}",
       modal_image_aria: "{title}: image {index}",
-      btn_view_slider: "View Interactive Slider"
+      btn_view_slider: "View Interactive Slider",
+      easter_cat: "Hey, quit pulling!"
     },
     ru: {
       nav_home: "Главная",
@@ -1109,7 +1110,8 @@ document.addEventListener('DOMContentLoaded', () => {
       modal_overview: "Описание проекта",
       modal_video_aria: "{title}: видео {index}",
       modal_image_aria: "{title}: изображение {index}",
-      btn_view_slider: "Открыть интерактивный слайдер"
+      btn_view_slider: "Открыть интерактивный слайдер",
+      easter_cat: "Ууу, не тяни!"
     },
     zh: {
       nav_home: "首页",
@@ -1279,7 +1281,8 @@ document.addEventListener('DOMContentLoaded', () => {
       modal_overview: "项目概述",
       modal_video_aria: "{title}：视频 {index}",
       modal_image_aria: "{title}：图片 {index}",
-      btn_view_slider: "查看双图对比"
+      btn_view_slider: "查看双图对比",
+      easter_cat: "喵～别拉啦！"
     },
     ja: {
       nav_home: "ホーム",
@@ -1449,7 +1452,8 @@ document.addEventListener('DOMContentLoaded', () => {
       modal_overview: "プロジェクト概要",
       modal_video_aria: "{title}：動画 {index}",
       modal_image_aria: "{title}：画像 {index}",
-      btn_view_slider: "比較スライダーを見る"
+      btn_view_slider: "比較スライダーを見る",
+      easter_cat: "うにゃー、引っぱらないで！"
     },
     fr: {
       nav_home: "Accueil",
@@ -1619,7 +1623,8 @@ document.addEventListener('DOMContentLoaded', () => {
       modal_overview: "Présentation",
       modal_video_aria: "{title} : vidéo {index}",
       modal_image_aria: "{title} : image {index}",
-      btn_view_slider: "Ouvrir le slider interactif"
+      btn_view_slider: "Ouvrir le slider interactif",
+      easter_cat: "Ouille, arrête de tirer !"
     }
   };
 
