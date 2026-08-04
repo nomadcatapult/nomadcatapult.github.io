@@ -53,10 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const hasHttpOrigin = ['http:', 'https:'].includes(window.location.protocol);
     const archivePlayerOrigin = hasHttpOrigin
       ? window.location.origin
-      : 'https://nomadcatapult.github.io';
+      : 'https://nomadcatapult.com';
     const archivePlayerReferrer = hasHttpOrigin
       ? window.location.href
-      : 'https://nomadcatapult.github.io/';
+      : 'https://nomadcatapult.com/';
     const archivePlayerParams = new URLSearchParams({
       rel: '0',
       playsinline: '1',

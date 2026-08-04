@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nomadcatapult.github.io/sitemap.xml
+Sitemap: https://nomadcatapult.com/sitemap.xml
