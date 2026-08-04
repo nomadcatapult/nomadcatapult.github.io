@@ -932,6 +932,7 @@ document.addEventListener('DOMContentLoaded', () => {
       placeholder_project: "Briefly describe your visuals, website, app, game, live show, sound, or production scale requirements...",
       form_launching: "Launching Message...",
       form_success: "Message sent successfully! We'll get back to you within 24 hours.",
+      form_error: "Something went wrong and your message wasn't sent. Please try again, or email us directly at nomad.catapult.team@gmail.com.",
       modal_role: "Role / Services",
       modal_client: "Client / Type",
       modal_tools: "Tools & Tech",
@@ -1101,6 +1102,7 @@ document.addEventListener('DOMContentLoaded', () => {
       placeholder_project: "Кратко опишите визуал, сайт, приложение, игру, live-шоу, звук или требования к масштабу команды...",
       form_launching: "Отправка сообщения...",
       form_success: "Сообщение успешно отправлено! Мы свяжемся с вами в течение 24 часов.",
+      form_error: "Что-то пошло не так — сообщение не отправлено. Попробуйте ещё раз или напишите нам напрямую: nomad.catapult.team@gmail.com.",
       modal_role: "Роль / Услуги",
       modal_client: "Клиент / Тип",
       modal_tools: "Инструменты и технологии",
@@ -1270,6 +1272,7 @@ document.addEventListener('DOMContentLoaded', () => {
       placeholder_project: "简单描述您的视觉、网站、应用、游戏、现场演出、声音或团队规模需求...",
       form_launching: "正在发送消息...",
       form_success: "消息发送成功！我们将在 24 小时内回复您。",
+      form_error: "出错了，消息未能发送。请重试，或直接发送邮件至 nomad.catapult.team@gmail.com。",
       modal_role: "角色 / 服务",
       modal_client: "客户 / 类型",
       modal_tools: "工具与技术",
@@ -1439,6 +1442,7 @@ document.addEventListener('DOMContentLoaded', () => {
       placeholder_project: "ビジュアル、Webサイト、アプリ、ゲーム、ライブショー、サウンド、チーム規模の要件を簡単にご記入ください...",
       form_launching: "送信中...",
       form_success: "送信されました！24時間以内にご連絡します。",
+      form_error: "エラーが発生し、メッセージを送信できませんでした。もう一度お試しいただくか、nomad.catapult.team@gmail.com まで直接ご連絡ください。",
       modal_role: "役割・サービス",
       modal_client: "クライアント・タイプ",
       modal_tools: "使用ツール・技術",
@@ -1608,6 +1612,7 @@ document.addEventListener('DOMContentLoaded', () => {
       placeholder_project: "Décrivez brièvement vos besoins : visuels, site web, application, jeu, spectacle live, son ou échelle de production...",
       form_launching: "Envoi du message...",
       form_success: "Message envoyé ! Nous revenons vers vous sous 24 heures.",
+      form_error: "Une erreur est survenue — le message n'a pas été envoyé. Réessayez ou écrivez-nous directement à nomad.catapult.team@gmail.com.",
       modal_role: "Rôle / Services",
       modal_client: "Client / Type",
       modal_tools: "Outils et technologies",
@@ -2043,28 +2048,51 @@ document.addEventListener('DOMContentLoaded', () => {
   const statusMsg = document.getElementById('form-status-msg');
 
   if (contactForm && statusMsg) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       const currentLang = document.documentElement.getAttribute('lang') || 'en';
       const submitBtn = contactForm.querySelector('button[type="submit"]');
-      
+      const formData = new FormData(contactForm);
+
       submitBtn.disabled = true;
       submitBtn.textContent = translations[currentLang].form_launching;
       statusMsg.textContent = '';
       statusMsg.className = 'form-status-msg';
 
-      // Simulate network request
-      setTimeout(() => {
-        submitBtn.disabled = false;
-        submitBtn.textContent = translations[currentLang].btn_send;
-        
+      try {
+        // Deliver the message through the FormSubmit.co AJAX endpoint so the
+        // visitor's message actually reaches the studio inbox.
+        const response = await fetch('https://formsubmit.co/ajax/nomad.catapult.team@gmail.com', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            name: formData.get('name'),
+            email: formData.get('email'),
+            message: formData.get('message'),
+            _subject: `New portfolio message from ${formData.get('name')}`,
+            _template: 'table',
+            _captcha: 'false'
+          })
+        });
+
+        if (!response.ok) throw new Error(`Form service responded with HTTP ${response.status}`);
+
+        // Only claim success once the mail service confirmed delivery.
         statusMsg.textContent = translations[currentLang].form_success;
         statusMsg.className = 'form-status-msg success';
-        
-        // Reset form
         contactForm.reset();
-      }, 1200);
+      } catch (err) {
+        // Keep the visitor's input so they can retry without retyping.
+        statusMsg.textContent = translations[currentLang].form_error;
+        statusMsg.className = 'form-status-msg error';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = translations[currentLang].btn_send;
+      }
     });
   }
 
