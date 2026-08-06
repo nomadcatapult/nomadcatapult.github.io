@@ -1183,15 +1183,24 @@ section[id] {
   --collab-cutout-color: #e9f6f3;
   position: relative;
   isolation: isolate;
-  min-height: 54rem;
+  display: flex;
+  flex-direction: column;
+  /* Keep the text card + buttons at the section bottom without eating the
+     backdrop art: the section is laptop-viewport height, the card rides the
+     bottom edge, and the art stays the hero in the middle. */
+  min-height: 50rem;
   overflow: hidden;
-  padding: clamp(2.25rem, 3.5vw, 3.5rem) 0 clamp(2.5rem, 4vw, 3.75rem);
+  padding: clamp(2.25rem, 3.5vw, 3.5rem) 0 clamp(2rem, 3vw, 2.75rem);
   background: #183d43;
 }
 
 .collab-section .container {
   position: relative;
   z-index: 2;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .collab-backdrops,
@@ -1339,7 +1348,9 @@ section[id] {
 }
 
 html:lang(ru) .collab-section .section-title {
-  font-size: clamp(3.75rem, 7.25vw, 8.75rem);
+  /* "ГИБКИЙ МАСШТАБ КОМАНДЫ" must stay on one line inside the viewport:
+     at 7.25vw it overflowed the box on 13" laptops (scrollWidth > width). */
+  font-size: clamp(3.4rem, 6.55vw, 8rem);
 }
 
 html:lang(zh) .collab-section .section-title,
@@ -1351,15 +1362,17 @@ html:lang(ja) .collab-section .section-title {
 .collab-explorer {
   position: relative;
   display: flex;
-  min-height: clamp(38rem, 52vw, 44rem);
+  flex: 1;
   flex-direction: column;
+  min-height: 0;
 }
 
 .collab-tabs-shell {
   position: relative;
   z-index: 3;
+  order: 1;
   width: min(58rem, 100%);
-  margin: clamp(1.35rem, 2.5vw, 2.25rem) auto 0;
+  margin: auto auto clamp(0.5rem, 0.9vw, 0.75rem);
   overflow: hidden;
   background: rgba(255, 248, 233, 0.18);
   border: 1px solid rgba(255, 248, 233, 0.36);
@@ -1473,10 +1486,10 @@ html:lang(ja) .collab-section .section-title {
   --collab-text-glass-wash: rgba(255, 253, 247, 0.2);
   position: relative;
   isolation: isolate;
+  order: 2;
   display: grid;
   width: 100%;
-  margin-top: auto;
-  transform: translateY(clamp(1rem, 2.2vw, 2rem));
+  margin-bottom: clamp(0.5rem, 0.9vw, 0.75rem);
 }
 
 .collab-stage::before,
@@ -1489,11 +1502,11 @@ html:lang(ja) .collab-section .section-title {
 
 .collab-stage::before {
   z-index: 0;
-  background: rgba(255, 253, 247, 0.94);
+  background: rgba(255, 253, 247, 0.58);
   border: 1px solid rgba(255, 248, 233, 0.7);
   box-shadow: 0 22px 54px rgba(7, 31, 34, 0.24), 6px 7px 0 rgba(24, 61, 67, 0.13);
-  backdrop-filter: blur(18px) saturate(1.12);
-  -webkit-backdrop-filter: blur(18px) saturate(1.12);
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
 }
 
 .collab-stage::after {
@@ -1562,12 +1575,12 @@ html:lang(ja) .collab-section .section-title {
 
 .collab-panel-body {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
-  gap: clamp(1.75rem, 4vw, 4rem);
+  grid-template-columns: minmax(0, 1.2fr) minmax(15rem, 0.8fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
   align-items: start;
   width: calc(100% - 4rem);
   margin: 0 2rem;
-  padding: clamp(1.5rem, 3vw, 2.25rem);
+  padding: clamp(1.1rem, 2vw, 1.5rem);
   background: transparent;
 }
 
@@ -1578,10 +1591,10 @@ html:lang(ja) .collab-section .section-title {
 
 .collab-panel-index {
   display: block;
-  margin-bottom: 0.55rem;
+  margin-bottom: 0.4rem;
   color: var(--accent-color);
   font-family: var(--font-title);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.12em;
 }
@@ -1589,17 +1602,17 @@ html:lang(ja) .collab-section .section-title {
 .collab-type {
   font-family: var(--font-title);
   font-weight: 700;
-  font-size: clamp(1.35rem, 2.5vw, 2rem);
+  font-size: clamp(1.2rem, 2.1vw, 1.6rem);
   color: var(--text-main);
-  margin-bottom: 0.65rem;
+  margin-bottom: 0.45rem;
   position: relative;
 }
 
 .collab-desc {
   max-width: none;
   margin: 0;
-  font-size: 0.96rem;
-  line-height: 1.65;
+  font-size: 0.9rem;
+  line-height: 1.55;
   color: var(--text-muted);
   font-weight: 400;
 }
@@ -1613,9 +1626,9 @@ html:lang(ja) .collab-section .section-title {
 
 .collab-facts > div {
   display: grid;
-  grid-template-columns: 5rem minmax(0, 1fr);
-  gap: 1rem;
-  padding: 0.72rem 0;
+  grid-template-columns: 4.75rem minmax(0, 1fr);
+  gap: 0.85rem;
+  padding: 0.5rem 0;
   text-align: left;
   border-right: 0;
   border-bottom: 1px solid var(--border-color);
@@ -1642,9 +1655,9 @@ html:lang(ja) .collab-section .section-title {
 .collab-facts dd {
   max-width: 16rem;
   color: var(--text-main);
-  font-size: 0.87rem;
+  font-size: 0.82rem;
   font-weight: 500;
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 .collab-accessible-text {
@@ -1756,14 +1769,14 @@ html[data-theme='dark'] .collab-stage {
 }
 
 html[data-theme='dark'] .collab-stage::before {
-  background: rgba(27, 68, 72, 0.94);
+  background: rgba(27, 68, 72, 0.62);
   border-color: rgba(255, 248, 233, 0.18);
   box-shadow: 0 22px 54px rgba(0, 0, 0, 0.28), 6px 7px 0 rgba(0, 0, 0, 0.14);
 }
 
 @media (max-width: 900px) {
   .collab-section {
-    min-height: 52rem;
+    min-height: 46rem;
     padding-top: 3rem;
     padding-bottom: 2.75rem;
   }
@@ -1775,19 +1788,19 @@ html[data-theme='dark'] .collab-stage::before {
   }
 
   html:lang(ru) .collab-section .section-title {
-    font-size: clamp(3rem, 7vw, 4.25rem);
+    font-size: clamp(2.9rem, 6.45vw, 4.1rem);
   }
 
   .collab-explorer {
-    min-height: 39rem;
+    min-height: 32rem;
   }
 
   .collab-tabs-shell {
-    margin-top: 1.5rem;
+    margin-bottom: 0.55rem;
   }
 
   .collab-stage {
-    transform: translateY(0.75rem);
+    transform: none;
   }
 
   .collab-panel-body {
@@ -1812,11 +1825,11 @@ html[data-theme='dark'] .collab-stage::before {
 
 @media (max-width: 768px) {
   .collab-section {
-    min-height: 57rem;
+    min-height: 52rem;
   }
 
   .collab-explorer {
-    min-height: 43rem;
+    min-height: 34rem;
   }
 
   .collab-section .section-title {
@@ -1908,7 +1921,7 @@ html[data-theme='dark'] .collab-stage::before {
 
 @media (max-width: 480px) {
   .collab-section {
-    min-height: 60rem;
+    min-height: 52rem;
   }
 
   .collab-section .section-title {
@@ -1918,7 +1931,7 @@ html[data-theme='dark'] .collab-stage::before {
   }
 
   .collab-explorer {
-    min-height: 46rem;
+    min-height: 36rem;
   }
 
   .collab-stage {

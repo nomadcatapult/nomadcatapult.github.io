@@ -271,16 +271,17 @@
             <button class="btn-filter" data-filter="motion" data-i18n="filter_motion">Motion</button>
             <button class="btn-filter" data-filter="cleanup" data-i18n="filter_cleanup">Cleanup</button>
             <button class="btn-filter" data-filter="ai" data-i18n="filter_ai">AI Concept</button>
-            <button class="btn-filter" data-filter="interactive" data-i18n="filter_interactive">Interactive</button>
+            <!-- Interactive is hidden until there is a matching project. -->
             <button class="btn-filter" data-filter="animation" data-i18n="filter_animation">Animation</button>
           </div>
         </div>
 
         <!-- Filtering promotes one matching card into this full-width feature.
              New cards only need a data-category; source order defines the
-             fallback lead. data-feature-priority is reserved for a permanent
-             lead such as LADA. The side scenes and CTA cells stay at the
-             outside edges of the active content automatically. -->
+             fallback lead. Cards marked data-feature-lead="never" (like LADA)
+             step back to the second position in the active filter. The side
+             scenes and CTA cells stay at the outside edges of the active
+             content automatically. -->
         <div class="work-grid" id="work-grid">
           <!-- LADA 2026 Dealer Conference -->
           <div class="featured-work-stage">
@@ -288,7 +289,7 @@
               <img class="featured-work-illustration" src="assets/images/featured-slot-rope.jpg" alt="" loading="lazy" decoding="async">
             </div>
 
-            <div class="work-item work-item--featured" data-category="motion ai cgi" data-feature-priority="100" id="work-lada">
+            <div class="work-item" data-category="motion ai cgi" data-feature-lead="never" id="work-lada">
             <div class="work-img-container">
               <img src="assets/images/work_lada.jpg" alt="LADA Azimut neon wireframe key visual from the 2026 dealer conference film" loading="lazy">
               <div class="work-badge badge-client" data-i18n="badge_client">Client Work</div>
@@ -852,7 +853,7 @@
   </dialog>
 
   <!-- Main Logic -->
-  <script src="script.js?v=20260804a"></script>
+  <script src="script.js?v=20260806a"></script>
 
   <!-- Cloudflare Web Analytics -->
   <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"b8030b1a9612492ca29167aecab881ac"}'></script>

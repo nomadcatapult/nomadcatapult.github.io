@@ -599,15 +599,20 @@ document.addEventListener('DOMContentLoaded', () => {
     return filterValue === 'all' || categories.includes(filterValue);
   };
 
-  // LADA is the preferred lead whenever it belongs to the active filter. For
-  // every other filter, the first matching project in source order takes the
-  // lead automatically. A future card may opt into a stronger lead preference
-  // by receiving a higher data-feature-priority value.
-  const chooseFeaturedWork = matchingItems => matchingItems.reduce((featured, item) => {
-    const featurePriority = Number(item.dataset.featurePriority) || 0;
-    const featuredPriority = Number(featured?.dataset.featurePriority) || 0;
-    return featurePriority > featuredPriority ? item : featured;
-  }, matchingItems[0]);
+  // Cards marked data-feature-lead="never" (like LADA) step back from the
+  // featured slot and read as the second project in the active filter. They
+  // only take the lead when they are the only match. For every other filter,
+  // the first matching project in source order leads, unless a card opts into
+  // a stronger lead preference via a higher data-feature-priority value.
+  const chooseFeaturedWork = matchingItems => {
+    const leadCandidates = matchingItems.filter(item => item.dataset.featureLead !== 'never');
+    const candidates = leadCandidates.length > 0 ? leadCandidates : matchingItems;
+    return candidates.reduce((featured, item) => {
+      const featurePriority = Number(item.dataset.featurePriority) || 0;
+      const featuredPriority = Number(featured?.dataset.featurePriority) || 0;
+      return featurePriority > featuredPriority ? item : featured;
+    }, candidates[0]);
+  };
 
   const applyWorkFilter = (filterValue, animate = false) => {
     const matchingItems = allWorkItems.filter(item => workMatchesFilter(item, filterValue));
@@ -981,7 +986,7 @@ document.addEventListener('DOMContentLoaded', () => {
       archive_meta_format: "Шоурил до AI-эры",
       archive_meta_aria: "Информация о шоуриле",
       archive_link: "Смотреть на YouTube ↗",
-      motto: "Прямая работа.<br>Гибкий масштаб студии.",
+      motto: "Работаем напрямую.<br>Гибкий масштаб студии.",
       lead_text: "Мы помогаем агентствам, брендам и творческим командам превращать сырые идеи в готовые визуалы, интерактивные форматы, инструменты, игры, сайты и шоу-контент.",
       body_text: "Nomad Catapult работает как удаленный творческий production-партнер для любых экранов, сцен и playable-поверхностей. Для точечных задач вы работаете напрямую со старшим художником. Для крупных проектов мы собираем специалистов по визуальному дизайну, разработке, анимации, звуку и AI-assisted workflow.",
       services_tag: "Наши возможности",
@@ -2431,7 +2436,9 @@ document.addEventListener('DOMContentLoaded', () => {
       setLoading(false);
       host.classList.remove('has-error');
       host.classList.add('has-started', 'is-playing');
-      video.controls = true;
+      // Native controls stay off so no dark control bar covers the playing
+      // clip on hover; clicking the video toggles play/pause instead.
+      video.controls = false;
       playButton.disabled = false;
       onPlaying?.();
     });
@@ -2446,7 +2453,16 @@ document.addEventListener('DOMContentLoaded', () => {
       setRetryLabel();
     });
     video.addEventListener('click', () => {
-      if (!host.classList.contains('has-started')) play();
+      if (host.classList.contains('has-started')) {
+        if (video.paused) {
+          const playAttempt = video.play();
+          if (playAttempt && typeof playAttempt.catch === 'function') playAttempt.catch(() => {});
+        } else {
+          video.pause();
+        }
+      } else {
+        play();
+      }
     });
     playButton.addEventListener('click', play);
 
@@ -2485,13 +2501,24 @@ document.addEventListener('DOMContentLoaded', () => {
     modalVideoElement.removeAttribute('poster');
     modalVideoElement.preload = 'auto';
     modalVideoElement.controls = false;
-    modalVideoGate.hidden = false;
-    modalVideoGate.classList.remove('has-error', 'is-ready');
-    modalVideoGate.classList.add('is-loading');
-    modalVideoGatePlay.disabled = false;
+    // The preview autoplays (muted + loop), so the play gate stays hidden and
+    // is only revealed if the browser blocks autoplay for some reason.
+    modalVideoGate.hidden = true;
+    modalVideoGate.classList.remove('is-loading', 'has-error', 'is-ready');
+    if (modalVideoGatePlay) modalVideoGatePlay.disabled = false;
     setModalVideoGateLabel('video_play');
     modalVideoElement.src = item.url;
     modalVideoElement.load();
+
+    const playAttempt = modalVideoElement.play();
+    if (playAttempt && typeof playAttempt.catch === 'function') {
+      playAttempt.catch(() => {
+        modalVideoGate.hidden = false;
+        modalVideoGate.classList.remove('is-loading', 'is-ready');
+        if (modalVideoGatePlay) modalVideoGatePlay.disabled = false;
+        setModalVideoGateLabel('video_play');
+      });
+    }
   };
 
   const playPreparedModalVideo = () => {
@@ -2526,7 +2553,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   modalVideoGatePlay?.addEventListener('click', playPreparedModalVideo);
   modalVideoElement?.addEventListener('click', () => {
-    if (!modalVideoGate?.classList.contains('is-ready')) playPreparedModalVideo();
+    if (modalVideoGate?.classList.contains('is-ready')) {
+      if (modalVideoElement.paused) {
+        const playAttempt = modalVideoElement.play();
+        if (playAttempt && typeof playAttempt.catch === 'function') playAttempt.catch(() => {});
+      } else {
+        modalVideoElement.pause();
+      }
+    } else {
+      playPreparedModalVideo();
+    }
   });
   modalVideoElement?.addEventListener('loadstart', () => modalVideoGate?.classList.add('is-loading'));
   modalVideoElement?.addEventListener('loadeddata', () => {
@@ -2539,7 +2575,9 @@ document.addEventListener('DOMContentLoaded', () => {
   modalVideoElement?.addEventListener('playing', () => {
     modalVideoGate?.classList.remove('is-loading', 'has-error');
     modalVideoGate?.classList.add('is-ready');
-    modalVideoElement.controls = true;
+    // Native controls stay off so no dark control bar covers the playing
+    // preview on hover; a click on the video toggles play/pause instead.
+    modalVideoElement.controls = false;
     if (modalVideoGatePlay) modalVideoGatePlay.disabled = false;
   });
   modalVideoElement?.addEventListener('error', () => {
@@ -2821,8 +2859,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modalVideo.style.display = 'block';
         modalVideo.muted = true;
         modalVideo.loop = true;
-        // A poster and explicit play gate keep the media recognisable without
-        // starting a network request until the visitor chooses this clip.
+        // Selecting a video tab autoplays the muted looping preview.
         prepareModalVideo(item);
       } else {
         heroMedia.classList.toggle('is-letterboxed', imageFit === 'contain');
