@@ -5012,8 +5012,7 @@ html[data-theme='dark'] .work-rail-control {
   padding: 1.5rem;
   color: #fff6e7;
   background:
-    linear-gradient(135deg, rgba(7, 8, 10, 0.78), rgba(7, 8, 10, 0.36)),
-    url('assets/images/work_cleanup_after.png') center / cover;
+    linear-gradient(135deg, rgba(7, 8, 10, 0.82), rgba(7, 8, 10, 0.42));
   text-align: center;
   transition: opacity 0.35s ease, visibility 0.35s ease;
   pointer-events: none;
@@ -5024,20 +5023,6 @@ html[data-theme='dark'] .work-rail-control {
   visibility: hidden;
 }
 
-.vfx-video-placeholder-mark {
-  display: grid;
-  place-items: center;
-  width: 3.25rem;
-  height: 3.25rem;
-  padding-left: 0.12rem;
-  color: var(--text-main);
-  background: rgba(255, 246, 231, 0.94);
-  border: 1px solid rgba(24, 61, 67, 0.22);
-  border-radius: 50%;
-  box-shadow: 0 0.75rem 2rem rgba(7, 8, 10, 0.3);
-}
-
-.vfx-video-placeholder-label,
 .modal-video-gate-type {
   font-family: var(--font-title);
   font-size: 0.7rem;

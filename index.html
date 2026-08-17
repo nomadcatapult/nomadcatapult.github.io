@@ -45,7 +45,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@700;800;900&family=Inter:wght@300;400;500;600;800;900&family=Noto+Sans+SC:wght@800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20260803b">
+  <link rel="stylesheet" href="style.css?v=20260817a">
 </head>
 <body>
   <!-- Easter Egg Cat -->
@@ -454,11 +454,9 @@
             <video class="vfx-comparison-source" id="vfx-comparison-video" data-video-src="assets/video/vfx_compare.mp4" muted playsinline preload="none" aria-hidden="true"></video>
             <canvas class="vfx-comparison-canvas" id="vfx-comparison-canvas" aria-hidden="true"></canvas>
             <div class="vfx-video-placeholder" id="vfx-video-placeholder" role="status" aria-live="polite">
-              <span class="vfx-video-placeholder-mark" aria-hidden="true">▶</span>
-              <span class="vfx-video-placeholder-label" data-i18n="video_comparison">VFX video comparison</span>
               <span class="vfx-video-placeholder-loading">
                 <span class="video-loader-spinner" aria-hidden="true"></span>
-                <span class="video-loader-text" data-i18n="video_loading">Loading video…</span>
+                <span class="video-loader-text" data-i18n="video_soon">Video will load soon</span>
               </span>
             </div>
 
@@ -736,6 +734,21 @@
                   </span>
                 </span>
               </li>
+              <li class="person-card">
+                <span class="person-photo">
+                  <img src="assets/images/team_hanna.jpg" alt="Hanna Berdnik" width="180" height="180" decoding="async" data-person-photo>
+                  <span class="person-initials" aria-hidden="true">HB</span>
+                </span>
+                <span class="person-body">
+                  <span class="person-name" data-i18n="person_hanna_name">Hanna Berdnik</span>
+                  <span class="person-role" data-i18n="person_hanna_role">CG Artist / Illustrator</span>
+                  <span class="person-bio" data-i18n="person_hanna_bio">Hanna is a CG artist and illustrator with a good sense of form, colour, and detail. She creates imagery so alive that it feels ready to jump off the screen and into reality.</span>
+                  <span class="person-links">
+                    <a href="https://www.behance.net/berdnikhanna" target="_blank" rel="noopener noreferrer">Behance</a>
+                    <a href="https://t.me/hanna_berdnik" target="_blank" rel="noopener noreferrer">Telegram</a>
+                  </span>
+                </span>
+              </li>
             </ul>
           </div>
 
@@ -853,7 +866,7 @@
   </dialog>
 
   <!-- Main Logic -->
-  <script src="script.js?v=20260806a"></script>
+  <script src="script.js?v=20260817c"></script>
 
   <!-- Cloudflare Web Analytics -->
   <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"b8030b1a9612492ca29167aecab881ac"}'></script>
