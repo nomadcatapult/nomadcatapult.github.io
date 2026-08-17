@@ -2060,38 +2060,30 @@ html[data-theme='dark'] .collab-stage::before {
   text-transform: uppercase;
 }
 
+/* A wrapping grid rather than a horizontal scroller. As a flex rail the
+   cards overflowed the container as soon as the crew outgrew one row, and
+   with the scrollbar hidden the last card was simply cut off at the right
+   edge — the same clipping the work rail used to have. The grid keeps every
+   card whole however many people are added. */
 .people-rail {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
   gap: 1rem;
-  margin: 0 -0.35rem;
-  padding: 0.35rem;
-  overflow-x: auto;
+  margin: 0;
+  padding: 0;
   list-style: none;
-  scrollbar-width: none;
-  /* Free horizontal scrolling: scroll-snap proximity made the rail feel
-     "stuck" at the right edge — a small leftward gesture snapped back to the
-     last card instead of moving. Keep the gesture on the rail at the edges
-     instead of chaining to the page, like the work rail. */
-  overscroll-behavior-x: contain;
-  -webkit-overflow-scrolling: touch;
-}
-
-.people-rail::-webkit-scrollbar {
-  display: none;
 }
 
 .person-card {
   display: flex;
-  flex: 0 0 auto;
   gap: 1.15rem;
   align-items: stretch;
-  width: min(23rem, 100%);
+  min-width: 0;
   padding: 1.35rem;
   border: 1px solid var(--border-color);
   border-radius: 1.1rem;
   background: var(--bg-card);
   box-shadow: 0 14px 34px rgba(7, 31, 34, 0.08);
-  scroll-snap-align: start;
   transition: var(--transition-smooth);
 }
 
@@ -2183,6 +2175,37 @@ html[data-theme='dark'] .collab-stage::before {
 .person-links a:hover {
   color: var(--accent-color);
   border-bottom-color: var(--accent-color);
+}
+
+/* On phones the grid collapses to one column, which would turn the crew
+   into a very tall stack, so keep a swipeable rail here. The card width
+   leaves the next one peeking so the gesture is discoverable, and the
+   padding (cancelled by the matching negative margin) gives the card
+   shadow and hover lift room inside the scroll port instead of letting
+   the overflow mask shave them off. */
+@media (max-width: 768px) {
+  .people-rail {
+    display: flex;
+    margin: -0.4rem -0.65rem -1.5rem;
+    padding: 0.4rem 0.65rem 1.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* Free horizontal scrolling: scroll-snap proximity made the rail feel
+       "stuck" at the right edge — a small leftward gesture snapped back to
+       the last card instead of moving. Keep the gesture on the rail at the
+       edges instead of chaining to the page, like the work rail. */
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .people-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .person-card {
+    flex: 0 0 auto;
+    width: min(21rem, 85%);
+  }
 }
 
 .contact-methods {
@@ -4998,9 +5021,9 @@ html[data-theme='dark'] .work-rail-control {
 }
 
 /* Video states ------------------------------------------------------------
-   A clip is always announced before it starts: the poster remains visible,
-   while a play affordance and a compact loading state make slow connections
-   feel intentional rather than like an empty frame. */
+   A clip is always announced before it starts: the poster stays behind a
+   dimming wash while a compact loading state makes slow connections feel
+   intentional rather than like an empty frame. */
 .vfx-video-placeholder {
   position: absolute;
   inset: 0;

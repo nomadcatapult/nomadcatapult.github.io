@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
       rel: '0',
       playsinline: '1',
       enablejsapi: '1',
-      controls: '0',
       origin: archivePlayerOrigin,
       widget_referrer: archivePlayerReferrer
     });
@@ -794,7 +793,6 @@ document.addEventListener('DOMContentLoaded', () => {
       video_play: "Play video",
       video_pause: "Pause video",
       video_retry: "Try again",
-      video_comparison: "VFX video comparison",
       video_soon: "Video will load soon",
       canvas_tag: "Made for makers",
       canvas_title: "NomadCanvas",
@@ -927,7 +925,7 @@ document.addEventListener('DOMContentLoaded', () => {
       person_narek_bio: "Director and editor across commercials, music videos, documentaries, and feature films — bringing story and rhythm to every cut.",
       person_hanna_name: "Hanna Berdnik",
       person_hanna_role: "CG Artist / Illustrator",
-      person_hanna_bio: "Hanna is a CG artist and illustrator with a good sense of form, colour, and detail. She creates imagery so alive that it feels ready to jump off the screen and into reality.",
+      person_hanna_bio: "CG artist and illustrator with a sharp sense of form, colour, and detail — imagery so alive it looks ready to step off the screen.",
       direct_email: "Direct Email:",
       telegram_channel: "Telegram Channel:",
       form_name: "Name",
@@ -969,7 +967,6 @@ document.addEventListener('DOMContentLoaded', () => {
       video_play: "Смотреть видео",
       video_pause: "Поставить видео на паузу",
       video_retry: "Повторить",
-      video_comparison: "VFX-сравнение в видео",
       video_soon: "Видео скоро загрузится",
       canvas_tag: "Для тех, кто создаёт",
       canvas_title: "NomadCanvas",
@@ -1101,8 +1098,8 @@ document.addEventListener('DOMContentLoaded', () => {
       person_narek_role: "Режиссёр / режиссёр монтажа",
       person_narek_bio: "Режиссёр и монтажёр — рекламные ролики, клипы, документальное кино и полный метр. Держу историю и ритм в каждой склейке.",
       person_hanna_name: "Ханна Бердник",
-      person_hanna_role: "CG-художник-иллюстратор",
-      person_hanna_bio: "Ханна — CG-художник и иллюстратор с хорошим чувством формы, цвета и деталей. Она создаёт образы настолько живые, что они так и норовят выпрыгнуть из экрана в реальность.",
+      person_hanna_role: "CG-художник / иллюстратор",
+      person_hanna_bio: "CG-художник и иллюстратор с точным чувством формы, цвета и деталей — образы получаются такими живыми, что так и норовят выпрыгнуть из экрана.",
       direct_email: "Прямой Email:",
       telegram_channel: "Канал в Telegram:",
       form_name: "Имя",
@@ -1144,7 +1141,6 @@ document.addEventListener('DOMContentLoaded', () => {
       video_play: "播放视频",
       video_pause: "暂停视频",
       video_retry: "重试",
-      video_comparison: "VFX 视频对比",
       video_soon: "视频即将加载",
       canvas_tag: "为创作者而作",
       canvas_title: "NomadCanvas",
@@ -1277,7 +1273,7 @@ document.addEventListener('DOMContentLoaded', () => {
       person_narek_bio: "导演兼剪辑师——广告片、音乐视频、纪录片到院线长片，为每一次剪辑注入故事与节奏。",
       person_hanna_name: "Hanna Berdnik",
       person_hanna_role: "CG 艺术家 / 插画师",
-      person_hanna_bio: "Hanna 是一位 CG 艺术家兼插画师，对形态、色彩和细节有很好的感知。她创作的形象非常鲜活，仿佛随时会跳出屏幕、进入现实。",
+      person_hanna_bio: "CG 艺术家兼插画师——对形态、色彩与细节有敏锐的感知，画面鲜活得仿佛随时会跳出屏幕。",
       direct_email: "直接邮箱:",
       telegram_channel: "电报频道:",
       form_name: "姓名",
@@ -1319,7 +1315,6 @@ document.addEventListener('DOMContentLoaded', () => {
       video_play: "動画を再生",
       video_pause: "動画を一時停止",
       video_retry: "もう一度試す",
-      video_comparison: "VFX動画比較",
       video_soon: "動画はまもなく読み込まれます",
       canvas_tag: "つくる人のために",
       canvas_title: "NomadCanvas",
@@ -1452,7 +1447,7 @@ document.addEventListener('DOMContentLoaded', () => {
       person_narek_bio: "監督兼エディター。CM、ミュージックビデオ、ドキュメンタリー、長編映画まで手がけ、すべてのカットに物語とリズムを与えます。",
       person_hanna_name: "Hanna Berdnik",
       person_hanna_role: "CGアーティスト / イラストレーター",
-      person_hanna_bio: "HannaはCGアーティスト兼イラストレーターで、形、色、ディテールに対する感覚に優れています。彼女がつくるイメージはとても生き生きとして、今にも画面から現実に飛び出してきそうです。",
+      person_hanna_bio: "CGアーティスト兼イラストレーター。形・色・ディテールへの鋭い感覚で、いまにも画面から飛び出してきそうなイメージをつくります。",
       direct_email: "直通メール:",
       telegram_channel: "テレグラムチャンネル:",
       form_name: "名前",
@@ -1494,7 +1489,6 @@ document.addEventListener('DOMContentLoaded', () => {
       video_play: "Lire la vidéo",
       video_pause: "Mettre la vidéo en pause",
       video_retry: "Réessayer",
-      video_comparison: "Comparaison VFX en vidéo",
       video_soon: "La vidéo se chargera bientôt",
       canvas_tag: "Conçu pour les créateurs",
       canvas_title: "NomadCanvas",
@@ -1627,7 +1621,7 @@ document.addEventListener('DOMContentLoaded', () => {
       person_narek_bio: "Réalisateur et monteur — publicités, clips, documentaires et longs métrages, apportant récit et rythme à chaque montage.",
       person_hanna_name: "Hanna Berdnik",
       person_hanna_role: "Artiste CG / Illustratrice",
-      person_hanna_bio: "Hanna est une artiste CG et illustratrice avec un bon sens de la forme, de la couleur et du détail. Elle crée des images si vivantes qu’elles semblent prêtes à sortir de l’écran pour entrer dans la réalité.",
+      person_hanna_bio: "Artiste CG et illustratrice — un sens aiguisé de la forme, de la couleur et du détail, pour des images si vivantes qu’elles semblent prêtes à sortir de l’écran.",
       direct_email: "E-mail direct :",
       telegram_channel: "Chaîne Telegram :",
       form_name: "Nom",
@@ -2529,6 +2523,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modalVideoGatePlay) modalVideoGatePlay.disabled = false;
     setModalVideoGateLabel('video_play');
     modalVideoElement.src = item.url;
+    // Explicit reload: the element was just emptied above, and load() also
+    // clears a stale error state before play() is attempted.
+    modalVideoElement.load();
 
     const playAttempt = modalVideoElement.play();
     if (playAttempt && typeof playAttempt.catch === 'function') {
@@ -2557,6 +2554,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (needsLoad) {
       modalVideoElement.src = source;
       modalVideoElement.preload = 'auto';
+      // Retry after an error re-assigns the same URL, so an explicit load()
+      // is what actually restarts fetching and clears media.error.
+      modalVideoElement.load();
     }
 
     const playAttempt = modalVideoElement.play();
