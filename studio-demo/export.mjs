@@ -32,9 +32,11 @@ export function compactCardLayout(snapshot, { compact = false, context } = {}) {
     ctx.font = `400 11px ${FONT}`; const reasonLines = task.shortReason ? wrapText(ctx, task.shortReason, rowTextWidth, 3) : [];
     return { task, titleLines, reasonLines, height: Math.max(76, 52 + titleLines.length * titleLineHeight + reasonLines.length * 16) };
   });
+  const paymentRows=vm.payments.map(payment=>{ctx.font=`600 12px ${FONT}`;const titleLines=wrapText(ctx,payment.title,innerWidth-140);ctx.font=`400 10px ${FONT}`;const reasonLines=payment.state.reasons.length?wrapText(ctx,payment.state.reasons.join(' · '),innerWidth-30,2):[];return {payment,titleLines,reasonLines,height:48+titleLines.length*17+reasonLines.length*14};});
+  const paymentsHeight=paymentRows.reduce((s,p)=>s+p.height,0)+66;
   const hiddenHeight = vm.hiddenTaskCount ? 30 : 0, emptyHeight = rows.length ? 0 : 45;
-  const height = Math.ceil(pad * 2 + headerHeight + 18 + resourceHeight + 24 + 20 + rows.reduce((sum, row) => sum + row.height, 0) + hiddenHeight + emptyHeight + 19 + 108);
-  return { vm, width, height, pad, innerWidth, headerHeight, resourceHeight, rows, hiddenHeight, emptyHeight, titleFontSize, titleLineHeight };
+  const height = Math.ceil(pad * 2 + headerHeight + 18 + resourceHeight + 24 + 20 + rows.reduce((sum, row) => sum + row.height, 0) + hiddenHeight + emptyHeight + paymentsHeight + 19 + 108);
+  return { vm, paymentRows, paymentsHeight, width, height, pad, innerWidth, headerHeight, resourceHeight, rows, hiddenHeight, emptyHeight, titleFontSize, titleLineHeight };
 }
 function rounded(ctx, x, y, width, height, radius, fill, stroke) {
   ctx.beginPath(); ctx.roundRect(x, y, width, height, radius);
@@ -99,6 +101,12 @@ export async function cardPng(snapshot, { compact = false } = {}) {
     });
   } else { text(ctx, 'Пока нет задач', pad + 12, y + 12, 13); y += layout.emptyHeight; }
   if (vm.hiddenTaskCount) { text(ctx, `Ещё ${vm.hiddenTaskCount} задач · итог учитывает все ${vm.allTasks.length}`, pad + 2, y + 12, 11, 600); y += layout.hiddenHeight; }
+  y+=20;text(ctx,'АВАНСЫ · СОБЫТИЯ ОПЛАТЫ',pad,y,9,750);y+=22;
+  for(const row of layout.paymentRows){const {payment}=row;rounded(ctx,pad,y,innerWidth,row.height-7,10,payment.state.key==='received'?'#dae7c64d':'#d2d8de70','#63717e33');
+    row.titleLines.forEach((line,i)=>text(ctx,line,pad+12,y+10+i*17,12,650));ctx.font=`700 13px ${FONT}`;const amountWidth=ctx.measureText(payment.amountLabel).width;text(ctx,payment.amountLabel,width-pad-12-amountWidth,y+10,13,700);
+    const statusY=y+15+row.titleLines.length*17;text(ctx,payment.state.label,pad+12,statusY,10,600);row.reasonLines.forEach((line,i)=>text(ctx,line,pad+12,statusY+17+i*14,10));y+=row.height;
+  }
+  text(ctx,'Получено · ручные отметки: '+vm.paidLabel,pad,y+4,11,600);y+=24;
   y += 19; ctx.fillStyle = '#62707b3a'; ctx.fillRect(pad, y, innerWidth, 1); y += 17;
   const totalFont = compact ? 29 : 33; ctx.font = `800 ${totalFont}px ${FONT}`; const priceWidth = ctx.measureText(vm.totalPriceLabel).width;
   text(ctx, 'Согласованная сумма', pad, y + 8, compact ? 11 : 12); text(ctx, vm.totalPriceLabel, width - pad - priceWidth, y, totalFont, 800, '#141a22');

@@ -8,11 +8,11 @@ export function createLocalProjectStore(storage) {
       const data = JSON.parse(storage.getItem(STORAGE_KEY) || 'null');
       if (!data) return { currentId: null, projects: [] };
       if (!Array.isArray(data.projects) || data.projects.length > 20) throw new Error('Некорректный список локальных проектов.');
-      return { currentId: data.currentId, projects: data.projects.map(project => ({ id: String(project.id).slice(0, 100), snapshot: validateSnapshot(project.snapshot) })) };
+      return { currentId: data.currentId, projects: data.projects.map(project => ({ id: String(project.id).slice(0, 100), snapshot: validateSnapshot(project.snapshot), drafts:Object.fromEntries(Object.entries(project.drafts || {}).filter(([mode])=>['turnkey','together','consult','rescue'].includes(mode)).map(([mode,data])=>[mode,validateSnapshot(data)])) })) };
     },
     writeAll(data) {
       if (!Array.isArray(data.projects) || data.projects.length > 20) throw new Error('Допустимо до 20 локальных проектов.');
-      storage.setItem(STORAGE_KEY, JSON.stringify({ currentId: data.currentId, projects: data.projects.map(project => ({ id: project.id, snapshot: validateSnapshot(project.snapshot) })) }));
+      storage.setItem(STORAGE_KEY, JSON.stringify({ currentId: data.currentId, projects: data.projects.map(project => ({ id: project.id, snapshot: validateSnapshot(project.snapshot), drafts:Object.fromEntries(Object.entries(project.drafts || {}).filter(([mode])=>['turnkey','together','consult','rescue'].includes(mode)).map(([mode,data])=>[mode,validateSnapshot(data)])) })) }));
     },
     async load(id) {
       const project = this.readAll().projects.find(project => project.id === id);

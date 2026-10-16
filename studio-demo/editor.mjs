@@ -1,146 +1,90 @@
-import { createDemo, validateSnapshot, taskState, addTask, removeTask, setManualAdvance, setTaskAccepted, createViewerUrl } from './model.mjs';
-import { renderCard, element, hours } from './view.mjs';
-import { cardPng, download } from './export.mjs';
-import { createLocalProjectStore, localViewerUrl } from './storage.mjs';
-import { clientProjection } from './encrypted.mjs';
-const $ = selector => document.querySelector(selector);
-let browserStorage;
-try { browserStorage = window.localStorage; }
-catch { browserStorage = { getItem: () => null, setItem: () => { throw new Error('Локальное хранилище недоступно.'); } }; }
-const projectStore = createLocalProjectStore(browserStorage);
-const now = () => new Date().toISOString(), newId = () => 'p-' + crypto.randomUUID();
-let projects = [], currentId, snapshot, compact = false, generatedAt = null, toastTimer;
-function message(text) { $('#toast').textContent = text; clearTimeout(toastTimer); toastTimer = setTimeout(() => { $('#toast').textContent = ''; }, 6000); }
-try {
-  const saved = projectStore.readAll();
-  if (saved) {
-    projects = saved.projects;
-    currentId = saved.currentId;
-  }
-} catch { message('Локальные данные не прочитаны. Открыто новое демо; используйте JSON для резервной копии.'); }
-if (!projects.length) { currentId = newId(); projects = [{ id: currentId, snapshot: createDemo() }]; }
-if (!projects.some(project => project.id === currentId)) currentId = projects[0].id;
-snapshot = projects.find(project => project.id === currentId).snapshot;
-function persist() {
-  projects = projects.map(project => project.id === currentId ? { id: currentId, snapshot } : project);
-  try { projectStore.writeAll({ currentId, projects }); $('#save-status').textContent = 'Сохранено в этом браузере'; }
-  catch { $('#save-status').textContent = 'Хранилище недоступно. Сохраните JSON вручную.'; }
+import {createTemplate,MODES,validateSnapshot,taskState,paymentState,addTask,removeTask,removePayment,setTaskAccepted} from './model.mjs';
+import {renderCard,element} from './view.mjs';
+import {money} from './presentation.mjs';
+import {cardPng,download} from './export.mjs';
+import {createLocalProjectStore,localViewerUrl} from './storage.mjs';
+import {clientProjection} from './encrypted.mjs';
+const $=s=>document.querySelector(s),now=()=>new Date().toISOString(),id=()=> 'p-'+crypto.randomUUID();
+let storage,storageFault=false;try{storage=localStorage;}catch{storage={getItem:()=>null,setItem:()=>{throw Error('storage unavailable')}};}
+const store=createLocalProjectStore(storage);let projects=[],currentId,snapshot,compact=false,undoState=null,toastTimer;
+function message(text){$('#toast').textContent=text;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').textContent='',6500);}
+try{const saved=store.readAll();projects=saved.projects;currentId=saved.currentId;}catch{storageFault=true;message('Черновик не удалось прочитать. Импортируйте резервный JSON; сохранённые данные не перезаписаны.');}
+if(!projects.length){currentId=id();projects=[{id:currentId,snapshot:createTemplate('turnkey'),drafts:{}}];}
+if(!projects.some(p=>p.id===currentId))currentId=projects[0].id;
+snapshot=projects.find(p=>p.id===currentId).snapshot;
+function project(){return projects.find(p=>p.id===currentId);}
+function persist(){const p=project();p.snapshot=snapshot;p.drafts??={};p.drafts[snapshot.mode]=snapshot;try{if(storageFault)throw Error('Keep unreadable storage intact');store.writeAll({currentId,projects});$('#save-status').textContent='Ваши изменения и каждый режим сохранены в этом браузере.';}catch{$('#save-status').textContent='Сейчас изменения только в памяти. Скачайте JSON для сохранения.';}}
+function backup(){undoState=structuredClone({projects,currentId});$('#undo').hidden=false;}
+function preview(){renderCard($('#widget'),snapshot,{compact});for(const task of snapshot.tasks){const block=$('[data-task="'+task.id+'"]');if(block){block.querySelector('summary>span:first-child').textContent=task.title;block.querySelector('.editor-status').textContent=taskState(snapshot,task).label;const accepted=block.querySelector('[data-toggle="Результат принят"]');if(accepted)accepted.checked=task.accepted;}}for(const p of snapshot.payments){const block=$('#payment-editors [data-payment="'+p.id+'"]');if(block){block.querySelector('summary>span').textContent=p.title;block.querySelector('summary>strong').textContent=money(p.amountCents);}}persist();}
+function commit(next,{controls=true}={}){snapshot=validateSnapshot({...next,updatedAt:now()});controls?render():preview();}
+function attempt(action){try{action();}catch(e){message(e.message);}}
+function pulse(node){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;node.classList.remove('pulse');void node.offsetWidth;node.classList.add('pulse');}
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
+function elasticSlider(range,shell,thumb){let active=false,lastX=0,lastT=0,animation;
+ const reset=()=>{if(!active)return;active=false;range.dataset.dragging='false';const from=thumb.style.transform||'scale(1)';animation?.cancel();thumb.style.transform='';if(!reduceMotion.matches)animation=thumb.animate([{transform:from},{transform:'scale(.88,1.13)',offset:.42},{transform:'scale(1.07,.95)',offset:.7},{transform:'scale(1)'}],{duration:440,easing:'cubic-bezier(.2,.75,.25,1)'});};
+ range.addEventListener('pointerdown',e=>{if(range.disabled)return;animation?.cancel();active=true;lastX=e.clientX;lastT=performance.now();range.dataset.dragging='true';if(!reduceMotion.matches)thumb.style.transform='scale(.82,1.18)';range.setPointerCapture(e.pointerId);});
+ range.addEventListener('pointermove',e=>{if(!active||reduceMotion.matches)return;const t=performance.now(),speed=Math.min(2,Math.abs(e.clientX-lastX)/Math.max(8,t-lastT)),direction=Math.sign(e.clientX-lastX);thumb.style.transform='translateX('+direction*speed*2+'px) scale('+(1.05+speed*.25)+','+(.94-speed*.12)+')';lastX=e.clientX;lastT=t;});
+ for(const name of['pointerup','pointercancel','lostpointercapture','blur'])range.addEventListener(name,reset);
+ range.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','PageUp','PageDown'].includes(e.key)){animation?.cancel();active=true;if(!reduceMotion.matches)thumb.style.transform='scale(.88,1.12)';}});range.addEventListener('keyup',reset);
 }
-function field(label, name, value, options = {}) {
-  const wrapper = element('label', '', label), input = element('input');
-  input.dataset.field = name; input.value = value; input.type = options.type || 'text';
-  for (const key of ['min', 'max', 'step', 'maxLength']) if (options[key] !== undefined) input[key] = options[key];
-  input.required = true; input.disabled = Boolean(options.disabled); wrapper.append(input); return wrapper;
+let selectionMotion;
+const indicator=element('span','mode-indicator');indicator.setAttribute('aria-hidden','true');$('#modes').append(indicator);
+function moveSelection(){const target=$('[data-mode="'+snapshot.mode+'"]'),grid=$('#modes');if(!target)return;const a=indicator.getBoundingClientRect(),b=target.getBoundingClientRect(),g=grid.getBoundingClientRect(),had=indicator.dataset.ready;selectionMotion?.cancel();Object.assign(indicator.style,{left:(b.left-g.left)+'px',top:(b.top-g.top)+'px',width:b.width+'px',height:b.height+'px'});indicator.dataset.ready='true';if(had&&!reduceMotion.matches)selectionMotion=indicator.animate([{transform:'translate('+(a.left-b.left)+'px,'+(a.top-b.top)+'px) scale('+(a.width/b.width)+','+(a.height/b.height)+')'},{transform:'translate(0,0) scale(1.035,.97)',offset:.72},{transform:'translate(0,0) scale(1,1)'}],{duration:460,easing:'cubic-bezier(.2,.75,.2,1)'});}
+new ResizeObserver(()=>{selectionMotion?.cancel();indicator.dataset.ready='';moveSelection();}).observe($('#modes'));
+reduceMotion.addEventListener('change',()=>{selectionMotion?.cancel();document.querySelectorAll('.elastic-thumb').forEach(thumb=>{thumb.getAnimations().forEach(a=>a.cancel());thumb.style.transform='';});});
+function textField(label,value,fn,max=160){const wrap=element('label','',label),input=element('input');input.type='text';input.value=value;input.maxLength=max;input.required=true;input.addEventListener('input',()=>{if(input.value.trim())attempt(()=>fn(input.value.trim()));});input.addEventListener('change',()=>{if(!input.value.trim())input.setCustomValidity('Введите название');else input.setCustomValidity('');input.reportValidity();});wrap.append(input);return wrap;}
+/** Number values keep their full precision outside the slider's convenient range. */
+function numeric(label,value,{min=0,max=500,rangeMax=40,step=.25,name='',disabled=false}={},fn=()=>{}){
+ const box=element('div','numeric-control'),top=element('div','numeric-top'),uid=id();
+ const caption=element('label','',label);caption.htmlFor=uid;
+ const number=element('input','number-input');number.type='number';number.id=uid;number.min=min;number.max=max;number.step='any';number.value=value;number.disabled=disabled;if(name)number.name=name;number.dataset.numeric=name||label;number.required=true;
+ const range=element('input','elastic-range');range.type='range';range.min=min;range.max=rangeMax;range.step=step;range.value=Math.min(rangeMax,value);range.disabled=disabled;range.setAttribute('aria-label',label+' · ползунок');
+ const hint=element('p','range-hint'),error=element('p','field-error');error.id=uid+'-error';number.setAttribute('aria-describedby',error.id);range.setAttribute('aria-describedby',error.id);
+ const shell=element('div','slider-shell'),thumb=element('span','elastic-thumb');thumb.setAttribute('aria-hidden','true');shell.append(range,thumb);elasticSlider(range,shell,thumb);
+ function sync(v){range.value=Math.min(rangeMax,Math.max(min,v));const fraction=(Math.min(rangeMax,Math.max(min,v))-min)/(rangeMax-min);shell.style.setProperty('--fill',(fraction*100)+'%');shell.style.setProperty('--position',fraction);hint.textContent=v>rangeMax?'Выше диапазона ползунка · сохранено '+v:'Ползунок до '+rangeMax+' · ввод '+min+'–'+max;}
+ function update(v){if(number.value===''||!Number.isFinite(v)||v<min||v>max){number.setAttribute('aria-invalid','true');error.textContent='Допустимо от '+min+' до '+max+'. Значение не сохранено.';return;}if(Math.abs(v*100-Math.round(v*100))>1e-7){number.setAttribute('aria-invalid','true');error.textContent='Не более двух знаков после запятой. Значение не сохранено.';return;}number.removeAttribute('aria-invalid');error.textContent='';sync(v);fn(v);}
+ number.addEventListener('input',()=>update(Number(number.value)));number.addEventListener('change',()=>pulse(range));
+ range.addEventListener('input',()=>{number.value=range.value;update(Number(range.value));});range.addEventListener('change',()=>pulse(range));
+ top.append(caption,number);box.append(top,shell,hint,error);sync(value);return box;
 }
-function check(label, name, checked, disabled = false) {
-  const wrapper = element('label', 'check-label'), input = element('input'); input.type = 'checkbox'; input.dataset.field = name; input.checked = checked; input.disabled = disabled;
-  wrapper.append(input, document.createTextNode(label)); return wrapper;
+function toggle(label,checked,fn,disabled=false){const wrap=element('label','check-label switch'),input=element('input');input.type='checkbox';input.checked=checked;input.disabled=disabled;input.dataset.toggle=label;const track=element('span','switch-track');track.setAttribute('aria-hidden','true');input.addEventListener('change',()=>{const owner=wrap.closest('[data-task],[data-payment]'),ownerSelector=owner?.dataset.task?'[data-task="'+owner.dataset.task+'"]':owner?.dataset.payment?'#payment-editors [data-payment="'+owner.dataset.payment+'"]':null,focused=document.activeElement===input;try{fn(input.checked);}catch(e){message(e.message);render();}const replacement=ownerSelector?[...document.querySelectorAll(ownerSelector+' [data-toggle]')].find(n=>n.dataset.toggle===label):input;if(replacement){if(focused)replacement.focus({preventScroll:true});if(!reduceMotion.matches){const surface=replacement.nextElementSibling;surface.removeAttribute('data-spring');void surface.offsetWidth;surface.dataset.spring=replacement.checked?'on':'off';}}});wrap.append(input,track,document.createTextNode(label));return wrap;}
+function edit(nextFn,controls=true){const next=structuredClone(snapshot);nextFn(next);commit(next,{controls});}
+function conditions(item,isPayment){const group=element('details','conditions');group.dataset.disclosure=item.id+'-conditions';group.append(element('summary','', 'Условия старта · '+(item.dependencies.length+(item.paymentDependencies?.length||0))));const body=element('div','condition-options');
+ const candidates=[...snapshot.payments.map(p=>({...p,type:'payment',caption:'Аванс · '+p.title})),...snapshot.tasks.map(t=>({...t,type:'task',caption:'Принятие · '+t.title}))].filter(c=>c.id!==item.id);
+ for(const c of candidates){const key=isPayment?'dependencies':c.type==='payment'?'paymentDependencies':'dependencies';body.append(toggle(c.caption,item[key].includes(c.id),checked=>edit(next=>{const target=(isPayment?next.payments:next.tasks).find(t=>t.id===item.id);target[key]=checked?[...target[key],c.id]:target[key].filter(d=>d!==c.id);})));}
+ if(item.missingDependencies.length||[...item.dependencies,...(item.paymentDependencies||[])].some(d=>!candidates.some(c=>c.id===d))){body.append(element('p','warning','Удалённое условие блокирует старт. Переназначьте его или снимите явно.'));const clear=element('button','','Снять отсутствующие условия');clear.type='button';clear.onclick=()=>edit(next=>{const t=(isPayment?next.payments:next.tasks).find(t=>t.id===item.id);t.missingDependencies=[];t.dependencies=t.dependencies.filter(d=>candidates.some(c=>c.id===d));if(t.paymentDependencies)t.paymentDependencies=t.paymentDependencies.filter(d=>candidates.some(c=>c.id===d));});body.append(clear);}
+ if(!candidates.length)body.append(element('p','help','Добавьте другие задачи или авансы, чтобы связать этапы.'));group.append(body);return group;
 }
-function renderEditors() {
-  const open = new Set([...$('#task-editors').querySelectorAll('details[open]')].map(item => item.dataset.task));
-  $('#task-editors').replaceChildren();
-  for (const task of snapshot.tasks) {
-    const state = taskState(snapshot, task), block = element('details', 'task-editor'); block.dataset.task = task.id; block.open = open.has(task.id);
-    block.append(element('summary', '', task.title));
-    const fields = element('div', 'fields'); fields.append(field('Название', 'title', task.title, { maxLength: 160 }));
-    const plan = element('div', 'field-row'); plan.append(field('Базовая оценка, ч', 'estimateHours', task.estimateHours, { type: 'number', min: 0, max: 500, step: .25 }), field('Базовая цена, $', 'basePrice', task.basePriceCents / 100, { type: 'number', min: 0, max: 1000000, step: .01 })); fields.append(plan);
-    const actual = element('div', 'field-row'); actual.append(field('Потрачено, ч', 'spentHours', task.spentHours, { type: 'number', min: 0, max: 500, step: .25, disabled: state.key === 'blocked' }), field('Готовность, %', 'progress', task.progress, { type: 'number', min: 0, max: 100, step: 1, disabled: state.key === 'blocked' })); fields.append(actual);
-    fields.append(check('Результат принят', 'accepted', task.accepted, state.key === 'blocked'), check('Нужна ручная отметка второго аванса', 'requiresSecondAdvance', task.requiresSecondAdvance));
-    const dependencyLabel = element('label', '', 'Дождаться принятия задачи'), select = element('select'); select.dataset.field = 'dependencies';
-    const none = element('option', '', 'Без предшественника'); none.value = ''; select.append(none);
-    for (const candidate of snapshot.tasks.filter(item => item.id !== task.id)) { const option = element('option', '', candidate.title); option.value = candidate.id; option.selected = task.dependencies.includes(candidate.id); select.append(option); }
-    // Model permits multiple dependencies; this small editor retains existing sets until explicitly changed.
-    if (task.dependencies.length > 1) fields.append(element('p', 'help', 'В снимке несколько предшественников. Выбор ниже заменит их одним.'));
-    dependencyLabel.append(select); fields.append(dependencyLabel);
-    if (task.missingDependencies.length || task.dependencies.some(id => !snapshot.tasks.some(item => item.id === id))) {
-      fields.append(element('p', 'warning', 'Предшественник удалён. Задача остаётся заблокированной до переназначения или явного снятия зависимости.'));
-      const clear = element('button', '', 'Снять отсутствующую зависимость'); clear.type = 'button'; clear.dataset.action = 'clear-missing'; fields.append(clear);
-    }
-    for (const round of task.rounds) {
-      const row = element('div', 'round-editor'); row.dataset.round = round.id;
-      row.append(element('strong', '', `Раунд ${round.number} · ${round.included ? 'включён в базовую оценку' : 'дополнительный'}`));
-      if (!round.included) {
-        const estimates = element('div', 'field-row'); estimates.append(field('Оценка, ч', 'roundHours', round.estimateHours, { type: 'number', min: 0, max: 500, step: .25 }), field('Ставка, $/ч', 'roundRate', round.rateCents / 100, { type: 'number', min: 0, max: 100000, step: .01 }));
-        row.append(estimates, check('Дополнительный раунд согласован', 'roundAgreed', round.agreed));
-      }
-      fields.append(row);
-    }
-    const remove = element('button', 'danger', 'Удалить задачу'); remove.type = 'button'; remove.dataset.action = 'delete'; fields.append(remove);
-    block.append(fields); $('#task-editors').append(block);
-  }
+function taskEditors(){const open=new Set([...$('#task-editors').querySelectorAll('details[open][data-task]')].map(n=>n.dataset.task));$('#task-editors').replaceChildren();$('#task-count').textContent=snapshot.tasks.length+'/40';
+ for(const task of snapshot.tasks){const state=taskState(snapshot,task),block=element('details','task-editor task-editor-'+state.key);block.dataset.task=task.id;block.open=open.has(task.id);const summary=element('summary');summary.append(element('span','',task.title),element('span','editor-status',state.label));block.append(summary);const fields=element('div','fields');const update=(key,v,controls=false)=>edit(next=>{const t=next.tasks.find(t=>t.id===task.id);t[key]=v;if(key==='progress'&&v<100)t.accepted=false;},controls);
+ fields.append(textField('Название задачи',task.title,v=>update('title',v)),numeric('План работы, ч',task.estimateHours,{name:'estimateHours'},v=>update('estimateHours',v)),numeric('Согласованная базовая цена, $',task.basePriceCents/100,{max:1000000,rangeMax:1000,step:10,name:'basePrice'},v=>update('basePriceCents',Math.round(v*100))),numeric('Потрачено, ч',task.spentHours,{name:'spentHours',disabled:state.key==='blocked'},v=>update('spentHours',v)),numeric('Готовность, %',task.progress,{max:100,rangeMax:100,step:1,name:'progress',disabled:state.key==='blocked'},v=>update('progress',v)),toggle('Результат принят',task.accepted,v=>commit(setTaskAccepted(snapshot,task.id,v)),state.key==='blocked'));
+ if(state.reasons.length)fields.append(element('p','help',state.reasons.join(' · ')));fields.append(conditions(task,false));
+ const rounds=element('details','round-editor');rounds.dataset.disclosure=task.id+'-rounds';rounds.append(element('summary','','Обратная связь · '+task.rounds.filter(r=>r.included).length+' раунда включено'));const rbody=element('div','fields');rbody.append(element('p','help','Обычная обратная связь входит в цену. Дополнительные часы считаются только после отдельного согласования.'));
+ for(const round of task.rounds){if(round.included){rbody.append(element('p','included-round','✓ Раунд '+round.number+' · включён'));continue;}const row=element('div','extra-round');const ru=(key,v)=>edit(next=>{next.tasks.find(t=>t.id===task.id).rounds.find(r=>r.id===round.id)[key]=v;},false);row.append(element('h4','','Дополнительный раунд '+round.number),numeric('Дополнительные часы',round.estimateHours,{name:'roundHours'},v=>ru('estimateHours',v)),numeric('Согласованная ставка, $/ч',round.rateCents/100,{max:100000,rangeMax:200,step:5,name:'roundRate'},v=>ru('rateCents',Math.round(v*100))),toggle('Часы и сумма отдельно согласованы',round.agreed,v=>ru('agreed',v)));rbody.append(row);}
+ const extra=element('button','quiet','＋ Предложить дополнительные часы');extra.type='button';extra.disabled=task.rounds.length>=10;extra.onclick=()=>edit(next=>{const t=next.tasks.find(t=>t.id===task.id);t.rounds.push({id:id(),number:Math.max(0,...t.rounds.map(r=>r.number))+1,included:false,agreed:false,estimateHours:1,rateCents:5000});});rbody.append(extra);rounds.append(rbody);fields.append(rounds);
+ const remove=element('button','quiet danger','Удалить задачу');remove.type='button';remove.onclick=()=>{backup();commit(removeTask(snapshot,task.id));message('Задача удалена. Действие можно отменить.');};fields.append(remove);block.append(fields);$('#task-editors').append(block);}
 }
-function render() {
-  $('#project-title').value = snapshot.title; $('#capacity').value = snapshot.weeklyCapacityHours; $('#advance').checked = snapshot.manualSecondAdvanceRecorded;
-  $('#project-list').replaceChildren(); projects.forEach(project => { const option = element('option', '', project.id === currentId ? snapshot.title : project.snapshot.title); option.value = project.id; option.selected = project.id === currentId; $('#project-list').append(option); });
-  renderCard($('#widget'), snapshot, { compact }); renderEditors(); persist();
-  if (generatedAt) $('#share-status').textContent = generatedAt === snapshot.updatedAt ? 'Ссылка содержит текущий снимок.' : 'После создания ссылки данные изменились. Создайте новую ссылку.';
+function paymentEditors(){const open=new Set([...$('#payment-editors').querySelectorAll('details[open]')].map(n=>n.dataset.payment));$('#payment-editors').replaceChildren();
+ for(const p of snapshot.payments){const state=paymentState(snapshot,p),block=element('details','payment-editor');block.dataset.payment=p.id;block.open=open.has(p.id);const summary=element('summary');summary.append(element('span','',p.title),element('strong','',money(p.amountCents)));const fields=element('div','fields'),update=(key,v,controls=false)=>edit(next=>{next.payments.find(t=>t.id===p.id)[key]=v;},controls);
+ fields.append(textField('Название события',p.title,v=>update('title',v)),numeric('Сумма аванса, $',p.amountCents/100,{max:1000000,rangeMax:1000,step:10,name:'paymentAmount'},v=>update('amountCents',Math.round(v*100))),toggle('Получен · ручная отметка',p.status==='received',v=>update('status',v?'received':'planned',true)),conditions(p,true));
+ if(state.reasons.length)fields.append(element('p','help',state.reasons.join(' · ')));const remove=element('button','quiet danger','Удалить платёжный этап');remove.type='button';remove.onclick=()=>{backup();commit(removePayment(snapshot,p.id));message('Этап удалён. Действие можно отменить.');};fields.append(remove);block.append(summary,fields);$('#payment-editors').append(block);}
 }
-function commit(value) { snapshot = validateSnapshot(value); render(); }
-function attempt(action) { try { action(); } catch (error) { message(error.message); render(); } }
-$('#project-title').addEventListener('change', event => attempt(() => commit({ ...snapshot, title: event.target.value.trim(), updatedAt: now() })));
-$('#capacity').addEventListener('change', event => attempt(() => commit({ ...snapshot, weeklyCapacityHours: Number(event.target.value), updatedAt: now() })));
-$('#advance').addEventListener('change', event => commit(setManualAdvance(snapshot, event.target.checked)));
-$('#task-editors').addEventListener('change', event => attempt(() => {
-  const control = event.target, name = control.dataset.field;
-  if (!name || !control.reportValidity()) return;
-  const id = control.closest('[data-task]').dataset.task;
-  if (name === 'accepted') { commit(setTaskAccepted(snapshot, id, control.checked)); return; }
-  const next = structuredClone(snapshot), task = next.tasks.find(item => item.id === id);
-  const roundId = control.closest('[data-round]')?.dataset.round;
-  if (roundId) { const round = task.rounds.find(item => item.id === roundId); if (name === 'roundHours') round.estimateHours = Number(control.value); if (name === 'roundRate') round.rateCents = Math.round(Number(control.value) * 100); if (name === 'roundAgreed') round.agreed = control.checked; }
-  else if (name === 'dependencies') { task.dependencies = control.value ? [control.value] : []; task.missingDependencies = []; }
-  else if (name === 'basePrice') task.basePriceCents = Math.round(Number(control.value) * 100);
-  else if (name === 'requiresSecondAdvance') task[name] = control.checked;
-  else if (name === 'title') task.title = control.value.trim();
-  else { task[name] = Number(control.value); if (name === 'progress' && task.progress < 100) task.accepted = false; }
-  next.updatedAt = now(); commit(next);
-}));
-$('#task-editors').addEventListener('click', event => attempt(() => {
-  const button = event.target.closest('button[data-action]'); if (!button) return;
-  const id = button.closest('[data-task]').dataset.task;
-  if (button.dataset.action === 'delete') commit(removeTask(snapshot, id));
-  if (button.dataset.action === 'clear-missing') { const next = structuredClone(snapshot), task = next.tasks.find(item => item.id === id); task.missingDependencies = []; task.dependencies = task.dependencies.filter(dependency => next.tasks.some(item => item.id === dependency)); next.updatedAt = now(); commit(next); }
-}));
-$('#add-task').addEventListener('submit', event => { event.preventDefault(); attempt(() => { const form = event.currentTarget, values = new FormData(form); commit(addTask(snapshot, { title: String(values.get('title')), estimateHours: Number(values.get('estimateHours')), basePriceCents: Math.round(Number(values.get('price')) * 100) }, newId())); form.reset(); message('Задача добавлена.'); }); });
-$('#background').addEventListener('change', event => $('#preview-area').classList.toggle('dark', event.target.value === 'dark'));
-$('#compact').addEventListener('change', event => { compact = event.target.checked; renderCard($('#widget'), snapshot, { compact }); });
-$('#project-list').addEventListener('change', event => { currentId = event.target.value; snapshot = projects.find(project => project.id === currentId).snapshot; generatedAt = null; $('#share-result').hidden = true; render(); });
-$('#new-project').addEventListener('click', () => attempt(() => {
-  if (projects.length >= 20) throw new Error('В этом демо можно сохранить до 20 локальных проектов.');
-  currentId = newId(); snapshot = createDemo(); snapshot.title = `Новый проект ${projects.length + 1}`; snapshot.tasks = [];
-  projects.push({ id: currentId, snapshot }); generatedAt = null; $('#share-result').hidden = true; render();
-}));
-$('#share').addEventListener('click', () => attempt(() => {
-  const url = localViewerUrl(currentId, location.href); $('#share-url').value = url; $('#open-viewer').href = url;
-  $('#share-result').hidden = false; generatedAt = null; render();
-  $('#share-status').textContent = 'Один и тот же локальный ID получает обновления в этом браузере. С другого устройства данные пока недоступны.';
-  message('Локальный просмотр по ID готов. Внешнее хранилище ещё не подключено.');
-}));
-$('#snapshot-link').addEventListener('click', () => attempt(() => {
-  const url = createViewerUrl(snapshot, location.href); $('#share-url').value = url; $('#open-viewer').href = url;
-  $('#share-result').hidden = false; generatedAt = snapshot.updatedAt; render();
-  message('Создан опциональный снимок. Он не обновляется автоматически и не заменяет общую базу.');
-}));
-$('#copy-share').addEventListener('click', async () => {
-  try { await navigator.clipboard.writeText($('#share-url').value); message('Ссылка скопирована.'); }
-  catch { $('#share-url').focus(); $('#share-url').select(); message('Выделена ссылка. Нажмите Ctrl+C или скопируйте её вручную.'); }
-});
-$('#reset').addEventListener('click', () => { generatedAt = null; $('#share-result').hidden = true; commit(createDemo()); message('Текущий проект сброшен к демо-данным.'); });
-$('#export').addEventListener('click', async event => {
-  const button = event.currentTarget; if (button.disabled) return; button.disabled = true;
-  try { const blob = await cardPng(validateSnapshot(snapshot), { compact }); download(blob, `NomadCatapult-${snapshot.updatedAt.slice(0, 10)}.png`); message('PNG карточки сохранён.'); }
-  catch (error) { message(error.message); } finally { button.disabled = false; }
-});
-$('#export-json').addEventListener('click', () => download(new Blob([JSON.stringify(clientProjection(snapshot), null, 2)], { type: 'application/json' }), `NomadCatapult-${snapshot.updatedAt.slice(0, 10)}.json`));
-$('#import-json').addEventListener('click', () => $('#import-file').click());
-$('#import-file').addEventListener('change', async event => {
-  const file = event.target.files?.[0]; if (!file) return;
-  try {
-    if (file.size > 65536) throw new Error('JSON слишком большой: максимум 64 КБ. Медиафайлы в снимок не включаются.');
-    const imported = validateSnapshot(JSON.parse(await file.text()));
-    if (projects.length >= 20) throw new Error('Достигнут лимит 20 локальных проектов.');
-    currentId = newId(); snapshot = imported; projects.push({ id: currentId, snapshot }); generatedAt = null; $('#share-result').hidden = true; render(); message('JSON импортирован как отдельный локальный проект.');
-  } catch (error) { message(`Импорт не выполнен: ${error.message}`); }
-  finally { event.target.value = ''; }
-});
+function render(){const disclosures=new Set([...document.querySelectorAll('[data-disclosure][open]')].map(d=>d.dataset.disclosure));for(const mode of MODES){const b=$('[data-mode="'+mode.id+'"]');b.setAttribute('aria-pressed',String(snapshot.mode===mode.id));}
+ $('#project-list').replaceChildren();for(const p of projects){const option=element('option','',p.id===currentId?snapshot.title:p.snapshot.title);option.value=p.id;option.selected=p.id===currentId;$('#project-list').append(option);}
+ $('#project-controls').replaceChildren(textField('Название проекта',snapshot.title,v=>edit(n=>n.title=v,false),100),numeric('Недельный ресурс команды, ч',snapshot.weeklyCapacityHours,{min:.25,max:500,rangeMax:80,name:'capacity'},v=>edit(n=>n.weeklyCapacityHours=v,false)));
+ paymentEditors();taskEditors();for(const d of document.querySelectorAll('[data-disclosure]'))d.open=disclosures.has(d.dataset.disclosure);preview();moveSelection();
+}
+for(const [i,mode]of MODES.entries()){const b=element('button','mode-card');b.type='button';b.dataset.mode=mode.id;b.setAttribute('aria-pressed','false');b.append(element('span','mode-number','0'+(i+1)+' / '+mode.short),element('strong','',mode.title),element('span','mode-description',mode.description));b.onclick=()=>{if(snapshot.mode===mode.id)return;persist();snapshot=project().drafts?.[mode.id]||createTemplate(mode.id);render();message('Режим «'+mode.short+'». Ваши правки в других режимах сохранены.');pulse(b);};$('#modes').append(b);}
+$('#new-task-controls').append(numeric('План, ч',2,{name:'estimateHours'}),numeric('Базовая цена, $',50,{max:1000000,rangeMax:1000,step:10,name:'price'}));
+$('#add-task').onsubmit=e=>{e.preventDefault();attempt(()=>{const f=new FormData(e.currentTarget);const next=addTask(snapshot,{title:String(f.get('title')),estimateHours:Number(f.get('estimateHours')),basePriceCents:Math.round(Number(f.get('price'))*100)},id());next.tasks.at(-1).rounds=[1,2].map(n=>({id:'round-'+n,number:n,included:true,agreed:true,estimateHours:0,rateCents:0}));commit(next);e.currentTarget.querySelector('[name=title]').value='';message('Задача добавлена. Все поля можно изменить.');});};
+$('#add-payment').onclick=()=>attempt(()=>{edit(next=>next.payments.push({id:id(),title:'Новый аванс',amountCents:0,status:'planned',dependencies:[],missingDependencies:[]}));const block=$('#payment-editors').lastElementChild;block.open=true;block.querySelector('input').focus();});
+$('#project-list').onchange=e=>{persist();currentId=e.target.value;snapshot=project().snapshot;render();};
+$('#new-project').onclick=()=>attempt(()=>{if(projects.length>=20)throw Error('Допустимо до 20 проектов.');persist();currentId=id();snapshot=createTemplate(snapshot.mode);snapshot.title='Мой новый проект';snapshot.tasks=[];snapshot.payments=[];projects.push({id:currentId,snapshot,drafts:{}});render();});
+$('#reset').onclick=()=>{backup();snapshot=createTemplate(snapshot.mode);render();message('Применён исходный шаблон. Ваши правки можно вернуть кнопкой «Отменить действие».');};
+$('#undo').onclick=()=>{if(!undoState)return;({projects,currentId}=structuredClone(undoState));snapshot=project().snapshot;undoState=null;$('#undo').hidden=true;render();message('Предыдущее состояние восстановлено.');};
+$('#background').onchange=e=>$('#preview-area').classList.toggle('dark',e.target.value==='dark');$('#compact').onchange=e=>{compact=e.target.checked;preview();};
+$('#share').onclick=()=>{const a=$('#open-viewer');a.href=localViewerUrl(currentId,location.href);a.hidden=false;a.focus();};
+$('#export').onclick=async e=>{const b=e.currentTarget;b.disabled=true;try{download(await cardPng(snapshot,{compact}),'NomadCatapult-'+snapshot.updatedAt.slice(0,10)+'.png');message('PNG готов. Авансы и бюджет показаны отдельно.');}catch(err){message(err.message);}finally{b.disabled=false;}};
+$('#export-json').onclick=()=>download(new Blob([JSON.stringify(clientProjection(snapshot),null,2)],{type:'application/json'}),'NomadCatapult-demo.json');
+$('#import-json').onclick=()=>$('#import-file').click();$('#import-file').onchange=async e=>{const f=e.target.files?.[0];if(!f)return;try{if(f.size>65536)throw Error('Максимум 64 КБ.');const data=validateSnapshot(JSON.parse(await f.text()));if(projects.length>=20)throw Error('Допустимо до 20 проектов.');persist();currentId=id();snapshot=data;projects.push({id:currentId,snapshot,drafts:{}});render();message('JSON открыт отдельным проектом. Старые задачи сохранены.');}catch(err){message('Импорт не выполнен: '+err.message);}finally{e.target.value='';}};
 render();

@@ -18,6 +18,7 @@ function disclosure(title, value, children, className = '') {
   return details;
 }
 export function renderCard(root, snapshot, { compact = false } = {}) {
+  const previousPercent=Number(root.querySelector('[role=meter]')?.getAttribute('aria-valuenow')||0);
   const open = new Set([...root.querySelectorAll('details[open][data-key]')].map(node => node.dataset.key));
   root.replaceChildren(); root.className = `widget${compact ? ' compact' : ''}`;
   root.setAttribute('aria-label', 'Карточка состояния проекта NomadCatapult');
@@ -67,9 +68,17 @@ export function renderCard(root, snapshot, { compact = false } = {}) {
   }
   if (vm.hiddenTaskCount) section.append(element('p', 'remaining-tasks', `Ещё ${vm.hiddenTaskCount} задач · полный список в обычном режиме`));
   root.append(section);
+  const payments=element('section','payment-section');payments.append(element('h2','section-label','АВАНСЫ · СОБЫТИЯ ОПЛАТЫ'));
+  if(!vm.payments.length)payments.append(element('p','micro','Платёжные этапы не заданы.'));
+  for(const p of vm.payments){const row=element('div','payment-row payment-'+p.state.key);row.dataset.payment=p.id;
+    const head=element('div','payment-row-head');head.append(element('span','payment-icon',p.state.key==='received'?'✓':'↗'),element('strong','payment-title',p.title),element('strong','payment-amount',p.amountLabel));
+    row.append(head,element('span','payment-status',p.state.label));if(p.state.reasons.length)row.append(element('p','micro',p.state.reasons.join(' · ')));payments.append(row);
+  }
+  payments.append(pair('Получено · ручные отметки',vm.paidLabel),element('p','micro','Авансы входят в оплату заказа, не прибавляются к его цене.'));root.append(payments);
   const budget = disclosure('Согласованная сумма', vm.totalPriceLabel, [pair('Базовый заказ', money(totals.basePriceCents)), pair('Дополнительные согласованные правки', money(totals.extraPriceCents)), element('p', 'micro', 'Согласовано ≠ оплачено. Все цены в этом демо условные.')], 'budget');
   budget.dataset.key = 'budget'; budget.open = open.has('budget'); root.append(budget);
-  root.append(element('p', 'payment-note', snapshot.manualSecondAdvanceRecorded ? 'Второй аванс: вручную отмечен как полученный.' : 'Второй аванс: получение не отмечено.'));
+
   const footer = element('footer', 'widget-footer');
   footer.append(element('span', '', `Обновлено · ${vm.updatedLabel}`), element('span', '', 'Демо · цены условные')); root.append(footer);
+  if(previousPercent!==totals.remainingPercent&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&totals.remainingPercent){fill.animate([{transform:'scaleX('+previousPercent/totals.remainingPercent+') scaleY(.85)'},{transform:'scaleX(1.03) scaleY(1.08)',offset:.7},{transform:'scaleX(1) scaleY(1)'}],{duration:420,easing:'cubic-bezier(.2,.7,.25,1)'});}
 }

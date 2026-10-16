@@ -1,4 +1,4 @@
-import { validateSnapshot, projectTotals, taskTotals, taskState } from './model.mjs';
+import { validateSnapshot, projectTotals, taskTotals, taskState, paymentState, paymentTotals } from './model.mjs';
 export const COMPACT_TASK_LIMIT = 4;
 export const hours = value => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(value);
 export const money = cents => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(cents / 100).replace(/\.00$/, '');
@@ -12,6 +12,7 @@ const tones = {
 };
 function shortReasons(reasons) {
   return reasons.map(reason => reason
+    .replace('Ждёт аванс: Второй аванс', 'Ждёт второй аванс')
     .replace('Ожидаем ручную отметку второго аванса', 'Ждёт второй аванс')
     .replace('Ожидаем принятия:', 'Ждёт принятия:')
     .replace(/Удалён предшественник «.*» — переназначьте или снимите зависимость/, 'Удалён предшественник — нужно решение')
@@ -26,11 +27,14 @@ export function buildCardViewModel(input, { compact = false } = {}) {
       shortReason: reasons.slice(0, 2).join(' · ') + (reasons.length > 2 ? ` · ещё ${reasons.length - 2} условий` : ''),
       priceLabel: money(total.totalPriceCents) };
   });
+  const payments=snapshot.payments.map(p=>({...p,state:paymentState(snapshot,p),amountLabel:p.amountCents?money(p.amountCents):'Сумма не задана'}));
+  const payment=paymentTotals(snapshot);
   const tasks = compact ? allTasks.slice(0, COMPACT_TASK_LIMIT) : allTasks;
   return { snapshot, title: snapshot.title, updatedLabel: dateLabel(snapshot.updatedAt), totals,
     remainingLabel: `${totals.remainingPercent}% осталось`,
     resourceLabel: `${hours(totals.remainingHours)} из ${hours(snapshot.weeklyCapacityHours)} ч`,
     spentLabel: `${hours(totals.spentHours)} ч`, reservedLabel: `${hours(totals.reservedHours)} ч`,
     availableLabel: `${hours(totals.availableHours)} ч`, totalPriceLabel: money(totals.totalPriceCents),
+    payments, payment, paidLabel:snapshot.payments.some(p=>p.status==='received'&&!p.amountCents)?(payment.receivedCents?money(payment.receivedCents)+' + сумма не задана':'Сумма не задана'):money(payment.receivedCents), plannedPaymentLabel:money(payment.plannedCents),
     allTasks, tasks, hiddenTaskCount: allTasks.length - tasks.length };
 }
