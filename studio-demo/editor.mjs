@@ -1,7 +1,7 @@
 import {createTemplate,MODES,validateSnapshot,taskState,paymentState,addTask,removeTask,removePayment,setTaskAccepted} from './model.mjs';
-import {renderCard,element} from './view.mjs';
+import {renderCard,renderChatSummary,element} from './view.mjs';
 import {money} from './presentation.mjs';
-import {cardPng,download} from './export.mjs';
+import {cardPng,chatCardPng,download} from './export.mjs';
 import {createLocalProjectStore,localViewerUrl} from './storage.mjs';
 import {clientProjection} from './encrypted.mjs';
 const $=s=>document.querySelector(s),now=()=>new Date().toISOString(),id=()=> 'p-'+crypto.randomUUID();
@@ -15,7 +15,7 @@ snapshot=projects.find(p=>p.id===currentId).snapshot;
 function project(){return projects.find(p=>p.id===currentId);}
 function persist(){const p=project();p.snapshot=snapshot;p.drafts??={};p.drafts[snapshot.mode]=snapshot;try{if(storageFault)throw Error('Keep unreadable storage intact');store.writeAll({currentId,projects});$('#save-status').textContent='Ваши изменения и каждый режим сохранены в этом браузере.';}catch{$('#save-status').textContent='Сейчас изменения только в памяти. Скачайте JSON для сохранения.';}}
 function backup(){undoState=structuredClone({projects,currentId});$('#undo').hidden=false;}
-function preview(){$('.editor-panel').dataset.measure=snapshot.measurement.kind;renderCard($('#widget'),snapshot,{compact});for(const task of snapshot.tasks){const block=$('[data-task="'+task.id+'"]');if(block){block.querySelector('summary>span:first-child').textContent=task.title;block.querySelector('.editor-status').textContent=taskState(snapshot,task).label;const accepted=block.querySelector('[data-toggle="Результат принят"]');if(accepted)accepted.checked=task.accepted;}}for(const p of snapshot.payments){const block=$('#payment-editors [data-payment="'+p.id+'"]');if(block){block.querySelector('summary>span').textContent=p.title;block.querySelector('summary>strong').textContent=money(p.amountCents);}}persist();}
+function preview(){$('.editor-panel').dataset.measure=snapshot.measurement.kind;if(compact)renderChatSummary($('#widget'),snapshot);else renderCard($('#widget'),snapshot);$('#export').textContent=compact?'PNG для чата 960×1056 ↓':'Скачать полный PNG ↓';for(const task of snapshot.tasks){const block=$('[data-task="'+task.id+'"]');if(block){block.querySelector('summary>span:first-child').textContent=task.title;block.querySelector('.editor-status').textContent=taskState(snapshot,task).label;const accepted=block.querySelector('[data-toggle="Результат принят"]');if(accepted)accepted.checked=task.accepted;}}for(const p of snapshot.payments){const block=$('#payment-editors [data-payment="'+p.id+'"]');if(block){block.querySelector('summary>span').textContent=p.title;block.querySelector('summary>strong').textContent=money(p.amountCents);}}persist();}
 function commit(next,{controls=true}={}){snapshot=validateSnapshot({...next,updatedAt:now()});controls?render():preview();}
 function attempt(action){try{action();}catch(e){message(e.message);}}
 function pulse(node){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;node.classList.remove('pulse');void node.offsetWidth;node.classList.add('pulse');}
@@ -89,7 +89,7 @@ $('#reset').onclick=()=>{backup();snapshot=createTemplate(snapshot.mode);render(
 $('#undo').onclick=()=>{if(!undoState)return;({projects,currentId}=structuredClone(undoState));snapshot=project().snapshot;undoState=null;$('#undo').hidden=true;render();message('Предыдущее состояние восстановлено.');};
 $('#background').onchange=e=>$('#preview-area').classList.toggle('dark',e.target.value==='dark');$('#compact').onchange=e=>{compact=e.target.checked;preview();};
 $('#share').onclick=()=>{const a=$('#open-viewer');a.href=localViewerUrl(currentId,location.href);a.hidden=false;a.focus();};
-$('#export').onclick=async e=>{const b=e.currentTarget;b.disabled=true;try{download(await cardPng(snapshot,{compact}),'NomadCatapult-'+snapshot.updatedAt.slice(0,10)+'.png');message('PNG готов. Авансы и бюджет показаны отдельно.');}catch(err){message(err.message);}finally{b.disabled=false;}};
+$('#export').onclick=async e=>{const b=e.currentTarget;b.disabled=true;try{download(await (compact?chatCardPng(snapshot):cardPng(snapshot)),'NomadCatapult-'+snapshot.updatedAt.slice(0,10)+'.png');message(compact?'Короткий PNG готов. Ссылку на детали отправьте отдельным сообщением.':'Полный PNG готов.');}catch(err){message(err.message);}finally{b.disabled=false;}};
 $('#export-json').onclick=()=>download(new Blob([JSON.stringify(clientProjection(snapshot),null,2)],{type:'application/json'}),'NomadCatapult-demo.json');
 $('#import-json').onclick=()=>$('#import-file').click();$('#import-file').onchange=async e=>{const f=e.target.files?.[0];if(!f)return;try{if(f.size>65536)throw Error('Максимум 64 КБ.');const data=validateSnapshot(JSON.parse(await f.text()));if(projects.length>=20)throw Error('Допустимо до 20 проектов.');persist();currentId=id();snapshot=data;projects.push({id:currentId,snapshot,drafts:{}});render();message('JSON открыт отдельным проектом. Старые задачи сохранены.');}catch(err){message('Импорт не выполнен: '+err.message);}finally{e.target.value='';}};
 render();

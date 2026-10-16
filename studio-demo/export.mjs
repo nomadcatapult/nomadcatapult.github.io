@@ -1,4 +1,4 @@
-import { buildCardViewModel, hours, cardSurfaceImage } from './presentation.mjs';
+import { buildCardViewModel, buildChatViewModel, hours, cardSurfaceImage } from './presentation.mjs';
 const FONT = '"Segoe UI", Arial, sans-serif';
 export function wrapText(ctx, value, maxWidth, maxLines = Infinity) {
   const lines = []; let current = '';
@@ -123,4 +123,31 @@ export async function cardPng(snapshot, { compact = false } = {}) {
 export function download(blob, filename) {
   const url = URL.createObjectURL(blob), link = document.createElement('a'); link.href = url; link.download = filename;
   document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 10000);
+}
+
+/** A separate short composition, not a scaled report. 320×352 CSS units at 3x. */
+export function chatCardLayout(snapshot,{capturedAt=new Date().toISOString(),context}={}) {
+  const vm=buildChatViewModel(snapshot,{capturedAt}),ctx=context||document.createElement('canvas').getContext('2d');
+  ctx.font=`700 17px ${FONT}`;const titleLines=wrapText(ctx,vm.title,284,2);
+  ctx.font=`500 14px ${FONT}`;const warningLines=vm.warnings.flatMap(w=>wrapText(ctx,w,284));
+  if(warningLines.length>3)throw new Error('Предупреждения не помещаются в сводку. Используйте полный PNG.');
+  ctx.font=`650 15px ${FONT}`;const stageLines=wrapText(ctx,'Далее: '+vm.nextTitle,284,1);
+  ctx.font=`400 13px ${FONT}`;const statusLines=wrapText(ctx,vm.nextStatus,284,2);
+  return {vm,width:320,height:352,physicalWidth:960,physicalHeight:1056,titleLines,warningLines,stageLines,statusLines};
+}
+export async function chatCardPng(snapshot,{capturedAt=new Date().toISOString()}={}) {
+  const l=chatCardLayout(snapshot,{capturedAt}),{vm}=l,canvas=document.createElement('canvas');canvas.width=960;canvas.height=1056;const ctx=canvas.getContext('2d');ctx.scale(3,3);
+  ctx.beginPath();ctx.roundRect(0,0,320,352,18);ctx.clip();ctx.drawImage(await cardSurfaceImage(),-9.6,-10.56,339.2,373.12);rounded(ctx,.5,.5,319,351,18,null,'#73808c55');
+  text(ctx,'NomadCatapult',18,16,11,800,'#27343a');text(ctx,'ДЕМО',266,17,9,700);
+  l.titleLines.forEach((line,i)=>text(ctx,line,18,35+i*20,17,700,'#172129'));
+  text(ctx,vm.metricLabel,18,85,10,750);text(ctx,vm.headline,18,101,29,800,'#141a22');
+  ctx.font=`400 13px ${FONT}`;text(ctx,wrapText(ctx,vm.caption,284,1)[0],18,137,13);
+  rounded(ctx,18,160,284,12,6,'#59687830');ctx.save();ctx.beginPath();ctx.roundRect(18,160,284,12,6);ctx.clip();const accepted=284*vm.primaryPercent/100,review=284*vm.reviewPercent/100;
+  ctx.fillStyle='#c8ff00';ctx.fillRect(18,160,accepted,12);if(review){ctx.save();ctx.beginPath();ctx.rect(18+accepted,160,review,12);ctx.clip();ctx.fillStyle='#c4dad1';ctx.fillRect(18+accepted,160,review,12);ctx.strokeStyle='#657c738c';ctx.lineWidth=2;for(let x=6+accepted;x<30+accepted+review;x+=7){ctx.beginPath();ctx.moveTo(x,172);ctx.lineTo(x+12,160);ctx.stroke();}ctx.restore();}ctx.restore();
+  text(ctx,'Принято',18,188,12,500);text(ctx,vm.acceptedValue,85,186,16,700,'#26352c');text(ctx,'На приёмке',170,188,12,500);ctx.font=`700 16px ${FONT}`;text(ctx,vm.reviewValue,302-ctx.measureText(vm.reviewValue).width,186,16,700,'#26352c');
+  if(l.warningLines.length){l.warningLines.forEach((line,i)=>text(ctx,line,18,230+i*16,14,600,'#6b3f23'));}
+  else{l.stageLines.forEach((line,i)=>text(ctx,line,18,227+i*18,15,650,'#1c2930'));l.statusLines.forEach((line,i)=>text(ctx,line,18,249+i*15,13,500,vm.nextStatus.includes('Ждём')?'#594d32':'#45515d'));}
+  if(vm.payment){rounded(ctx,18,287,284,28,8,'#edf1d75c','#6576792b');text(ctx,'Аванс '+vm.payment.amount,27,295,13,700,'#27343a');ctx.font=`500 12px ${FONT}`;const statusWidth=ctx.measureText(vm.payment.status).width;text(ctx,vm.payment.status,293-statusWidth,296,12,500);}
+  text(ctx,'Снимок: '+vm.captureDate,18,325,10,500);text(ctx,'Данные: '+vm.dataDate,18,338,9,400);
+  return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('Не удалось сохранить PNG.')),'image/png'));
 }

@@ -1,10 +1,43 @@
-import { buildCardViewModel, hours, money, CARD_SURFACE_URL } from './presentation.mjs';
+import { buildCardViewModel, buildChatViewModel, hours, money, CARD_SURFACE_URL } from './presentation.mjs';
 export { hours, money, dateLabel } from './presentation.mjs';
 export function element(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
   if (text !== undefined) node.textContent = text;
   return node;
+}
+
+export function renderChatSummary(root,snapshot) {
+  const oldMeter=root.querySelector('[role=meter]'),previous=oldMeter?Number(oldMeter.getAttribute('aria-valuenow')):null;
+  const vm=buildChatViewModel(snapshot);root.replaceChildren();root.className='widget chat-card';root.dataset.measure=vm.kind;root.style.setProperty('--card-surface','url("'+CARD_SURFACE_URL+'")');
+  root.setAttribute('aria-label','Краткая сводка проекта');
+  const layout=element('div','chat-layout');
+  layout.append(element('p','chat-brand','NomadCatapult'),element('span','chat-demo','ДЕМО'));
+  const title=element('h1','project-name chat-title',vm.title);title.title=vm.title;layout.append(title);
+  layout.append(element('p','chat-metric-label',vm.metricLabel),element('p','remaining chat-headline',vm.headline));
+  const caption=element('p','chat-caption',vm.caption);caption.title=vm.caption;layout.append(caption);
+  const meter=element('div','meter chat-meter');meter.setAttribute('role','meter');meter.setAttribute('aria-label',vm.metricLabel);meter.setAttribute('aria-valuemin','0');meter.setAttribute('aria-valuemax','100');meter.setAttribute('aria-valuenow',String(vm.primaryPercent));meter.setAttribute('aria-valuetext',vm.ariaText);
+  const primary=element('span','meter-primary');primary.style.width=vm.primaryPercent+'%';meter.append(primary);
+  if(vm.kind!=='hours'){const review=element('span','meter-review');review.style.width=vm.reviewPercent+'%';review.setAttribute('aria-hidden','true');meter.append(review);}layout.append(meter);
+  const counts=element('div','chat-counts');counts.append(pair('Принято',vm.acceptedValue),pair('На приёмке',vm.reviewValue));layout.append(counts);
+  const next=element('section','chat-next');
+  if(vm.warnings.length){next.classList.add('chat-alerts');next.setAttribute('aria-label','Важные предупреждения');vm.warnings.forEach(w=>next.append(element('p','',w)));}
+  else {const title=element('p','chat-next-title','Далее: '+vm.nextTitle);title.title=vm.nextTitle;next.append(title,element('p','chat-next-status',vm.nextStatus));}layout.append(next);
+  if(vm.payment){const payment=element('p','chat-payment');payment.dataset.payment=vm.payment.id;payment.title=vm.payment.title;payment.append(element('strong','','Аванс '+vm.payment.amount),element('span','',vm.payment.status));layout.append(payment);}
+  layout.append(element('p','chat-date','Данные: '+vm.dataDate),element('p','chat-details-note',vm.detailsNote));root.append(layout);
+  if(previous!==null&&previous!==vm.primaryPercent&&vm.primaryPercent&&!matchMedia('(prefers-reduced-motion: reduce)').matches)primary.animate([{transform:'scaleX('+previous/vm.primaryPercent+') scaleY(.9)'},{transform:'scaleX(1.03) scaleY(1.06)',offset:.7},{transform:'scaleX(1) scaleY(1)'}],{duration:420,easing:'cubic-bezier(.2,.7,.25,1)'});
+  return vm;
+}
+
+/** The readonly client starts with one screen; whole sections disclose the original full data. */
+export function renderClientCard(root,snapshot) {
+  const open=new Set([...root.querySelectorAll('details[open][data-client-section]')].map(d=>d.dataset.clientSection));
+  root.replaceChildren();root.className='client-card';root.dataset.measure=snapshot.measurement.kind;
+  const summary=element('section');renderChatSummary(summary,snapshot);root.append(summary);
+  const full=element('article');renderCard(full,snapshot,{compact:false});
+  for(const [id,title,selectors]of [['stages','Все этапы',['.task-section']],['calculations','Расчёты и авансы',['.resource','.payment-section','.budget']]]){
+    const details=element('details','client-details');details.dataset.clientSection=id;details.open=open.has(id);details.append(element('summary','',title));const body=element('div','client-detail-body');selectors.forEach(selector=>body.append(full.querySelector(selector)));details.append(body);root.append(details);
+  }
 }
 function pair(label, value, className = '') {
   const row = element('div', `pair ${className}`);

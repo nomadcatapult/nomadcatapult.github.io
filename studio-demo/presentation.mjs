@@ -69,3 +69,35 @@ export function buildCardViewModel(input, { compact = false } = {}) {
     allTasks, tasks, hiddenTaskCount: allTasks.length - tasks.length,
     hiddenTasksLabel:kind==='percent'?'Остальные задачи — в полной карточке':`Ещё ${allTasks.length-tasks.length} ${['задача','задачи','задач'][new Intl.PluralRules('ru-RU').select(allTasks.length-tasks.length)==='one'?0:new Intl.PluralRules('ru-RU').select(allTasks.length-tasks.length)==='few'?1:2]} · итоги учитывают весь список` };
 }
+
+/** Shared compact summary: no independent progress counters, payments never become results. */
+export function buildChatViewModel(input,{capturedAt=null}={}) {
+  const full=buildCardViewModel(input),{snapshot,measure,results}=full;
+  const unfinished=full.allTasks.filter(t=>!t.accepted);
+  const next=unfinished.find(t=>['active','review'].includes(t.state.key))||unfinished.find(t=>t.state.key==='ready')||unfinished[0];
+  const required=new Set(),seen=new Set();
+  function collect(task){if(!task||seen.has(task.id)||task.accepted)return;seen.add(task.id);task.paymentDependencies.forEach(id=>required.add(id));task.dependencies.forEach(id=>collect(snapshot.tasks.find(t=>t.id===id)));}
+  collect(next);
+  const payment=full.payments.find(p=>required.has(p.id)&&p.status!=='received')||full.payments.find(p=>p.status!=='received'&&p.state.key==='planned');
+  const missing=next&&(next.missingDependencies.length||next.dependencies.some(id=>!snapshot.tasks.some(t=>t.id===id))||next.paymentDependencies.some(id=>!snapshot.payments.some(p=>p.id===id)));
+  const unresolved=unfinished.some(t=>t.missingDependencies.length||t.dependencies.some(id=>!snapshot.tasks.some(p=>p.id===id))||t.paymentDependencies.some(id=>!snapshot.payments.some(p=>p.id===id)))||snapshot.payments.some(p=>p.status!=='received'&&(p.missingDependencies.length||p.dependencies.some(id=>![...snapshot.tasks,...snapshot.payments].some(item=>item.id===id))));
+  const waitingPayment=next?.paymentDependencies.some(id=>snapshot.payments.find(p=>p.id===id)?.status!=='received');
+  const waitingTask=next?.dependencies.some(id=>!snapshot.tasks.find(t=>t.id===id)?.accepted);
+  const nextStatus=!next?(snapshot.tasks.length?'Все результаты приняты':'Добавьте первую задачу'):missing?'Нужно исправить зависимость':next.state.key==='blocked'?(waitingPayment&&waitingTask?'Ждём аванс и принятие':waitingPayment?'Ждём аванс':waitingTask?'Ждём принятие этапа':'Старт заблокирован'):next.state.key==='review'?'Готово · ждёт приёмки':next.state.key==='active'?'В работе':'Можно начинать';
+  const warnings=measure.kind==='hours'?[
+    full.totals.overSpentHours?`Сверх пакета: ${hours(full.totals.overSpentHours)} ч`:'',
+    full.totals.overReservedHours?`Резерв сверх остатка: ${hours(full.totals.overReservedHours)} ч`:''
+  ].filter(Boolean):[];
+  if(unresolved)warnings.push('Неразрешённая зависимость');
+  return {full,snapshot,title:snapshot.title,kind:measure.kind,
+    metricLabel:measure.kind==='hours'?'РЕСУРС · ОСТАТОК':'РЕЗУЛЬТАТЫ · ПРИНЯТО',
+    headline:measure.headline,caption:measure.kind==='hours'?measure.caption:measure.kind==='units'?snapshot.measurement.unitLabel:'По принятым задачам',
+    primaryPercent:measure.primaryPercent,reviewPercent:measure.reviewPercent,ariaText:measure.ariaText,
+    acceptedValue:measure.kind==='percent'?Math.round(results.acceptedPercent)+'%':`${results.accepted}/${results.total}`,
+    reviewValue:measure.kind==='percent'?Math.round(results.readyPercent)+'%':String(results.ready),
+    nextId:next?.id||null,nextTitle:next?next.title:snapshot.tasks.length?'Все результаты приняты':'Пока нет этапов',nextStatus,
+    warnings,notice:warnings.length?warnings.join(' · '):null,
+    payment:payment?{id:payment.id,title:payment.title,amount:payment.amountLabel,status:payment.state.key==='blocked'?'Ждёт условий':'Ожидается'}:null,
+    dataDate:dateLabel(snapshot.updatedAt),captureDate:capturedAt?dateLabel(capturedAt):null,
+    detailsNote:'Все этапы и расчёты — по ссылке'};
+}
