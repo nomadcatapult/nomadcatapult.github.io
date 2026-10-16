@@ -1,4 +1,4 @@
-import { buildCardViewModel, hours } from './presentation.mjs';
+import { buildCardViewModel, hours, cardSurfaceImage } from './presentation.mjs';
 const FONT = '"Segoe UI", Arial, sans-serif';
 export function wrapText(ctx, value, maxWidth, maxLines = Infinity) {
   const lines = []; let current = '';
@@ -25,7 +25,14 @@ export function compactCardLayout(snapshot, { compact = false, context } = {}) {
   const ctx = context || document.createElement('canvas').getContext('2d'), innerWidth = width - pad * 2;
   ctx.font = `500 15px ${FONT}`;
   const projectLines = wrapText(ctx, vm.title, innerWidth - 56), headerHeight = 43 + projectLines.length * 21;
-  const resourceHeight = 171 + (vm.totals.overSpentHours || vm.totals.overReservedHours ? 24 : 0);
+  const resourceWidth=innerWidth-34,m=vm.measure;
+  ctx.font=`400 14px ${FONT}`;const captionLines=wrapText(ctx,m.caption,resourceWidth,3);
+  const barY=79+captionLines.length*17+12,statsY=barY+26,columnWidth=resourceWidth/m.stats.length;
+  ctx.font=`400 9px ${FONT}`;const stats=m.stats.map(([label,value])=>({labelLines:wrapText(ctx,label,columnWidth-8,3),value}));const labelHeight=Math.max(...stats.map(s=>s.labelLines.length))*12,valueY=statsY+labelHeight+4;
+  let textY=valueY+29;const unallocatedY=m.kind==='hours'?textY:null;if(unallocatedY!==null)textY+=25;
+  ctx.font=`400 9px ${FONT}`;const explanationLines=wrapText(ctx,m.explanation,resourceWidth,5),explanationY=textY;textY+=explanationLines.length*12;
+  const warningLines=m.warnings.flatMap(w=>wrapText(ctx,w,resourceWidth,3)),warningY=textY+7;if(warningLines.length)textY+=7+warningLines.length*12;
+  const resourceHeight=textY+16,resourceLayout={captionLines,barY,statsY,stats,valueY,columnWidth,unallocatedY,explanationLines,explanationY,warningLines,warningY};
   const titleFontSize = 15, titleLineHeight = 21, rowTextWidth = innerWidth - 64;
   const rows = vm.tasks.map(task => {
     ctx.font = `700 ${titleFontSize}px ${FONT}`; const titleLines = wrapText(ctx, task.title, rowTextWidth);
@@ -36,7 +43,7 @@ export function compactCardLayout(snapshot, { compact = false, context } = {}) {
   const paymentsHeight=paymentRows.reduce((s,p)=>s+p.height,0)+66;
   const hiddenHeight = vm.hiddenTaskCount ? 30 : 0, emptyHeight = rows.length ? 0 : 45;
   const height = Math.ceil(pad * 2 + headerHeight + 18 + resourceHeight + 24 + 20 + rows.reduce((sum, row) => sum + row.height, 0) + hiddenHeight + emptyHeight + paymentsHeight + 19 + 108);
-  return { vm, paymentRows, paymentsHeight, width, height, pad, innerWidth, headerHeight, resourceHeight, rows, hiddenHeight, emptyHeight, titleFontSize, titleLineHeight };
+  return { vm, resourceLayout, paymentRows, paymentsHeight, width, height, pad, innerWidth, headerHeight, resourceHeight, rows, hiddenHeight, emptyHeight, titleFontSize, titleLineHeight };
 }
 function rounded(ctx, x, y, width, height, radius, fill, stroke) {
   ctx.beginPath(); ctx.roundRect(x, y, width, height, radius);
@@ -62,10 +69,9 @@ export async function cardPng(snapshot, { compact = false } = {}) {
   const { vm, width, height, pad, innerWidth, headerHeight, resourceHeight, rows } = layout;
   const scale = 2, canvas = document.createElement('canvas'); canvas.width = width * scale; canvas.height = height * scale;
   const ctx = canvas.getContext('2d'); ctx.scale(scale, scale);
-  const gradient = ctx.createLinearGradient(0, 0, width, height); gradient.addColorStop(0, '#d6dce0'); gradient.addColorStop(.52, '#bdc5cc'); gradient.addColorStop(1, '#adb9bd');
-  ctx.beginPath(); ctx.roundRect(0, 0, width, height, 21); ctx.clip(); ctx.fillStyle = gradient; ctx.fillRect(0, 0, width, height);
-  let seed = 23; const random = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
-  for (let i = 0; i < width * height / 20; i++) { ctx.fillStyle = random() > .5 ? '#ffffff08' : '#25313d05'; ctx.fillRect(random() * width, random() * height, 1, 1); }
+  ctx.beginPath();ctx.roundRect(0,0,width,height,21);ctx.clip();
+  // Fixed resting frame; matches the web surface before the slow compositor-only drift.
+  ctx.drawImage(await cardSurfaceImage(),-width*.03,-height*.03,width*1.06,height*1.06);
   rounded(ctx, .5, .5, width - 1, height - 1, 21, null, '#73808c55');
   let y = pad;
   text(ctx, 'NomadCatapult', pad, y, compact ? 24 : 28, 800, '#141a22');
@@ -75,17 +81,17 @@ export async function cardPng(snapshot, { compact = false } = {}) {
   y += headerHeight + 18;
   rounded(ctx, pad, y, innerWidth, resourceHeight, 14, '#f1f3f340', '#63717e33');
   const inset = pad + 17, contentWidth = innerWidth - 34;
-  text(ctx, 'НЕДЕЛЬНЫЙ РЕСУРС', inset, y + 16, 9, 750); text(ctx, vm.remainingLabel, inset, y + 35, compact ? 31 : 36, 800, '#141a22');
-  text(ctx, vm.resourceLabel, inset, y + 77, 14);
-  rounded(ctx, inset, y + 106, contentWidth, 12, 6, '#59687830');
-  if (vm.totals.remainingPercent) rounded(ctx, inset, y + 106, contentWidth * vm.totals.remainingPercent / 100, 12, 6, '#c8ff00');
-  [['Потрачено', vm.spentLabel], ['В резерве', vm.reservedLabel], ['Свободно', vm.availableLabel]].forEach(([label, value], index) => { const x = inset + index * contentWidth / 3; text(ctx, label, x, y + 131, 9); text(ctx, value, x, y + 146, 13, 650, '#27333e'); });
-  if (resourceHeight > 171) {
-    const warnings = [];
-    if (vm.totals.overSpentHours) warnings.push(`Перерасход: ${hours(vm.totals.overSpentHours)} ч`);
-    if (vm.totals.overReservedHours) warnings.push(`Резерв сверх остатка: ${hours(vm.totals.overReservedHours)} ч`);
-    text(ctx, warnings.join(' · '), inset, y + 172, 9, 600, '#6d3c24');
-  }
+  const m=vm.measure,r=layout.resourceLayout;
+  text(ctx,m.eyebrow,inset,y+16,9,750);text(ctx,m.headline,inset,y+35,compact?31:36,800,'#141a22');
+  r.captionLines.forEach((line,i)=>text(ctx,line,inset,y+79+i*17,14));
+  rounded(ctx,inset,y+r.barY,contentWidth,12,6,'#59687830');
+  ctx.save();ctx.beginPath();ctx.roundRect(inset,y+r.barY,contentWidth,12,6);ctx.clip();
+  const acceptedWidth=contentWidth*m.primaryPercent/100,reviewWidth=contentWidth*m.reviewPercent/100;
+  if(acceptedWidth){ctx.fillStyle='#c8ff00';ctx.fillRect(inset,y+r.barY,acceptedWidth,12);}
+  if(reviewWidth){ctx.save();ctx.beginPath();ctx.rect(inset+acceptedWidth,y+r.barY,reviewWidth,12);ctx.clip();ctx.fillStyle='#c4dad1';ctx.fillRect(inset+acceptedWidth,y+r.barY,reviewWidth,12);ctx.strokeStyle='#657c738c';ctx.lineWidth=2;for(let x=inset+acceptedWidth-12;x<inset+acceptedWidth+reviewWidth+12;x+=7){ctx.beginPath();ctx.moveTo(x,y+r.barY+12);ctx.lineTo(x+12,y+r.barY);ctx.stroke();}ctx.restore();}ctx.restore();
+  r.stats.forEach((stat,i)=>{const x=inset+i*r.columnWidth;stat.labelLines.forEach((line,j)=>text(ctx,line,x,y+r.statsY+j*12,9));text(ctx,stat.value,x,y+r.valueY,13,650,'#27333e');});
+  if(r.unallocatedY!==null){text(ctx,m.unallocatedLabel,inset,y+r.unallocatedY,10,600);ctx.font=`700 12px ${FONT}`;text(ctx,m.unallocatedValue,inset+contentWidth-ctx.measureText(m.unallocatedValue).width,y+r.unallocatedY-1,12,700);}
+  r.explanationLines.forEach((line,i)=>text(ctx,line,inset,y+r.explanationY+i*12,9));r.warningLines.forEach((line,i)=>text(ctx,line,inset,y+r.warningY+i*12,9,600,'#6d3c24'));
   y += resourceHeight + 24; text(ctx, 'ЗАДАЧИ · ГОТОВНОСТЬ РЕЗУЛЬТАТА', pad, y, 9, 750); y += 20;
   if (rows.length) {
     rounded(ctx, pad, y, innerWidth, rows.reduce((sum, row) => sum + row.height, 0), 13, '#e9eef12d', '#63717e30');
@@ -100,7 +106,7 @@ export async function cardPng(snapshot, { compact = false } = {}) {
       row.reasonLines.forEach((line, lineIndex) => text(ctx, line, x, chipY + 29 + lineIndex * 16, 11)); y += row.height;
     });
   } else { text(ctx, 'Пока нет задач', pad + 12, y + 12, 13); y += layout.emptyHeight; }
-  if (vm.hiddenTaskCount) { text(ctx, `Ещё ${vm.hiddenTaskCount} задач · итог учитывает все ${vm.allTasks.length}`, pad + 2, y + 12, 11, 600); y += layout.hiddenHeight; }
+  if (vm.hiddenTaskCount) { text(ctx, vm.hiddenTasksLabel, pad + 2, y + 12, 11, 600); y += layout.hiddenHeight; }
   y+=20;text(ctx,'АВАНСЫ · СОБЫТИЯ ОПЛАТЫ',pad,y,9,750);y+=22;
   for(const row of layout.paymentRows){const {payment}=row;rounded(ctx,pad,y,innerWidth,row.height-7,10,payment.state.key==='received'?'#dae7c64d':'#d2d8de70','#63717e33');
     row.titleLines.forEach((line,i)=>text(ctx,line,pad+12,y+10+i*17,12,650));ctx.font=`700 13px ${FONT}`;const amountWidth=ctx.measureText(payment.amountLabel).width;text(ctx,payment.amountLabel,width-pad-12-amountWidth,y+10,13,700);

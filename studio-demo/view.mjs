@@ -1,4 +1,4 @@
-import { buildCardViewModel, hours, money } from './presentation.mjs';
+import { buildCardViewModel, hours, money, CARD_SURFACE_URL } from './presentation.mjs';
 export { hours, money, dateLabel } from './presentation.mjs';
 export function element(tag, className, text) {
   const node = document.createElement(tag);
@@ -26,18 +26,16 @@ export function renderCard(root, snapshot, { compact = false } = {}) {
   const brand = element('div');
   brand.append(element('p', 'wordmark', 'NomadCatapult'), element('h1', 'project-name', vm.title));
   header.append(brand, element('span', 'demo-badge', 'ДЕМО')); root.append(header);
+  root.style.setProperty('--card-surface', 'url("'+CARD_SURFACE_URL+'")');root.dataset.measure=vm.measure.kind;
   const resource = element('section', 'resource');
-  resource.append(element('p', 'eyebrow', 'НЕДЕЛЬНЫЙ РЕСУРС'), element('p', 'remaining', vm.remainingLabel), element('p', 'resource-caption', vm.resourceLabel));
-  const meter = element('div', 'meter');
-  meter.setAttribute('role', 'meter'); meter.setAttribute('aria-label', 'Остаток недельного ресурса');
-  meter.setAttribute('aria-valuemin', '0'); meter.setAttribute('aria-valuemax', '100'); meter.setAttribute('aria-valuenow', String(totals.remainingPercent));
-  const fill = element('span'); fill.style.width = `${totals.remainingPercent}%`; meter.append(fill); resource.append(meter);
-  const stats = element('div', 'resource-stats');
-  stats.append(pair('Израсходовано', vm.spentLabel), pair('В резерве', vm.reservedLabel), pair('Свободно', vm.availableLabel));
-  resource.append(stats, element('p', 'micro', 'Ожидание не расходует часы. Резерв входит в остаток.'));
-  if (totals.overReservedHours) resource.append(element('p', 'warning', `Резерв превышает остаток на ${hours(totals.overReservedHours)} ч.`));
-  if (totals.overSpentHours) resource.append(element('p', 'warning', `Превышение недельного ресурса: ${hours(totals.overSpentHours)} ч.`));
-  root.append(resource);
+  const measure=vm.measure;
+  resource.append(element('p','eyebrow',measure.eyebrow),element('p','remaining',measure.headline),element('p','resource-caption',measure.caption));
+  const meter=element('div','meter');meter.setAttribute('role','meter');meter.setAttribute('aria-label',measure.ariaLabel);meter.setAttribute('aria-valuemin','0');meter.setAttribute('aria-valuemax','100');meter.setAttribute('aria-valuenow',String(measure.primaryPercent));meter.setAttribute('aria-valuetext',measure.ariaText);
+  const fill=element('span','meter-primary');fill.style.width=measure.primaryPercent+'%';meter.append(fill);
+  if(measure.kind!=='hours'){const review=element('span','meter-review');review.style.width=measure.reviewPercent+'%';review.setAttribute('aria-hidden','true');meter.append(review);}resource.append(meter);
+  const stats=element('div','resource-stats');stats.dataset.columns=measure.stats.length;for(const [label,value]of measure.stats)stats.append(pair(label,value));resource.append(stats);
+  if(measure.kind==='hours')resource.append(pair(measure.unallocatedLabel,measure.unallocatedValue,'unallocated'));
+  resource.append(element('p','micro metric-explanation',measure.explanation));for(const warning of measure.warnings)resource.append(element('p','warning',warning));root.append(resource);
   const section = element('section', 'task-section');
   section.append(element('h2', 'section-label', 'ЗАДАЧИ · ГОТОВНОСТЬ РЕЗУЛЬТАТА'));
   if (!snapshot.tasks.length) section.append(element('p', 'empty', 'Пока нет задач. Добавьте их в редакторе.'));
@@ -53,11 +51,11 @@ export function renderCard(root, snapshot, { compact = false } = {}) {
     const body = element('div', 'task-body');
     body.append(pair('Готовность', `${hours(task.progress)}%`));
     const progress = element('div', 'task-progress'), bar = element('span'); bar.style.width = `${task.progress}%`; progress.append(bar); body.append(progress);
-    body.append(pair('План с согласованными правками', `${hours(estimate.estimateHours)} ч`), pair('Потрачено / осталось в резерве', `${hours(task.spentHours)} / ${hours(estimate.reservedHours)} ч`));
+    if(measure.kind==='hours')body.append(pair('План с согласованными правками', `${hours(estimate.estimateHours)} ч`), pair('Потрачено / осталось в резерве', `${hours(task.spentHours)} / ${hours(estimate.reservedHours)} ч`));
     const quote = disclosure('Смета задачи', money(estimate.totalPriceCents), [pair('Базовая работа', money(task.basePriceCents)), pair('Согласованные дополнительные правки', money(estimate.extraPriceCents))]);
     body.append(quote);
     if (task.rounds.length) {
-      const rounds = task.rounds.map(round => pair(`Раунд ${round.number}`, round.included ? 'Включён в базовую цену' : `${hours(round.estimateHours)} ч × ${money(round.rateCents)} = ${money(Math.round(round.estimateHours * round.rateCents))} · ${round.agreed ? 'согласован' : 'не согласован'}`));
+      const rounds = task.rounds.map(round => pair(`Раунд ${round.number}`, round.included ? 'Включён в базовую цену' : measure.kind!=='hours' ? (round.agreed?'Согласовано: ':'Предложено: ')+money(Math.round(round.estimateHours*round.rateCents)) : `${hours(round.estimateHours)} ч × ${money(round.rateCents)} = ${money(Math.round(round.estimateHours * round.rateCents))} · ${round.agreed ? 'согласован' : 'не согласован'}`));
       body.append(disclosure('Раунды правок', String(task.rounds.length), rounds));
     }
     if (state.reasons.length) {
@@ -66,7 +64,7 @@ export function renderCard(root, snapshot, { compact = false } = {}) {
     } else if (state.key === 'ready') body.append(element('p', 'micro', 'Условия выполнены. Задача готова к старту; работа ещё не начата.'));
     details.append(body); section.append(details);
   }
-  if (vm.hiddenTaskCount) section.append(element('p', 'remaining-tasks', `Ещё ${vm.hiddenTaskCount} задач · полный список в обычном режиме`));
+  if (vm.hiddenTaskCount) section.append(element('p', 'remaining-tasks', vm.hiddenTasksLabel));
   root.append(section);
   const payments=element('section','payment-section');payments.append(element('h2','section-label','АВАНСЫ · СОБЫТИЯ ОПЛАТЫ'));
   if(!vm.payments.length)payments.append(element('p','micro','Платёжные этапы не заданы.'));
@@ -80,5 +78,5 @@ export function renderCard(root, snapshot, { compact = false } = {}) {
 
   const footer = element('footer', 'widget-footer');
   footer.append(element('span', '', `Обновлено · ${vm.updatedLabel}`), element('span', '', 'Демо · цены условные')); root.append(footer);
-  if(previousPercent!==totals.remainingPercent&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&totals.remainingPercent){fill.animate([{transform:'scaleX('+previousPercent/totals.remainingPercent+') scaleY(.85)'},{transform:'scaleX(1.03) scaleY(1.08)',offset:.7},{transform:'scaleX(1) scaleY(1)'}],{duration:420,easing:'cubic-bezier(.2,.7,.25,1)'});}
+  if(previousPercent!==measure.primaryPercent&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&measure.primaryPercent){fill.animate([{transform:'scaleX('+previousPercent/measure.primaryPercent+') scaleY(.85)'},{transform:'scaleX(1.03) scaleY(1.08)',offset:.7},{transform:'scaleX(1) scaleY(1)'}],{duration:420,easing:'cubic-bezier(.2,.7,.25,1)'});}
 }

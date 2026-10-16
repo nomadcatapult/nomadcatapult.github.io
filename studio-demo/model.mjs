@@ -1,6 +1,6 @@
 /** Shared, DOM-free model for an editor and a snapshot viewer. Money is integer cents. */
 import { viewerPageUrl } from './urls.mjs';
-export const SNAPSHOT_VERSION = 2;
+export const SNAPSHOT_VERSION = 3;
 export const MAX_FRAGMENT_LENGTH = 24000;
 const MAX_TASKS = 40;
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -30,7 +30,9 @@ export function createDemo(now = new Date().toISOString()) {
 }
 export function validateSnapshot(value) {
   value = clone(value);
-  requireValue(object(value) && [1, SNAPSHOT_VERSION].includes(value.version), 'Неподдерживаемая версия снимка.');
+  requireValue(object(value) && [1, 2, SNAPSHOT_VERSION].includes(value.version), 'Неподдерживаемая версия снимка.');
+  value.measurement ??= {kind:'hours',unitLabel:'результатов'};
+  requireValue(object(value.measurement) && ['hours','units','percent'].includes(value.measurement.kind) && text(value.measurement.unitLabel,40) && value.measurement.unitLabel.trim().length>0, 'Некорректный режим шкалы или название единиц.');
   const legacy = !Array.isArray(value.payments);
   if (legacy) value.payments = [{id:'legacy-second-advance',title:'Второй аванс',amountCents:0,status:value.manualSecondAdvanceRecorded ? 'received' : 'planned',dependencies:[],missingDependencies:[]}];
   for (const task of value.tasks || []) {
@@ -87,7 +89,7 @@ export function validateSnapshot(value) {
   // Construct an allowlisted copy: imported JSON never supplies executable markup or extra state.
   return {
     version: SNAPSHOT_VERSION, title: value.title, updatedAt: value.updatedAt,
-    weeklyCapacityHours: value.weeklyCapacityHours, manualSecondAdvanceRecorded: value.manualSecondAdvanceRecorded, mode:value.mode,
+    weeklyCapacityHours: value.weeklyCapacityHours, manualSecondAdvanceRecorded: value.manualSecondAdvanceRecorded, mode:value.mode, measurement:{kind:value.measurement.kind,unitLabel:value.measurement.unitLabel},
     payments:value.payments.map(p=>({id:p.id,title:p.title,amountCents:p.amountCents,status:p.status,dependencies:[...p.dependencies],missingDependencies:[...p.missingDependencies]})),
     tasks: value.tasks.map(task => ({
       id: task.id, title: task.title, estimateHours: task.estimateHours, spentHours: task.spentHours,
@@ -107,6 +109,8 @@ export function taskTotals(task) {
     reservedHours: task.accepted ? 0 : roundHours(Math.max(0, estimateHours - task.spentHours)) };
 }
 export function taskState(snapshot, task) {
+  // Acceptance is a recorded result; later payment changes cannot undo it.
+  if (task.accepted) return {key:'accepted',label:'Принято',reasons:[]};
   const reasons = [];
   for (const id of task.paymentDependencies || (task.requiresSecondAdvance ? ['legacy-second-advance'] : [])) {
     const payment=snapshot.payments?.find(p=>p.id===id);
@@ -119,8 +123,7 @@ export function taskState(snapshot, task) {
   }
   for (const name of task.missingDependencies) reasons.push(`Удалён предшественник «${name}» — переназначьте или снимите зависимость`);
   if (reasons.length) return { key: 'blocked', label: 'Ожидает условий', reasons };
-  if (task.accepted) return { key: 'accepted', label: 'Принято', reasons };
-  if (task.progress >= 100) return { key: 'review', label: 'Ожидает принятия', reasons };
+  if (task.progress >= 100) return { key: 'review', label: 'Готово · ждёт приёмки', reasons };
   if (task.progress > 0) return { key: 'active', label: 'В работе', reasons };
   return { key: 'ready', label: 'Готова к старту', reasons };
 }
@@ -237,4 +240,12 @@ export function createTemplate(mode,now=new Date().toISOString()){
     {id:'start-advance',title:'Стартовый аванс',amountCents:spec.advance*100,status:'planned',dependencies:[],missingDependencies:[]},
     {id:'next-advance',title:'Аванс следующего этапа',amountCents:spec.advance*100,status:'planned',dependencies:[tasks[0].id],missingDependencies:[]}
   ]});
+}
+
+/** Each deliverable task has equal weight; payment milestones never enter this denominator. */
+export function resultProgress(snapshot) {
+  const total=snapshot.tasks.length,accepted=snapshot.tasks.filter(t=>t.accepted).length;
+  const ready=snapshot.tasks.filter(t=>!t.accepted && taskState(snapshot,t).key==='review').length;
+  const pending=total-accepted-ready;
+  return {total,accepted,ready,pending,acceptedPercent:total?accepted/total*100:0,readyPercent:total?ready/total*100:0,pendingPercent:total?pending/total*100:0};
 }
